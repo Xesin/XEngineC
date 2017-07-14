@@ -112,7 +112,7 @@ void XEngine::Update() {
 	newTime = GetTime();
 	double frameTime = (newTime - currentTime) * 0.001;
 	currentTime = newTime;
-	float deltaTime = min(frameTime, dt);
+	float deltaTime = (float) min(frameTime, dt);
 
 	currentScene->Update(deltaTime);
 }

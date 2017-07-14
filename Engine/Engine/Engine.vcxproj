@@ -100,7 +100,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\XiscoFerrer\Documents\Visual Studio 2017\Projects\Box2D-master\Box2D;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,7 +172,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Box2D-master\Box2D\Build\vs2017\Box2D.vcxproj">
+    <ProjectReference Include="..\..\Box2D\Box2D.vcxproj">
       <Project>{a434e80c-1049-10be-d9ca-b31d459e0cef}</Project>
     </ProjectReference>
   </ItemGroup>

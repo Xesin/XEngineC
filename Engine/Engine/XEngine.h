@@ -40,8 +40,10 @@ public:
 
 	static long GetTime() {
 		using namespace std::chrono;
-		return system_clock::now().time_since_epoch() /
+
+		__int64 time = system_clock::now().time_since_epoch() /
 			milliseconds(1);
+		return (long)time;
 	}
 
 private:

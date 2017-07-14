@@ -26,7 +26,7 @@ int WINAPI WinMain(
 		{
 			XEngine engine;
 
-			if (SUCCEEDED(engine.Initialize(new EngineScene())))
+			if (SUCCEEDED(engine.Initialize(new EngineScene(), 1280.f, 720.f)))
 			{
 				engine.RunMessageLoop();
 			}

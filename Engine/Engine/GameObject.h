@@ -9,7 +9,7 @@ public:
 		transform.p = spawn_position;
 	}
 	virtual void OnRender(Renderer* renderer) const = 0;
-	virtual void Update() = 0;
+	virtual void Update(float deltaTime) = 0;
 public:
 	b2Transform transform;
 };

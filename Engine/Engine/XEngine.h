@@ -4,7 +4,7 @@
 #include <windows.h>
 
 // C RunTime Header Files:
-
+#include <chrono>
 #include <d2d1.h>
 #include <d2d1helper.h>
 #include "ArrayList.h"
@@ -33,10 +33,16 @@ public:
 	~XEngine();
 
 	// Register the window class and call methods for instantiating drawing resources
-	HRESULT Initialize(EngineScene* initialScene);
+	HRESULT Initialize(EngineScene* initialScene, float resolutionX, float resolutionY);
 
 	// Process and dispatch messages
 	void RunMessageLoop();
+
+	static long GetTime() {
+		using namespace std::chrono;
+		return system_clock::now().time_since_epoch() /
+			milliseconds(1);
+	}
 
 private:
 	// The windows procedure.
@@ -49,9 +55,16 @@ private:
 
 	void Update();
 
+	void StartScene(EngineScene* sceneToStart);
+
+public:
+	static XEngine* instance;
 private:
 	ArrayList<GameObject*> gameObjects;
 	HWND m_hwnd;
 	Renderer* renderer;
 	EngineScene* currentScene;
+	unsigned long currentTime = 0;
+	unsigned long newTime = 0;
+	float dt = 0;
 };

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include <math.h>
+#include <ctime>
+
 
 #include "XEngine.h"
 #include "Renderer.h"
@@ -38,7 +40,7 @@ XEngine::~XEngine()
 }
 
 
-HRESULT XEngine::Initialize(EngineScene* initialScene)
+HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float resolutionY)
 {
 	HRESULT hr;
 	currentScene = initialScene;
@@ -79,8 +81,8 @@ HRESULT XEngine::Initialize(EngineScene* initialScene)
 			WS_OVERLAPPEDWINDOW,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
-			static_cast<UINT>(ceil(640.f * dpiX / 96.f)),
-			static_cast<UINT>(ceil(480.f * dpiY / 96.f)),
+			static_cast<UINT>(ceil(resolutionX * dpiX / 96.f)),
+			static_cast<UINT>(ceil(resolutionY * dpiY / 96.f)),
 			NULL,
 			NULL,
 			HINST_THISCOMPONENT,
@@ -93,6 +95,11 @@ HRESULT XEngine::Initialize(EngineScene* initialScene)
 			UpdateWindow(m_hwnd);
 		}
 		pDemoApp = this;
+		
+		currentTime = GetTime();
+			
+		dt = 1.f / 60.f;
+		currentScene->Preload();
 		currentScene->Start();
 	}
 
@@ -100,7 +107,22 @@ HRESULT XEngine::Initialize(EngineScene* initialScene)
 }
 
 void XEngine::Update() {
-	currentScene->Update();
+
+	//Calculate semi-fixed deltaTime
+	newTime = GetTime();
+	double frameTime = (newTime - currentTime) * 0.001;
+	currentTime = newTime;
+	float deltaTime = min(frameTime, dt);
+
+	currentScene->Update(deltaTime);
+}
+
+void XEngine::StartScene(EngineScene * sceneToStart)
+{
+	currentScene->OnDestroy();
+	currentScene = sceneToStart;
+	currentScene->Preload();
+	currentScene->Start();
 }
 
 LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

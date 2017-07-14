@@ -17,9 +17,9 @@ public:
 	void Start() {
 		gameObjects.insert(new Rect(b2Vec2(50.f, 40.f), 100, 100));
 	}
-	void Update() {
+	void Update(float deltaTime) {
 		for (int i = 0; i < gameObjects.size_of_list(); i++) {
-			gameObjects[i]->Update();
+			gameObjects[i]->Update(deltaTime);
 		}
 	}
 	void OnDestroy() {}

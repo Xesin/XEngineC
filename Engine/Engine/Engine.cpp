@@ -5,6 +5,7 @@
 #include <dwrite.h>
 #include "Engine.h"
 #include "XEngine.h"
+#include "EngineScene.h"
 
 
 int WINAPI WinMain(
@@ -26,7 +27,7 @@ int WINAPI WinMain(
 		{
 			XEngine engine;
 
-			if (SUCCEEDED(engine.Initialize()))
+			if (SUCCEEDED(engine.Initialize(new EngineScene())))
 			{
 				engine.RunMessageLoop();
 			}

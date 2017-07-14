@@ -24,6 +24,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 class Renderer;
 class GameObject;
+class EngineScene;
 
 class XEngine
 {
@@ -32,7 +33,7 @@ public:
 	~XEngine();
 
 	// Register the window class and call methods for instantiating drawing resources
-	HRESULT Initialize();
+	HRESULT Initialize(EngineScene* initialScene);
 
 	// Process and dispatch messages
 	void RunMessageLoop();
@@ -46,9 +47,11 @@ private:
 		LPARAM lParam
 	);
 
-	ArrayList<GameObject*> gameObjects;
+	void Update();
 
 private:
+	ArrayList<GameObject*> gameObjects;
 	HWND m_hwnd;
 	Renderer* renderer;
+	EngineScene* currentScene;
 };

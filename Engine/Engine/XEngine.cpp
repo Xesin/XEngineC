@@ -7,15 +7,24 @@
 #include "Renderer.h"
 #include "GameObject.h"
 #include "Rect.h"
+#include "EngineScene.h"
+
+XEngine* pDemoApp;
 
 void XEngine::RunMessageLoop()
 {
 	MSG msg;
-
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+	msg.message = WM_NULL;
+	while (msg.message != WM_QUIT) {
+		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE)) {
+			
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else {
+			pDemoApp->Update();
+			pDemoApp->currentScene->Render(m_hwnd, pDemoApp->renderer);
+		}
 	}
 }
 
@@ -29,9 +38,10 @@ XEngine::~XEngine()
 }
 
 
-HRESULT XEngine::Initialize()
+HRESULT XEngine::Initialize(EngineScene* initialScene)
 {
 	HRESULT hr;
+	currentScene = initialScene;
 	renderer = new Renderer();
 	// Initialize device-indpendent resources, such
 	// as the Direct2D factory.
@@ -83,92 +93,70 @@ HRESULT XEngine::Initialize()
 			ShowWindow(m_hwnd, SW_SHOWNORMAL);
 			UpdateWindow(m_hwnd);
 		}
+		pDemoApp = this;
+		currentScene->Start();
 	}
 
 	return hr;
 }
 
-float x = 10;
+void XEngine::Update() {
+	currentScene->Update();
+}
 
 LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
 
-	if (message == WM_CREATE)
+	bool wasHandled = false;
+
+	if (pDemoApp)
 	{
-		LPCREATESTRUCT pcs = (LPCREATESTRUCT)lParam;
-		XEngine *pDemoApp = (XEngine *)pcs->lpCreateParams;
-
-		::SetWindowLongPtrW(
-			hwnd,
-			GWLP_USERDATA,
-			PtrToUlong(pDemoApp)
-		);
-
-		result = 1;
-	}
-	else
-	{
-		XEngine *pDemoApp = reinterpret_cast<XEngine *>(static_cast<LONG_PTR>(
-			::GetWindowLongPtrW(
-				hwnd,
-				GWLP_USERDATA
-			)));
-
-		bool wasHandled = false;
-
-		if (pDemoApp)
+		switch (message)
 		{
-			switch (message)
-			{
-			case WM_SIZE:
-			{
-				UINT width = LOWORD(lParam);
-				UINT height = HIWORD(lParam);
-				pDemoApp->renderer->OnResize(width, height);
-			}
-			result = 0;
-			wasHandled = true;
-			break;
-
-			case WM_DISPLAYCHANGE:
-			{
-				InvalidateRect(hwnd, NULL, FALSE);
-			}
-			result = 0;
-			wasHandled = true;
-			break;
-
-			case WM_PAINT:
-			{
-				
-				ValidateRect(hwnd, NULL);
-			}
-			result = 0;
-			wasHandled = true;
-			break;
-
-			case WM_DESTROY:
-			{
-				PostQuitMessage(0);
-			}
-			result = 1;
-			wasHandled = true;
-			break;
-			}
-
-			if (message != WM_DESTROY || message != WM_QUIT) {
-				pDemoApp->renderer->OnRender(hwnd, pDemoApp->gameObjects[4]);
-			}
-
+		case WM_SIZE:
+		{
+			UINT width = LOWORD(lParam);
+			UINT height = HIWORD(lParam);
+			pDemoApp->renderer->OnResize(width, height);
 		}
+		result = 0;
+		wasHandled = true;
+		break;
+
+		case WM_DISPLAYCHANGE:
+		{
+			InvalidateRect(hwnd, NULL, FALSE);
+		}
+		result = 0;
+		wasHandled = true;
+		break;
+
+		case WM_PAINT:
+		{
+				
+			ValidateRect(hwnd, NULL);
+		}
+		result = 0;
+		wasHandled = true;
+		break;
+
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+		}
+		result = 1;
+		wasHandled = true;
+		break;
+		}
+	}
 
 		
-		if (!wasHandled)
-		{
-			result = DefWindowProc(hwnd, message, wParam, lParam);
-		}
+	if (!wasHandled)
+	{
+		result = DefWindowProc(hwnd, message, wParam, lParam);
 	}
+	
 
 	return result;
 }

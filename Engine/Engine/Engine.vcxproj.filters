@@ -48,6 +48,9 @@
     <ClInclude Include="Rect.h">
       <Filter>Archivos de encabezado\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="ArrayList.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

@@ -7,8 +7,7 @@
 
 #include <d2d1.h>
 #include <d2d1helper.h>
-
-class Renderer;
+#include "ArrayList.h"
 
 #ifndef HINST_THISCOMPONENT
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
@@ -22,6 +21,9 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define Assert(b)
 #endif //DEBUG || _DEBUG
 #endif
+
+class Renderer;
+class GameObject;
 
 class XEngine
 {
@@ -43,6 +45,8 @@ private:
 		WPARAM wParam,
 		LPARAM lParam
 	);
+
+	ArrayList<GameObject*> gameObjects;
 
 private:
 	HWND m_hwnd;

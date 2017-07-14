@@ -5,6 +5,7 @@
 
 #include "XEngine.h"
 #include "Renderer.h"
+#include "GameObject.h"
 #include "Rect.h"
 
 void XEngine::RunMessageLoop()
@@ -35,7 +36,7 @@ HRESULT XEngine::Initialize()
 	// Initialize device-indpendent resources, such
 	// as the Direct2D factory.
 	hr = renderer->Initialize();
-
+	gameObjects.insert(new Rect());
 	if (SUCCEEDED(hr))
 	{
 		// Register the window class.
@@ -157,11 +158,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			}
 
 			if (message != WM_DESTROY || message != WM_QUIT) {
-				Rect* rect = new Rect();
-				x++;
-				rect->x = x;
-				pDemoApp->renderer->OnRender(hwnd, rect);
-				delete rect;
+				pDemoApp->renderer->OnRender(hwnd, pDemoApp->gameObjects[4]);
 			}
 
 		}

@@ -46,7 +46,6 @@ HRESULT XEngine::Initialize(EngineScene* initialScene)
 	// Initialize device-indpendent resources, such
 	// as the Direct2D factory.
 	hr = renderer->Initialize();
-	gameObjects.insert(new Rect());
 	if (SUCCEEDED(hr))
 	{
 		// Register the window class.

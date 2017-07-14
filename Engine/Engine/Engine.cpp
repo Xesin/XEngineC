@@ -7,7 +7,6 @@
 #include "XEngine.h"
 #include "EngineScene.h"
 
-
 int WINAPI WinMain(
 	HINSTANCE /* hInstance */,
 	HINSTANCE /* hPrevInstance */,

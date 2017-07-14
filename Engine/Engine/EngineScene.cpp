@@ -2,6 +2,7 @@
 #include "EngineScene.h"
 #include "GameObject.h"
 #include "Renderer.h"
+#include "Rect.h"
 
 EngineScene::~EngineScene()
 {
@@ -14,6 +15,7 @@ void EngineScene::Preload()
 
 void EngineScene::Start()
 {
+	gameObjects.insert(new Rect(b2Vec2(50.f, 40.f)));
 }
 
 void EngineScene::Update()

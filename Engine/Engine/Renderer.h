@@ -16,6 +16,8 @@ inline void SafeRelease(
 	}
 }
 
+class GameObject;
+
 
 class Renderer
 {
@@ -29,7 +31,9 @@ public:
 	void GetDesktopDpi(FLOAT* dpiX, FLOAT* dpiY);
 
 	// Draw content.
-	HRESULT OnRender(HWND m_hwnd);
+	HRESULT OnRender(HWND m_hwnd, GameObject* gameObject);
+
+	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color);
 
 	// Resize the render target.
 	void OnResize(
@@ -51,7 +55,6 @@ private:
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1HwndRenderTarget* m_pRenderTarget;
-	ID2D1SolidColorBrush* m_pLightSlateGrayBrush;
-	ID2D1SolidColorBrush* m_pCornflowerBlueBrush;
+	ID2D1SolidColorBrush* colorBrush;
 };
 

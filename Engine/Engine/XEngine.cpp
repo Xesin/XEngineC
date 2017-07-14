@@ -5,6 +5,7 @@
 
 #include "XEngine.h"
 #include "Renderer.h"
+#include "Rect.h"
 
 void XEngine::RunMessageLoop()
 {
@@ -23,7 +24,7 @@ XEngine::XEngine():
 }
 XEngine::~XEngine()
 {
-
+	delete renderer;
 }
 
 
@@ -137,7 +138,9 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			case WM_PAINT:
 			{
-				pDemoApp->renderer->OnRender(hwnd);
+				Rect* rect = new Rect();
+				pDemoApp->renderer->OnRender(hwnd, rect);
+				delete rect;
 				ValidateRect(hwnd, NULL);
 			}
 			result = 0;

@@ -87,6 +87,8 @@ HRESULT XEngine::Initialize()
 	return hr;
 }
 
+float x = 10;
+
 LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
@@ -138,9 +140,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			case WM_PAINT:
 			{
-				Rect* rect = new Rect();
-				pDemoApp->renderer->OnRender(hwnd, rect);
-				delete rect;
+				
 				ValidateRect(hwnd, NULL);
 			}
 			result = 0;
@@ -155,8 +155,18 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			wasHandled = true;
 			break;
 			}
+
+			if (message != WM_DESTROY || message != WM_QUIT) {
+				Rect* rect = new Rect();
+				x++;
+				rect->x = x;
+				pDemoApp->renderer->OnRender(hwnd, rect);
+				delete rect;
+			}
+
 		}
 
+		
 		if (!wasHandled)
 		{
 			result = DefWindowProc(hwnd, message, wParam, lParam);

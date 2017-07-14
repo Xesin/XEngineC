@@ -3,10 +3,9 @@
 class Rect : public GameObject {
 public:
 	void OnRender(Renderer* renderer) const;
-	Rect(b2Vec2 spawn_pos) : GameObject(spawn_pos) {
-
-	}
-
+	void Update() {}
+	Rect(b2Vec2 spawn_pos, float32 _width, float32 _height);
 public:
-	float x = 0;
+	float32 width;
+	float32 height;
 };

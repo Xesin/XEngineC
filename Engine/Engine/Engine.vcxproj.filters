@@ -77,9 +77,6 @@
     <ClCompile Include="Rect.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="EngineScene.cpp">
-      <Filter>Archivos de código fuente\Scenes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">

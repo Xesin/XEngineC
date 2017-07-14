@@ -2,8 +2,14 @@
 #include "Rect.h"
 #include "Renderer.h"
 
-void Rect::OnRender(Renderer* renderer) const
-{
-	renderer->RenderRect(x, 50, 100, 100, D2D1::ColorF(D2D1::ColorF::Aquamarine));
+Rect::Rect(b2Vec2 spawn_pos, float32 _width, float32 _height) : GameObject(spawn_pos) {
+	width = _width;
+	height = _height;
+
 }
 
+void Rect::OnRender(Renderer* renderer) const{
+
+	renderer->RenderRect(transform.p.x, transform.p.y, width, height, D2D1::ColorF(D2D1::ColorF::Aquamarine));
+
+}

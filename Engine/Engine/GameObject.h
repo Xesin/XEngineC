@@ -6,10 +6,10 @@ class Renderer;
 class GameObject {
 public:
 	GameObject(b2Vec2 spawn_position) {
-		position = spawn_position;
+		transform.p = spawn_position;
 	}
 	virtual void OnRender(Renderer* renderer) const = 0;
-
+	virtual void Update() = 0;
 public:
-	b2Vec2 position;
+	b2Transform transform;
 };

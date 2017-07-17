@@ -157,6 +157,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		{
 				
 			ValidateRect(hwnd, NULL);
+			pDemoApp->currentScene->Render(hwnd, pDemoApp->renderer);
 		}
 		result = 0;
 		wasHandled = true;

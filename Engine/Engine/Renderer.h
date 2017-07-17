@@ -33,14 +33,11 @@ public:
 	// Draw content.
 	HRESULT OnRender(HWND m_hwnd, GameObject* gameObject);
 
-	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color);
-
 	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith = 1);
-
-	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color);
 
 	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith = 1);
 
+	void RenderImage(float posX, float posY);
 	// Resize the render target.
 	void OnResize(
 		UINT width,
@@ -56,11 +53,27 @@ private:
 
 	// Release device-dependent resource.
 	void DiscardDeviceResources();
+
+	template <typename T>
+	float PixelsToDipsX(T x)
+	{
+		return static_cast<float>(x) / DPIScaleX;
+	}
+
+	template <typename T>
+	float PixelsToDipsY(T y)
+	{
+		return static_cast<float>(y) / DPIScaleY;
+	}
 	
 
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1HwndRenderTarget* m_pRenderTarget;
 	ID2D1SolidColorBrush* colorBrush;
+	float DPIScaleX = 1.f;
+	float DPIScaleY = 1.f;
 };
+
+
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Renderer.h"
 #include "GameObject.h"
+#include <wincodec.h>
 
 Renderer::Renderer() :
 	m_pDirect2dFactory(NULL),
@@ -19,6 +20,13 @@ Renderer::~Renderer()
 HRESULT Renderer::Initialize()
 {
 	return CreateDeviceIndependentResources();
+	FLOAT dpiX;
+	FLOAT dpiY;
+
+	GetDesktopDpi(&dpiX, &dpiY);
+
+	DPIScaleX = dpiX / 96.0f;
+	DPIScaleY = dpiY / 96.0f;
 }
 
 void Renderer::GetDesktopDpi(FLOAT *dpiX, FLOAT* dpiY) {
@@ -50,8 +58,10 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 		);
 
 		// Create a Direct2D render target.
+		D2D1_RENDER_TARGET_PROPERTIES properties = D2D1::RenderTargetProperties();
+		properties.pixelFormat = D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED);
 		hr = m_pDirect2dFactory->CreateHwndRenderTarget(
-			D2D1::RenderTargetProperties(),
+			properties,
 			D2D1::HwndRenderTargetProperties(m_hwnd, size),
 			&m_pRenderTarget
 		);
@@ -97,26 +107,13 @@ HRESULT Renderer::OnRender(HWND m_hwnd, GameObject* gameObject)
 	return hr;
 }
 
-void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color)
-{
-	D2D1_RECT_F rectangle = D2D1::RectF(
-		posX,
-		posY,
-		posX + width,
-		posY + height
-	);
-
-	colorBrush->SetColor(color);
-		m_pRenderTarget->FillRectangle(&rectangle, colorBrush);
-}
-
 void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith)
 {
 	D2D1_RECT_F rectangle = D2D1::RectF(
-		posX,
-		posY,
-		posX + width,
-		posY + height
+		PixelsToDipsX(posX),
+		PixelsToDipsY(posY),
+		PixelsToDipsX(posX) + PixelsToDipsX(width),
+		PixelsToDipsY(posY) + PixelsToDipsY(height)
 	);
 
 	colorBrush->SetColor(color);
@@ -124,29 +121,46 @@ void Renderer::RenderRect(float posX, float posY, float width, float height, D2D
 		m_pRenderTarget->FillRectangle(&rectangle, colorBrush);
 	}
 	else {
-		m_pRenderTarget->DrawRectangle(&rectangle, colorBrush, strokeWith);
+		m_pRenderTarget->DrawRectangle(&rectangle, colorBrush, PixelsToDipsX(strokeWith));
 	}
-}
-
-void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color)
-{
-	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(posX, posY), radiusX, radiusY);
-
-	colorBrush->SetColor(color);
-
-	m_pRenderTarget->FillEllipse(&ellipse, colorBrush);
 }
 
 void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith)
 {
-	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(posX, posY), radiusX, radiusY);
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(PixelsToDipsX(posX), PixelsToDipsY(posY)),
+		PixelsToDipsX(radiusX),
+		PixelsToDipsY(radiusY));
 
 	colorBrush->SetColor(color);
 	if (fill) {
 		m_pRenderTarget->FillEllipse(&ellipse, colorBrush);
 	}
 	else {
-		m_pRenderTarget->DrawEllipse(&ellipse, colorBrush, strokeWith);
+		m_pRenderTarget->DrawEllipse(&ellipse, colorBrush, PixelsToDipsX(strokeWith));
+	}
+}
+
+void Renderer::RenderImage(float posX, float posY)
+{
+	// Create a decoder
+	IWICBitmapDecoder *pDecoder = NULL;
+	IWICImagingFactory *pIWICFactory;
+	HRESULT hr = S_OK;
+
+	hr = pIWICFactory->CreateDecoderFromFilename(
+		L"",                      // Image to be decoded
+		NULL,                            // Do not prefer a particular vendor
+		GENERIC_READ,                    // Desired read access to the file
+		WICDecodeMetadataCacheOnDemand,  // Cache metadata when needed
+		&pDecoder                        // Pointer to the decoder
+	);
+
+	// Retrieve the first frame of the image from the decoder
+	IWICBitmapFrameDecode *pFrame = NULL;
+
+	if (SUCCEEDED(hr))
+	{
+		hr = pDecoder->GetFrame(0, &pFrame);
 	}
 }
 

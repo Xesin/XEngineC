@@ -96,5 +96,8 @@
     <Image Include="Engine.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="bitmap1.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -60,6 +60,9 @@
     <ClInclude Include="EngineScene.h">
       <Filter>Archivos de encabezado\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Archivos de encabezado\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +78,9 @@
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="Rect.cpp">
+      <Filter>Archivos de código fuente\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>

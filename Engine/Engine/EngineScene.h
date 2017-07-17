@@ -1,6 +1,6 @@
 #pragma once
 #include "ArrayList.h"
-#include "Rect.h"
+#include "Circle.h"
 #include "GameObject.h"
 #include "Renderer.h"
 
@@ -15,7 +15,10 @@ public:
 
 	void Preload() {}
 	void Start() {
-		gameObjects.insert(new Rect(b2Vec2(50.f, 40.f), 100, 100));
+		Circle* ellipse = new Circle(b2Vec2(50.f, 40.f), 100, 100);
+		ellipse->fill = false;
+		ellipse->strokeWith = 5;
+		gameObjects.insert(ellipse);
 	}
 	void Update(float deltaTime) {
 		for (int i = 0; i < gameObjects.size_of_list(); i++) {

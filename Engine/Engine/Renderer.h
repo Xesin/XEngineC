@@ -35,6 +35,12 @@ public:
 
 	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color);
 
+	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith = 1);
+
+	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color);
+
+	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith = 1);
+
 	// Resize the render target.
 	void OnResize(
 		UINT width,

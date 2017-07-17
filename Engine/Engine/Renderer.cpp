@@ -99,7 +99,7 @@ HRESULT Renderer::OnRender(HWND m_hwnd, GameObject* gameObject)
 
 void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color)
 {
-	D2D1_RECT_F rectangle2 = D2D1::RectF(
+	D2D1_RECT_F rectangle = D2D1::RectF(
 		posX,
 		posY,
 		posX + width,
@@ -107,7 +107,47 @@ void Renderer::RenderRect(float posX, float posY, float width, float height, D2D
 	);
 
 	colorBrush->SetColor(color);
-	m_pRenderTarget->FillRectangle(&rectangle2, colorBrush);
+		m_pRenderTarget->FillRectangle(&rectangle, colorBrush);
+}
+
+void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith)
+{
+	D2D1_RECT_F rectangle = D2D1::RectF(
+		posX,
+		posY,
+		posX + width,
+		posY + height
+	);
+
+	colorBrush->SetColor(color);
+	if (fill) {
+		m_pRenderTarget->FillRectangle(&rectangle, colorBrush);
+	}
+	else {
+		m_pRenderTarget->DrawRectangle(&rectangle, colorBrush, strokeWith);
+	}
+}
+
+void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color)
+{
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(posX, posY), radiusX, radiusY);
+
+	colorBrush->SetColor(color);
+
+	m_pRenderTarget->FillEllipse(&ellipse, colorBrush);
+}
+
+void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith)
+{
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(posX, posY), radiusX, radiusY);
+
+	colorBrush->SetColor(color);
+	if (fill) {
+		m_pRenderTarget->FillEllipse(&ellipse, colorBrush);
+	}
+	else {
+		m_pRenderTarget->DrawEllipse(&ellipse, colorBrush, strokeWith);
+	}
 }
 
 

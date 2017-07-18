@@ -40,6 +40,12 @@
     <Filter Include="Archivos de recursos\Resources">
       <UniqueIdentifier>{521205b6-d98e-4d11-aa74-b0d721586985}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Managers">
+      <UniqueIdentifier>{09a44ddb-a2df-4548-b244-36aebbddabc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Managers">
+      <UniqueIdentifier>{f718217d-c6a6-43b6-b2ad-f2f1823bff04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -86,6 +92,9 @@
     <ClInclude Include="Headers\resource.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Managers\ScaleManager.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -111,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="Source\XEngine.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Managers\ScaleManager.cpp">
+      <Filter>Source\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

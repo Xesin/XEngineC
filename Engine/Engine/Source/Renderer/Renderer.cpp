@@ -2,6 +2,7 @@
 #include "Renderer\Renderer.h"
 #include "GameObjects\GameObject.h"
 #include "Renderer\CachedImage.h"
+#include "Managers\ScaleManager.h"
 
 
 IWICImagingFactory* Renderer::wicFactory = nullptr;
@@ -9,7 +10,8 @@ ID2D1HwndRenderTarget* Renderer::m_pRenderTarget = nullptr;
 
 Renderer::Renderer() :
 	m_pDirect2dFactory(NULL),
-	colorBrush(NULL)
+	colorBrush(NULL),
+	scaleManager(NULL)
 {
 	Renderer::wicFactory = NULL;
 	Renderer::m_pRenderTarget = NULL;
@@ -21,6 +23,7 @@ Renderer::~Renderer()
 	SafeRelease(&Renderer::m_pRenderTarget);
 	SafeRelease(&colorBrush);
 	SafeRelease(&Renderer::wicFactory);
+	delete scaleManager;
 }
 
 HRESULT Renderer::Initialize()
@@ -77,6 +80,8 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 			&Renderer::m_pRenderTarget
 		);
 
+		scaleManager = new ScaleManager(size.width, size.height);
+
 
 		if (SUCCEEDED(hr))
 		{
@@ -91,6 +96,8 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 	return hr;
 }
 
+
+
 HRESULT Renderer::OnRender(HWND m_hwnd, GameObject* gameObject)
 {
 	HRESULT hr = S_OK;
@@ -98,24 +105,31 @@ HRESULT Renderer::OnRender(HWND m_hwnd, GameObject* gameObject)
 	hr = CreateDeviceResources(m_hwnd);
 	if (SUCCEEDED(hr))
 	{
-		Renderer::m_pRenderTarget->BeginDraw();
-
+		
 		Renderer::m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-
-		Renderer::m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
 		gameObject->OnRender(this);
 
-		hr = Renderer::m_pRenderTarget->EndDraw();
 	}
+
+	return hr;
+}
+
+void Renderer::PreRender()
+{
+	Renderer::m_pRenderTarget->BeginDraw();
+	Renderer::m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+}
+
+void Renderer::EndRender()
+{
+	HRESULT hr = Renderer::m_pRenderTarget->EndDraw();
 
 	if (hr == D2DERR_RECREATE_TARGET)
 	{
 		hr = S_OK;
 		DiscardDeviceResources();
 	}
-
-	return hr;
 }
 
 void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith)
@@ -128,6 +142,7 @@ void Renderer::RenderRect(float posX, float posY, float width, float height, D2D
 	);
 
 	colorBrush->SetColor(color);
+
 	if (fill) {
 		Renderer::m_pRenderTarget->FillRectangle(&rectangle, colorBrush);
 	}
@@ -178,6 +193,7 @@ void Renderer::OnResize(UINT width, UINT height)
 		// error here, because the error will be returned again
 		// the next time EndDraw is called.
 		Renderer::m_pRenderTarget->Resize(D2D1::SizeU(width, height));
+		scaleManager->OnResize(width);
 	}
 }
 

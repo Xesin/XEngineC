@@ -25,7 +25,9 @@ void XEngine::RunMessageLoop()
 		}
 		else {
 			pDemoApp->Update();
+			pDemoApp->renderer->PreRender();
 			pDemoApp->currentScene->Render(m_hwnd, pDemoApp->renderer);
+			pDemoApp->renderer->EndRender();
 		}
 	}
 }

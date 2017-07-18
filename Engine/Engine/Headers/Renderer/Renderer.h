@@ -18,6 +18,7 @@ inline void SafeRelease(
 
 class GameObject;
 class CachedImage;
+class ScaleManager;
 
 class Renderer
 {
@@ -32,6 +33,12 @@ public:
 
 	// Draw content.
 	HRESULT OnRender(HWND m_hwnd, GameObject* gameObject);
+
+	// InitializeRender
+	void PreRender();
+
+	// Ends the render
+	void EndRender();
 
 	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith = 1);
 
@@ -63,13 +70,13 @@ private:
 	template <typename T>
 	float PixelsToDipsX(T x)
 	{
-		return static_cast<float>(x) / DPIScaleX;
+		return (static_cast<float>(x) / DPIScaleX) * scaleManager->scaleX;
 	}
 
 	template <typename T>
 	float PixelsToDipsY(T y)
 	{
-		return static_cast<float>(y) / DPIScaleY;
+		return (static_cast<float>(y) / DPIScaleY) * scaleManager->scaleY;
 	}
 	
 public:
@@ -81,6 +88,7 @@ private:
 	ID2D1SolidColorBrush* colorBrush;
 	float DPIScaleX = 1.f;
 	float DPIScaleY = 1.f;
+	ScaleManager* scaleManager;
 };
 
 

@@ -124,6 +124,7 @@ void XEngine::Update() {
 void XEngine::StartScene(EngineScene * sceneToStart)
 {
 	currentScene->OnDestroy();
+	CacheManager::GetInstance()->FlushCache();
 	currentScene = sceneToStart;
 	currentScene->Preload();
 	currentScene->Start();

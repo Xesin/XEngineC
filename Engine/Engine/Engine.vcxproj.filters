@@ -1,88 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Archivos de código fuente">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Archivos de encabezado">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Archivos de recursos">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Archivos de encabezado\GameObjects">
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\GameObjects">
       <UniqueIdentifier>{0407039d-e2bf-4988-a9ec-89019e6a6b63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de código fuente\GameObjects">
-      <UniqueIdentifier>{6198a430-21a6-4df0-9f8b-9a0b4980f3ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de encabezado\Scenes">
+    <Filter Include="Headers\Scenes">
       <UniqueIdentifier>{5e2f52eb-297b-40b1-8312-41ff230d9f0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de código fuente\Scenes">
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source\GameObjects">
+      <UniqueIdentifier>{6198a430-21a6-4df0-9f8b-9a0b4980f3ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scenes">
       <UniqueIdentifier>{8f6580d5-9a29-49ef-9106-7d263ca38902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Renderer">
+      <UniqueIdentifier>{ca3e409c-db51-4067-a17d-ad2d0e1ebbbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Utils">
+      <UniqueIdentifier>{2f811762-00c2-40a6-aa59-22f306c6e05d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{9736d688-f629-4aa9-abda-1359325fb0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer">
+      <UniqueIdentifier>{1c425de9-932e-4f66-8522-083dae4d5f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Resources">
+      <UniqueIdentifier>{521205b6-d98e-4d11-aa74-b0d721586985}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="XEngine.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Archivos de encabezado\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>Archivos de encabezado\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrayList.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineScene.h">
-      <Filter>Archivos de encabezado\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>Archivos de encabezado\GameObjects</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="XEngine.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Rect.cpp">
-      <Filter>Archivos de código fuente\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Circle.cpp">
-      <Filter>Archivos de código fuente\GameObjects</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">
@@ -90,14 +50,75 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>Archivos de recursos</Filter>
+    <ClInclude Include="Headers\stdafx.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\targetver.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\XEngine.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Engine.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\GameObjects\Circle.h">
+      <Filter>Headers\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\GameObjects\GameObject.h">
+      <Filter>Headers\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\GameObjects\Rect.h">
+      <Filter>Headers\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Scenes\EngineScene.h">
+      <Filter>Headers\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Renderer\CachedImage.h">
+      <Filter>Headers\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Renderer\Renderer.h">
+      <Filter>Headers\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Utils\ArrayList.h">
+      <Filter>Headers\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\resource.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\GameObjects\Circle.cpp">
+      <Filter>Source\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjects\GameObject.cpp">
+      <Filter>Source\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjects\Rect.cpp">
+      <Filter>Source\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\CachedImage.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Renderer.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\stdafx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\XEngine.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Engine.ico">
+      <Filter>Archivos de recursos\Resources</Filter>
     </Image>
-    <Image Include="Engine.ico">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="bitmap1.bmp">
-      <Filter>Archivos de recursos</Filter>
+    <Image Include="Resources\small.ico">
+      <Filter>Archivos de recursos\Resources</Filter>
     </Image>
   </ItemGroup>
 </Project>

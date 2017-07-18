@@ -7,7 +7,7 @@
 #include <chrono>
 #include <d2d1.h>
 #include <d2d1helper.h>
-#include "ArrayList.h"
+#include "Utils\ArrayList.h"
 
 #ifndef HINST_THISCOMPONENT
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;

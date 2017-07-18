@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Rect.h"
-#include "Renderer.h"
+#include "GameObjects\Rect.h"
+#include "Renderer\Renderer.h"
 
 Rect::Rect(b2Vec2 spawn_pos, float32 _width, float32 _height) : GameObject(spawn_pos) {
 	width = _width;

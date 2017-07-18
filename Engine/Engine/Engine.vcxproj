@@ -96,11 +96,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..;Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,43 +141,40 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ArrayList.h" />
-    <ClInclude Include="Circle.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="EngineScene.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Rect.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="XEngine.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Rect.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="XEngine.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="bitmap1.bmp" />
-    <Image Include="Engine.ico" />
-    <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Box2D\Box2D.vcxproj">
       <Project>{a434e80c-1049-10be-d9ca-b31d459e0cef}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Headers\Engine.h" />
+    <ClInclude Include="Headers\GameObjects\Circle.h" />
+    <ClInclude Include="Headers\GameObjects\GameObject.h" />
+    <ClInclude Include="Headers\GameObjects\Rect.h" />
+    <ClInclude Include="Headers\Renderer\CachedImage.h" />
+    <ClInclude Include="Headers\Renderer\Renderer.h" />
+    <ClInclude Include="Headers\resource.h" />
+    <ClInclude Include="Headers\Scenes\EngineScene.h" />
+    <ClInclude Include="Headers\stdafx.h" />
+    <ClInclude Include="Headers\targetver.h" />
+    <ClInclude Include="Headers\Utils\ArrayList.h" />
+    <ClInclude Include="Headers\XEngine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Engine.cpp" />
+    <ClCompile Include="Source\GameObjects\Circle.cpp" />
+    <ClCompile Include="Source\GameObjects\GameObject.cpp" />
+    <ClCompile Include="Source\GameObjects\Rect.cpp" />
+    <ClCompile Include="Source\Renderer\CachedImage.cpp" />
+    <ClCompile Include="Source\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\stdafx.cpp" />
+    <ClCompile Include="Source\XEngine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Engine.ico" />
+    <Image Include="Resources\small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

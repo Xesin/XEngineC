@@ -1,7 +1,7 @@
 #pragma once
 #include <d2d1.h>
 #include <d2d1helper.h>
-#include "Renderer.h"
+#include <wincodec.h>
 
 template<class Interface>
 inline void SafeRelease(
@@ -17,7 +17,7 @@ inline void SafeRelease(
 }
 
 class GameObject;
-
+class CachedImage;
 
 class Renderer
 {
@@ -37,19 +37,25 @@ public:
 
 	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith = 1);
 
-	void RenderImage(float posX, float posY);
+	void RenderImage(float posX, float posY, CachedImage* imageToRender);
 	// Resize the render target.
 	void OnResize(
 		UINT width,
 		UINT height
 	);
 
-private:
-	// Initialize device-independent resources.
-	HRESULT CreateDeviceIndependentResources();
+	static IWICImagingFactory* GetIwicFactory();
+
+	static HRESULT CreateIwicFactory();
+
+	static ID2D1HwndRenderTarget* GetRenderTarget();
 
 	// Initialize device-dependent resources.
 	HRESULT CreateDeviceResources(HWND m_hwnd);
+
+private:
+	// Initialize device-independent resources.
+	HRESULT CreateDeviceIndependentResources();
 
 	// Release device-dependent resource.
 	void DiscardDeviceResources();
@@ -66,10 +72,12 @@ private:
 		return static_cast<float>(y) / DPIScaleY;
 	}
 	
-
+public:
+	static IWICImagingFactory *wicFactory;
+	static ID2D1HwndRenderTarget* m_pRenderTarget;
 private:
+	
 	ID2D1Factory* m_pDirect2dFactory;
-	ID2D1HwndRenderTarget* m_pRenderTarget;
 	ID2D1SolidColorBrush* colorBrush;
 	float DPIScaleX = 1.f;
 	float DPIScaleY = 1.f;

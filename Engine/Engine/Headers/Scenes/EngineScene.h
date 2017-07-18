@@ -1,8 +1,8 @@
 #pragma once
-#include "ArrayList.h"
-#include "Circle.h"
-#include "GameObject.h"
-#include "Renderer.h"
+#include "Utils\ArrayList.h"
+#include "GameObjects\Circle.h"
+#include "GameObjects\GameObject.h"
+#include "Renderer\Renderer.h"
 
 #define SuperScene EngineScene
 

@@ -5,7 +5,7 @@
 #include <dwrite.h>
 #include "Engine.h"
 #include "XEngine.h"
-#include "EngineScene.h"
+#include "Scenes\EngineScene.h"
 
 int WINAPI WinMain(
 	HINSTANCE /* hInstance */,

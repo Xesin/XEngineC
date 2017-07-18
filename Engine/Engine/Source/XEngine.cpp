@@ -6,10 +6,10 @@
 
 
 #include "XEngine.h"
-#include "Renderer.h"
-#include "GameObject.h"
-#include "Rect.h"
-#include "EngineScene.h"
+#include "Renderer\Renderer.h"
+#include "GameObjects\GameObject.h"
+#include "GameObjects\Rect.h"
+#include "Scenes\EngineScene.h"
 
 XEngine* pDemoApp;
 
@@ -45,7 +45,6 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 	HRESULT hr;
 	currentScene = initialScene;
 	renderer = new Renderer();
-	// Initialize device-indpendent resources, such
 	// as the Direct2D factory.
 	hr = renderer->Initialize();
 	if (SUCCEEDED(hr))
@@ -93,7 +92,10 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		{
 			ShowWindow(m_hwnd, SW_SHOWNORMAL);
 			UpdateWindow(m_hwnd);
+
+			renderer->CreateDeviceResources(m_hwnd);
 		}
+
 		pDemoApp = this;
 		
 		currentTime = GetTime();

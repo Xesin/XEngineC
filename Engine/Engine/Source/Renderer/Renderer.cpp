@@ -3,6 +3,7 @@
 #include "GameObjects\GameObject.h"
 #include "Renderer\CachedImage.h"
 #include "Managers\ScaleManager.h"
+#include "Managers\CacheManager.h"
 
 
 IWICImagingFactory* Renderer::wicFactory = nullptr;
@@ -91,6 +92,8 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 				&colorBrush
 			);
 		}
+
+		CacheManager::GetInstance()->RefreshCache();
 	}
 
 	return hr;

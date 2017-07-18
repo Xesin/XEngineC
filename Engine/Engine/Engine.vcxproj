@@ -162,12 +162,14 @@
     <ClInclude Include="Headers\targetver.h" />
     <ClInclude Include="Headers\Utils\ArrayList.h" />
     <ClInclude Include="Headers\XEngine.h" />
+    <ClInclude Include="Source\Managers\CacheManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\GameObjects\Circle.cpp" />
     <ClCompile Include="Source\GameObjects\GameObject.cpp" />
     <ClCompile Include="Source\GameObjects\Rect.cpp" />
+    <ClCompile Include="Source\Managers\CacheManager.cpp" />
     <ClCompile Include="Source\Managers\ScaleManager.cpp" />
     <ClCompile Include="Source\Renderer\CachedImage.cpp" />
     <ClCompile Include="Source\Renderer\Renderer.cpp" />

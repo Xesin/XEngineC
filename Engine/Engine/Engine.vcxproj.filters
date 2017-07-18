@@ -95,6 +95,9 @@
     <ClInclude Include="Headers\Managers\ScaleManager.h">
       <Filter>Headers\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Managers\CacheManager.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -122,6 +125,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Managers\ScaleManager.cpp">
+      <Filter>Source\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Managers\CacheManager.cpp">
       <Filter>Source\Managers</Filter>
     </ClCompile>
   </ItemGroup>

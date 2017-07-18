@@ -98,6 +98,9 @@
     <ClInclude Include="Source\Managers\CacheManager.h">
       <Filter>Headers\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\GameObjects\Sprite.h">
+      <Filter>Headers\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -129,6 +132,9 @@
     </ClCompile>
     <ClCompile Include="Source\Managers\CacheManager.cpp">
       <Filter>Source\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjects\Sprite.cpp">
+      <Filter>Source\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -104,6 +104,9 @@
     <ClInclude Include="Headers\Utils\Animation.h">
       <Filter>Headers\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Managers\AnimationManager.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -141,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="Source\Utils\Animation.cpp">
       <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Managers\AnimationManager.cpp">
+      <Filter>Source\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

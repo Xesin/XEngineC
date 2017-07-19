@@ -2,7 +2,6 @@
 #include "GameObjects\Sprite.h"
 #include "Renderer\CachedImage.h"
 #include "Renderer\Renderer.h"
-#include "Utils\Animation.h"
 #include <math.h>
 
 Sprite::Sprite(b2Vec2 spawn_position, CachedImage * image) : GameObject(spawn_position)
@@ -12,6 +11,11 @@ Sprite::Sprite(b2Vec2 spawn_position, CachedImage * image) : GameObject(spawn_po
 	frameHeight = image->Get2D2Bitmap()->GetPixelSize().height;
 	columns = 1;
 	rows = 1;
+	animationManager = new AnimationManager(this);
+}
+
+Sprite::~Sprite() {
+	delete animationManager;
 }
 
 void Sprite::OnRender(Renderer * renderer)
@@ -37,5 +41,5 @@ void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)
 }
 
 void Sprite::Update(float deltaTime) {
-	animManager->Update(deltaTime);
+	animationManager->Update(deltaTime);
 }

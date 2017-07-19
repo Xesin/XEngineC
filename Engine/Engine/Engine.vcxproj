@@ -154,6 +154,7 @@
     <ClInclude Include="Headers\GameObjects\GameObject.h" />
     <ClInclude Include="Headers\GameObjects\Rect.h" />
     <ClInclude Include="Headers\GameObjects\Sprite.h" />
+    <ClInclude Include="Headers\Managers\AnimationManager.h" />
     <ClInclude Include="Headers\Managers\ScaleManager.h" />
     <ClInclude Include="Headers\Renderer\CachedImage.h" />
     <ClInclude Include="Headers\Renderer\Renderer.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Source\GameObjects\GameObject.cpp" />
     <ClCompile Include="Source\GameObjects\Rect.cpp" />
     <ClCompile Include="Source\GameObjects\Sprite.cpp" />
+    <ClCompile Include="Source\Managers\AnimationManager.cpp" />
     <ClCompile Include="Source\Managers\CacheManager.cpp" />
     <ClCompile Include="Source\Managers\ScaleManager.cpp" />
     <ClCompile Include="Source\Renderer\CachedImage.cpp" />

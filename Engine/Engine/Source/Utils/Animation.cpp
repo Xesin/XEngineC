@@ -2,8 +2,7 @@
 #include "Utils\Animation.h"
 #include "GameObjects\Sprite.h"
 
-Animation::Animation(LPCWSTR animName, int* frames, int refreshRate) {
-	this->animName = animName;
+Animation::Animation(int* frames, int refreshRate) {
 	this->frames = frames;
 	frameCount = sizeof(*frames);
 	this->refreshRate = refreshRate;

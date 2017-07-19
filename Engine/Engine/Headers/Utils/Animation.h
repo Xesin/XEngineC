@@ -4,7 +4,7 @@ class Sprite;
 
 class Animation {
 public:
-	Animation(LPCWSTR animName, int* frames, int refreshRate);
+	Animation(int* frames, int refreshRate);
 	
 	void SetSprite(Sprite* spriteRef);
 
@@ -16,7 +16,6 @@ public:
 
 	void Stop();
 public:
-	LPCWSTR animName;
 	int* frames;
 	int frameCount = 0;
 	int currentFrame = 0;

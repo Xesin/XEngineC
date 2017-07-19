@@ -44,7 +44,7 @@ public:
 
 	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith = 1);
 
-	void RenderImage(float posX, float posY, CachedImage* imageToRender);
+	void RenderImage(float posX, float posY, CachedImage* imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight);
 	// Resize the render target.
 	void OnResize(
 		UINT width,

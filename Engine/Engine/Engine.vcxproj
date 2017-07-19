@@ -161,6 +161,7 @@
     <ClInclude Include="Headers\Scenes\EngineScene.h" />
     <ClInclude Include="Headers\stdafx.h" />
     <ClInclude Include="Headers\targetver.h" />
+    <ClInclude Include="Headers\Utils\Animation.h" />
     <ClInclude Include="Headers\Utils\ArrayList.h" />
     <ClInclude Include="Headers\XEngine.h" />
     <ClInclude Include="Source\Managers\CacheManager.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Source\Renderer\CachedImage.cpp" />
     <ClCompile Include="Source\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\stdafx.cpp" />
+    <ClCompile Include="Source\Utils\Animation.cpp" />
     <ClCompile Include="Source\XEngine.cpp" />
   </ItemGroup>
   <ItemGroup>

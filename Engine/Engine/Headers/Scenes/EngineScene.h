@@ -14,7 +14,9 @@ public:
 
 	void Preload() {}
 	void Start() {
-		Sprite* sprite = new Sprite(b2Vec2(50.f, 50.f), CacheManager::GetInstance()->AddImage(L"Resources/Engine.ico"));
+		Sprite* sprite = new Sprite(b2Vec2(50.f, 50.f), CacheManager::GetInstance()->AddImage(L"Resources/count anim.png"));
+		sprite->SetSpriteSheet(50, 50);
+		sprite->currentFrame = 0;
 		gameObjects.insert(sprite);
 	}
 	void Update(float deltaTime) {

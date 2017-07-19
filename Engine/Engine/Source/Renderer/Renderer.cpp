@@ -169,20 +169,33 @@ void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY
 	}
 }
 
-void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender)
+void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight)
 {
 	
 	ID2D1Bitmap* bitmapToRender = imageToRender->Get2D2Bitmap();
 	if (bitmapToRender)
 	{
-		D2D1_RECT_F rectangle = D2D1::RectF(
+		D2D1_RECT_F src = D2D1::RectF(
+			frameColumn * frameWidth,
+			frameRow * frameHeight,
+			frameColumn * frameWidth + frameWidth,
+			frameRow * frameHeight + frameHeight
+		);
+
+		D2D1_RECT_F destination = D2D1::RectF(
 			PixelsToDipsX(posX),
 			PixelsToDipsY(posY),
-			PixelsToDipsX(posX) + PixelsToDipsX(bitmapToRender->GetPixelSize().width),
-			PixelsToDipsY(posY) + PixelsToDipsY(bitmapToRender->GetPixelSize().height)
+			PixelsToDipsX(posX) + frameWidth,
+			PixelsToDipsY(posY) + frameHeight
 		);
 	
-		Renderer::m_pRenderTarget->DrawBitmap(bitmapToRender, rectangle);
+		Renderer::m_pRenderTarget->DrawBitmap(
+			bitmapToRender, 
+			destination, 
+			1.0f, 
+			D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, 
+			src
+		);
 	}
 }
 

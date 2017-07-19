@@ -47,6 +47,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 	HRESULT hr;
 	currentScene = initialScene;
 	renderer = new Renderer();
+
 	// as the Direct2D factory.
 	hr = renderer->Initialize();
 	if (SUCCEEDED(hr))
@@ -140,41 +141,43 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 	{
 		switch (message)
 		{
-		case WM_SIZE:
-		{
-			UINT width = LOWORD(lParam);
-			UINT height = HIWORD(lParam);
-			pDemoApp->renderer->OnResize(width, height);
-		}
-		result = 0;
-		wasHandled = true;
-		break;
+			case WM_SIZE:
+			{
+				UINT width = LOWORD(lParam);
+				UINT height = HIWORD(lParam);
+				pDemoApp->renderer->OnResize(width, height);
+			
+				result = 0;
+				wasHandled = true;
+				break;
+			}
 
-		case WM_DISPLAYCHANGE:
-		{
-			InvalidateRect(hwnd, NULL, FALSE);
-		}
-		result = 0;
-		wasHandled = true;
-		break;
+			case WM_DISPLAYCHANGE:
+			{
+				InvalidateRect(hwnd, NULL, FALSE);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
 
-		case WM_PAINT:
-		{
-				
-			ValidateRect(hwnd, NULL);
-			pDemoApp->currentScene->Render(hwnd, pDemoApp->renderer);
-		}
-		result = 0;
-		wasHandled = true;
-		break;
+			case WM_PAINT:
+			{
 
-		case WM_DESTROY:
-		{
-			PostQuitMessage(0);
-		}
-		result = 1;
-		wasHandled = true;
-		break;
+				ValidateRect(hwnd, NULL);
+				pDemoApp->currentScene->Render(hwnd, pDemoApp->renderer);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_DESTROY:
+			{
+				PostQuitMessage(0);
+
+				result = 1;
+				wasHandled = true;
+				break;
+			}
 		}
 	}
 

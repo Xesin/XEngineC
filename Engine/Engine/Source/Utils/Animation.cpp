@@ -31,8 +31,8 @@ void Animation::Update(float deltaTime)
 				return;
 			}
 		}
-		frameTime += (deltaTime * 1000);
-		animTime += (deltaTime * 1000);
+		frameTime += (int) (deltaTime * 1000);
+		animTime += (int) (deltaTime * 1000);
 
 		sprite->currentFrame = currentFrame;
 	}

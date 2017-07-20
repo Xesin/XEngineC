@@ -185,6 +185,65 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			case WM_KEYDOWN:
 			{
 				pDemoApp->inputManager->KeyDown(wParam);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_KEYUP:
+			{
+				pDemoApp->inputManager->KeyUp(wParam);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_LBUTTONDOWN:
+			{
+				pDemoApp->inputManager->MouseDown(MOUSE_LEFT);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_RBUTTONDOWN:
+			{
+				pDemoApp->inputManager->MouseDown(MOUSE_RIGHT);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_MBUTTONDOWN:
+			{
+				pDemoApp->inputManager->MouseDown(MOUSE_MIDDLE);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_LBUTTONUP:
+			{
+				pDemoApp->inputManager->MouseUp(MOUSE_LEFT);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_RBUTTONUP:
+			{
+				pDemoApp->inputManager->MouseUp(MOUSE_RIGHT);
+				result = 0;
+				wasHandled = true;
+				break;
+			}
+
+			case WM_MBUTTONUP:
+			{
+				pDemoApp->inputManager->MouseUp(MOUSE_MIDDLE);
+				result = 0;
+				wasHandled = true;
+				break;
 			}
 		}
 	}

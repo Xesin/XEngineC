@@ -18,7 +18,7 @@ public:
 	void Preload() {}
 
 	void Test(unsigned int keycode) {
-		gameObjects[0]->transform.p.x += 10;
+		gameObjects[0]->transform.p.y += 10 ;
 	}
 
 	void Start() {
@@ -32,11 +32,25 @@ public:
 		gameObjects.insert(sprite);
 		sprite->animationManager->PlayAnim(L"Idle");
 
-		delegate<void(unsigned int)> newDel = CREATE_MULTICAST_DELEGATE(XEngine::instance->inputManager->OnKeyDown, EngineScene, &EngineScene::Test, this);
+		delegate<void(unsigned int)> newDel = CREATE_MULTICAST_DELEGATE(XEngine::instance->inputManager->OnMouseDown, EngineScene, &EngineScene::Test, this);
+		XEngine::instance->inputManager->OnMouseDown += newDel;
 	}
 	void Update(float deltaTime) {
 		for (int i = 0; i < gameObjects.size_of_list(); i++) {
 			gameObjects[i]->Update(deltaTime);
+		}
+
+		if (XEngine::instance->inputManager->IsDown(VK_D)) {
+			gameObjects[0]->transform.p.x += 60 * deltaTime;
+		}
+		if (XEngine::instance->inputManager->IsDown(VK_A)) {
+			gameObjects[0]->transform.p.x -= 60 * deltaTime;
+		}
+		if (XEngine::instance->inputManager->IsDown(VK_S)) {
+			gameObjects[0]->transform.p.y += 60 * deltaTime;
+		}
+		if (XEngine::instance->inputManager->IsDown(VK_W)) {
+			gameObjects[0]->transform.p.y -= 60 * deltaTime;
 		}
 	}
 	void OnDestroy() {}

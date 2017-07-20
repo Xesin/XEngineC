@@ -4,14 +4,15 @@
 #include <math.h>
 #include <ctime>
 
-
 #include "XEngine.h"
 #include "Renderer\Renderer.h"
 #include "GameObjects\GameObject.h"
 #include "GameObjects\Rect.h"
 #include "Scenes\EngineScene.h"
+#include "Managers\InputManager.h"
 
 XEngine* pDemoApp;
+XEngine* XEngine::instance = NULL;
 
 void XEngine::RunMessageLoop()
 {
@@ -32,22 +33,25 @@ void XEngine::RunMessageLoop()
 	}
 }
 
-XEngine::XEngine():
-	m_hwnd(NULL)
+XEngine::XEngine() 
 {
+	XEngine::instance = NULL;
+	m_hwnd = NULL;
+	inputManager = NULL;
 }
 XEngine::~XEngine()
 {
 	delete renderer;
+	delete inputManager;
 }
-
 
 HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float resolutionY)
 {
 	HRESULT hr;
 	currentScene = initialScene;
 	renderer = new Renderer();
-
+	inputManager = new InputManager();
+	XEngine::instance = this;
 	// as the Direct2D factory.
 	hr = renderer->Initialize();
 	if (SUCCEEDED(hr))
@@ -65,7 +69,6 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		wcex.lpszClassName = L"D2DDemoApp";
 
 		RegisterClassEx(&wcex);
-
 
 		// Because the CreateWindow function takes its size in pixels,
 		// obtain the system DPI and use it to scale the window size.
@@ -177,6 +180,11 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 				result = 1;
 				wasHandled = true;
 				break;
+			}
+
+			case WM_KEYDOWN:
+			{
+				pDemoApp->inputManager->KeyDown(wParam);
 			}
 		}
 	}

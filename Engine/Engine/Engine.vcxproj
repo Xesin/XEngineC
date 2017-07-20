@@ -104,6 +104,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <CompileAsManaged>false</CompileAsManaged>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,6 +169,10 @@
     <ClInclude Include="Headers\targetver.h" />
     <ClInclude Include="Headers\Utils\Animation.h" />
     <ClInclude Include="Headers\Utils\ArrayList.h" />
+    <ClInclude Include="Headers\Utils\Delegates\Delegate.h" />
+    <ClInclude Include="Headers\Utils\Delegates\DelegateBase.h" />
+    <ClInclude Include="Headers\Utils\Delegates\DelegatesSettings.h" />
+    <ClInclude Include="Headers\Utils\Delegates\MultiCastDelegate.h" />
     <ClInclude Include="Headers\XEngine.h" />
     <ClInclude Include="Source\Managers\CacheManager.h" />
   </ItemGroup>

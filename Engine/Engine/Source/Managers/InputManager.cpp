@@ -6,19 +6,23 @@ InputManager::InputManager()
 {
 }
 
-void InputManager::OnKeyDown(unsigned int vKeyCode)
+void InputManager::KeyDown(unsigned int vKeyCode)
 {
+	OnKeyDown(vKeyCode);
 }
 
-void InputManager::OnKeyUp(unsigned int vKeyCode)
+void InputManager::KeyUp(unsigned int vKeyCode)
 {
+
+	OnKeyUp(vKeyCode);
 }
 
-void InputManager::OnMouseDown(unsigned int position)
+void InputManager::MouseDown(unsigned int position)
 {
+	OnMouseDown(position);
 }
 
-void InputManager::OnMouseUp(unsigned int position)
+void InputManager::MouseUp(unsigned int position)
 {
-
+	OnMouseUp(position);
 }

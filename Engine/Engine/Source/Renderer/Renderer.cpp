@@ -5,7 +5,6 @@
 #include "Managers\ScaleManager.h"
 #include "Managers\CacheManager.h"
 
-
 IWICImagingFactory* Renderer::wicFactory = nullptr;
 ID2D1HwndRenderTarget* Renderer::m_pRenderTarget = nullptr;
 
@@ -176,10 +175,10 @@ void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, i
 	if (bitmapToRender)
 	{
 		D2D1_RECT_F src = D2D1::RectF(
-			frameColumn * frameWidth,
-			frameRow * frameHeight,
-			frameColumn * frameWidth + frameWidth,
-			frameRow * frameHeight + frameHeight
+			(float) frameColumn * frameWidth,
+			(float) frameRow * frameHeight,
+			(float) frameColumn * frameWidth + frameWidth,
+			(float) frameRow * frameHeight + frameHeight
 		);
 
 		D2D1_RECT_F destination = D2D1::RectF(

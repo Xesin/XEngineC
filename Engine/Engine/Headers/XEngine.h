@@ -24,6 +24,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 class Renderer;
 class GameObject;
+class InputManager;
 class EngineScene;
 
 class XEngine
@@ -61,6 +62,7 @@ private:
 
 public:
 	static XEngine* instance;
+	InputManager* inputManager;
 private:
 	ArrayList<GameObject*> gameObjects;
 	HWND m_hwnd;

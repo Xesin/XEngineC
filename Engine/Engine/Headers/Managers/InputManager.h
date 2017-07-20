@@ -1,5 +1,6 @@
 #pragma once
 #include <stdlib.h>
+#include "Utils\Delegates\DelegatesSettings.h"
 
 #define MOUSE_LEFT 0x0
 #define MOUSE_RIGHT 0x1
@@ -10,11 +11,16 @@ class InputManager {
 public:
 	InputManager();
 
-	void OnKeyDown(unsigned int vKeyCode);
-	void OnKeyUp(unsigned int vKeyCode);
+	void KeyDown(unsigned int vKeyCode);
+	void KeyUp(unsigned int vKeyCode);
 
-	void OnMouseDown(unsigned int str);
-	void OnMouseUp(unsigned int position);
+	void MouseDown(unsigned int position);
+	void MouseUp(unsigned int position);
+
+	DEFINE_MULTICAST_DELEGATE(OnKeyDown, void(unsigned int));
+	DEFINE_MULTICAST_DELEGATE(OnKeyUp, void(unsigned int));
+	DEFINE_MULTICAST_DELEGATE(OnMouseDown, void(unsigned int));
+	DEFINE_MULTICAST_DELEGATE(OnMouseUp, void(unsigned int));
 
 private:	
 

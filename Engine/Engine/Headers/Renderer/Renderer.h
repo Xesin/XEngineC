@@ -2,6 +2,7 @@
 #include <d2d1.h>
 #include <d2d1helper.h>
 #include <wincodec.h>
+#include "Utils\Delegates\DelegatesSettings.h"
 
 template<class Interface>
 inline void SafeRelease(
@@ -83,7 +84,6 @@ public:
 	static IWICImagingFactory *wicFactory;
 	static ID2D1HwndRenderTarget* m_pRenderTarget;
 private:
-	
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1SolidColorBrush* colorBrush;
 	float DPIScaleX = 1.f;

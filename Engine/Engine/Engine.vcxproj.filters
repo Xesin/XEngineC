@@ -46,6 +46,12 @@
     <Filter Include="Source\Managers">
       <UniqueIdentifier>{f718217d-c6a6-43b6-b2ad-f2f1823bff04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Utils\Delegates">
+      <UniqueIdentifier>{64b3b020-f39e-4141-802b-6531026a4c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Utils\Delegates">
+      <UniqueIdentifier>{17fefc3c-2bd8-4fd6-8eec-839d8b7e3f76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -109,6 +115,18 @@
     </ClInclude>
     <ClInclude Include="Headers\Managers\InputManager.h">
       <Filter>Headers\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Utils\Delegates\Delegate.h">
+      <Filter>Headers\Utils\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Utils\Delegates\DelegateBase.h">
+      <Filter>Headers\Utils\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Utils\Delegates\DelegatesSettings.h">
+      <Filter>Headers\Utils\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Utils\Delegates\MultiCastDelegate.h">
+      <Filter>Headers\Utils\Delegates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

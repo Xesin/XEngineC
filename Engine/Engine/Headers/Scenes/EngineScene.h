@@ -51,8 +51,8 @@ public:
 		}
 		if (XEngine::instance->inputManager->IsDown(VK_W)) {
 			gameObjects[0]->transform.p.y -= 60 * deltaTime;
-			POINT point = XEngine::instance->inputManager->CursorPos();
-			gameObjects[0]->transform.p.y = point.y;
+			//POINT point = XEngine::instance->inputManager->CursorPos();
+			gameObjects[0]->transform.p.y += 60;
 		}
 
 

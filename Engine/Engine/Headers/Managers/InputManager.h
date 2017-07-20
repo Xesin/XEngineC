@@ -20,6 +20,8 @@ public:
 
 	bool IsDown(unsigned int vKeyCode);
 
+	POINT CursorPos();
+
 	DEFINE_MULTICAST_DELEGATE(OnKeyDown, void(unsigned int));
 	DEFINE_MULTICAST_DELEGATE(OnKeyUp, void(unsigned int));
 	DEFINE_MULTICAST_DELEGATE(OnMouseDown, void(unsigned int));
@@ -27,6 +29,8 @@ public:
 
 private:	
 	bool keyDowns[255];
+	bool isMouseDown;
+	int mouseButtonDown;
 };
 
 #define VK_0	0x30

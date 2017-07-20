@@ -4,7 +4,6 @@
 
 InputManager::~InputManager()
 {
-	//delete keyDowns;
 }
 
 InputManager::InputManager()
@@ -12,6 +11,8 @@ InputManager::InputManager()
 	for (unsigned int i = 0; i < sizeof(keyDowns); i++) {
 		keyDowns[i] = false;
 	}
+	isMouseDown = false;
+	mouseButtonDown = -1;
 }
 
 void InputManager::KeyDown(unsigned int vKeyCode)
@@ -32,14 +33,24 @@ void InputManager::KeyUp(unsigned int vKeyCode)
 void InputManager::MouseDown(unsigned int position)
 {
 	OnMouseDown(position);
+	isMouseDown = true;
+	mouseButtonDown = position;
 }
 
 void InputManager::MouseUp(unsigned int position)
 {
 	OnMouseUp(position);
+	isMouseDown = false;
+	mouseButtonDown = -1;
 }
 
 bool InputManager::IsDown(unsigned int vKeyCode)
 {
 	return keyDowns[vKeyCode];
+}
+
+POINT InputManager::CursorPos() {
+	POINT point;
+	GetCursorPos(&point);
+	return point;
 }

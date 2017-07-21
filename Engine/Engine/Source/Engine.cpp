@@ -5,7 +5,7 @@
 #include <dwrite.h>
 #include "Engine.h"
 #include "XEngine.h"
-#include "Scenes\EngineScene.h"
+#include "Scenes\InitialScene.h"
 
 int WINAPI WinMain(
 	HINSTANCE /* hInstance */,
@@ -26,7 +26,7 @@ int WINAPI WinMain(
 		{
 			XEngine engine;
 
-			if (SUCCEEDED(engine.Initialize(new EngineScene(), 1280.f, 720.f)))
+			if (SUCCEEDED(engine.Initialize(new InitialScene(), 1280.f, 720.f)))
 			{
 				engine.RunMessageLoop();
 			}

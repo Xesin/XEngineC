@@ -63,7 +63,7 @@ void ArrayList<T>::reserve(int Num)
 	{
 		temp[i] = obj[i];
 	}
-	if (obj != NULL) delete[] obj;
+	if (obj != 0) delete[] obj;
 	obj = temp;
 	capacity = Num;
 }

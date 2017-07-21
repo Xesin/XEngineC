@@ -8,6 +8,7 @@ class GameObject {
 public:
 	GameObject(b2Vec2 spawn_position) {
 		transform.p = spawn_position;
+		transform.q.SetIdentity();
 	}
 
 	virtual void OnRender(Renderer* renderer) = 0;

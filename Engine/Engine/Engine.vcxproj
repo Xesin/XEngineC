@@ -176,6 +176,7 @@
     <ClInclude Include="Headers\Renderer\Renderer.h" />
     <ClInclude Include="Headers\resource.h" />
     <ClInclude Include="Headers\Scenes\EngineScene.h" />
+    <ClInclude Include="Headers\Scenes\InitialScene.h" />
     <ClInclude Include="Headers\stdafx.h" />
     <ClInclude Include="Headers\targetver.h" />
     <ClInclude Include="Headers\Utils\Animation.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="Source\Managers\ScaleManager.cpp" />
     <ClCompile Include="Source\Renderer\CachedImage.cpp" />
     <ClCompile Include="Source\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Scenes\InitialScene.cpp" />
     <ClCompile Include="Source\stdafx.cpp" />
     <ClCompile Include="Source\Utils\Animation.cpp" />
     <ClCompile Include="Source\XEngine.cpp" />

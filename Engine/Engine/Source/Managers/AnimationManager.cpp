@@ -32,3 +32,10 @@ void AnimationManager::PlayAnim(LPCWSTR name) {
 		currentAnimation->Play();
 	}
 }
+
+bool AnimationManager::IsPlaying(LPCWSTR name) {
+
+	if (animations[name]) {
+		return animations[name]->isPlaying;
+	}
+}

@@ -184,9 +184,9 @@ void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, i
 		);
 
 		D2D1_RECT_F destination = D2D1::RectF(
-			PixelsToDipsX(posX / scale.width),
+			PixelsToDipsX(posX / scale.width) - frameWidth * 0.5f,
 			PixelsToDipsY(posY / scale.height),
-			PixelsToDipsX(posX / scale.width) + frameWidth,
+			PixelsToDipsX(posX / scale.width) + frameWidth * 0.5f,
 			PixelsToDipsY(posY / scale.height) + frameHeight
 		);
 	

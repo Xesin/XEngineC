@@ -2,6 +2,7 @@
 #include <d2d1.h>
 #include <d2d1helper.h>
 #include <wincodec.h>
+#include <algorithm>
 #include "Utils\Delegates\DelegatesSettings.h"
 
 template<class Interface>
@@ -73,13 +74,13 @@ private:
 	template <typename T>
 	float PixelsToDipsX(T x)
 	{
-		return (static_cast<float>(x) / DPIScaleX) * scaleManager->scaleX;
+		return std::round((static_cast<float>(x) / DPIScaleX) * scaleManager->scaleX);
 	}
 
 	template <typename T>
 	float PixelsToDipsY(T y)
 	{
-		return (static_cast<float>(y) / DPIScaleY) * scaleManager->scaleY;
+		return std::round((static_cast<float>(y) / DPIScaleY) * scaleManager->scaleY);
 	}
 	
 public:

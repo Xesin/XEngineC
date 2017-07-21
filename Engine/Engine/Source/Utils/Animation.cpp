@@ -2,9 +2,9 @@
 #include "Utils\Animation.h"
 #include "GameObjects\Sprite.h"
 
-Animation::Animation(int* frames, int refreshRate) {
+Animation::Animation(int* const frames, int refreshRate, int size) {
 	this->frames = frames;
-	frameCount = sizeof(*frames);
+	frameCount = size;
 	this->refreshRate = refreshRate;
 	loopCount = 0;
 }
@@ -37,7 +37,7 @@ void Animation::Update(float deltaTime)
 		frameTime += (int) (deltaTime * 1000);
 		animTime += (int) (deltaTime * 1000);
 
-		sprite->currentFrame = currentFrame;
+		sprite->currentFrame = frames[currentFrame];
 	}
 }
 

@@ -33,17 +33,19 @@ public:
 	void GetDesktopDpi(FLOAT* dpiX, FLOAT* dpiY);
 
 	// Draw content.
-	HRESULT OnRender(HWND m_hwnd, GameObject* gameObject);
+	void OnRenderObject(GameObject* gameObject);
 
 	// InitializeRender
-	void PreRender();
+	HRESULT PreRender(HWND m_hwnd);
 
 	// Ends the render
 	void EndRender();
 
-	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith = 1);
+	void SetTransform(D2D1::Matrix3x2F transform);
 
-	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith = 1);
+	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill = true, float strokeWith = 1);
+
+	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill = true, float strokeWith = 1);
 
 	void RenderImage(float posX, float posY, CachedImage* imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight);
 	// Resize the render target.
@@ -82,7 +84,7 @@ private:
 	
 public:
 	static IWICImagingFactory *wicFactory;
-	static ID2D1HwndRenderTarget* m_pRenderTarget;
+	static ID2D1HwndRenderTarget* renderTarget;
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1SolidColorBrush* colorBrush;

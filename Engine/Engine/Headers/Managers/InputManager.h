@@ -9,7 +9,7 @@
 class InputManager {
 
 public:
-	InputManager();
+	InputManager(HWND hwndInstance);
 	~InputManager();
 
 	void KeyDown(unsigned int vKeyCode);
@@ -17,6 +17,8 @@ public:
 
 	void MouseDown(unsigned int position);
 	void MouseUp(unsigned int position);
+
+	bool IsMouseButtonDown(unsigned int position);
 
 	bool IsDown(unsigned int vKeyCode);
 
@@ -30,7 +32,8 @@ public:
 private:	
 	bool keyDowns[255];
 	bool isMouseDown;
-	int mouseButtonDown;
+	unsigned int mouseButtonDown;
+	HWND hwndInstance;
 };
 
 #define VK_0	0x30

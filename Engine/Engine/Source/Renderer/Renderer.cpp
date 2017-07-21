@@ -6,7 +6,7 @@
 #include "Managers\CacheManager.h"
 
 IWICImagingFactory* Renderer::wicFactory = nullptr;
-ID2D1HwndRenderTarget* Renderer::m_pRenderTarget = nullptr;
+ID2D1HwndRenderTarget* Renderer::renderTarget = nullptr;
 
 Renderer::Renderer() :
 	m_pDirect2dFactory(NULL),
@@ -14,13 +14,13 @@ Renderer::Renderer() :
 	scaleManager(NULL)
 {
 	Renderer::wicFactory = NULL;
-	Renderer::m_pRenderTarget = NULL;
+	Renderer::renderTarget = NULL;
 }
 
 Renderer::~Renderer()
 {
 	SafeRelease(&m_pDirect2dFactory);
-	SafeRelease(&Renderer::m_pRenderTarget);
+	SafeRelease(&Renderer::renderTarget);
 	SafeRelease(&colorBrush);
 	SafeRelease(&Renderer::wicFactory);
 	delete scaleManager;
@@ -61,7 +61,7 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 {
 	HRESULT hr = S_OK;
 
-	if (!Renderer::m_pRenderTarget)
+	if (!Renderer::renderTarget)
 	{
 		RECT rc;
 		GetClientRect(m_hwnd, &rc);
@@ -77,7 +77,7 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 		hr = m_pDirect2dFactory->CreateHwndRenderTarget(
 			properties,
 			D2D1::HwndRenderTargetProperties(m_hwnd, size),
-			&Renderer::m_pRenderTarget
+			&Renderer::renderTarget
 		);
 
 		scaleManager = new ScaleManager(size.width, size.height);
@@ -86,10 +86,11 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 		if (SUCCEEDED(hr))
 		{
 			// Create a gray brush.
-			hr = Renderer::m_pRenderTarget->CreateSolidColorBrush(
+			hr = Renderer::renderTarget->CreateSolidColorBrush(
 				D2D1::ColorF(D2D1::ColorF::LightSlateGray),
 				&colorBrush
 			);
+			
 		}
 
 		CacheManager::GetInstance()->RefreshCache();
@@ -100,38 +101,37 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 
 
 
-HRESULT Renderer::OnRender(HWND m_hwnd, GameObject* gameObject)
+void Renderer::OnRenderObject(GameObject* gameObject)
 {
-	HRESULT hr = S_OK;
-
-	hr = CreateDeviceResources(m_hwnd);
-	if (SUCCEEDED(hr))
-	{
-		
-		Renderer::m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-
-		gameObject->OnRender(this);
-
-	}
-
-	return hr;
+	gameObject->OnRender(this);
 }
 
-void Renderer::PreRender()
+HRESULT Renderer::PreRender(HWND m_hwnd)
 {
-	Renderer::m_pRenderTarget->BeginDraw();
-	Renderer::m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	HRESULT hr = S_OK;
+	hr = CreateDeviceResources(m_hwnd);
+	if (SUCCEEDED(hr)) {
+		Renderer::renderTarget->BeginDraw();
+		Renderer::renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+		Renderer::renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	}
+	return hr;
 }
 
 void Renderer::EndRender()
 {
-	HRESULT hr = Renderer::m_pRenderTarget->EndDraw();
+	HRESULT hr = Renderer::renderTarget->EndDraw();
 
 	if (hr == D2DERR_RECREATE_TARGET)
 	{
 		hr = S_OK;
 		DiscardDeviceResources();
 	}
+}
+
+void Renderer::SetTransform(D2D1::Matrix3x2F transform)
+{
+	renderTarget->SetTransform(transform);
 }
 
 void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith)
@@ -146,10 +146,10 @@ void Renderer::RenderRect(float posX, float posY, float width, float height, D2D
 	colorBrush->SetColor(color);
 
 	if (fill) {
-		Renderer::m_pRenderTarget->FillRectangle(&rectangle, colorBrush);
+		Renderer::renderTarget->FillRectangle(&rectangle, colorBrush);
 	}
 	else {
-		Renderer::m_pRenderTarget->DrawRectangle(&rectangle, colorBrush, PixelsToDipsX(strokeWith));
+		Renderer::renderTarget->DrawRectangle(&rectangle, colorBrush, PixelsToDipsX(strokeWith));
 	}
 }
 
@@ -161,10 +161,10 @@ void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY
 
 	colorBrush->SetColor(color);
 	if (fill) {
-		Renderer::m_pRenderTarget->FillEllipse(&ellipse, colorBrush);
+		Renderer::renderTarget->FillEllipse(&ellipse, colorBrush);
 	}
 	else {
-		Renderer::m_pRenderTarget->DrawEllipse(&ellipse, colorBrush, PixelsToDipsX(strokeWith));
+		Renderer::renderTarget->DrawEllipse(&ellipse, colorBrush, PixelsToDipsX(strokeWith));
 	}
 }
 
@@ -188,7 +188,7 @@ void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, i
 			PixelsToDipsY(posY) + frameHeight
 		);
 	
-		Renderer::m_pRenderTarget->DrawBitmap(
+		Renderer::renderTarget->DrawBitmap(
 			bitmapToRender, 
 			destination, 
 			1.0f, 
@@ -202,12 +202,12 @@ void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, i
 
 void Renderer::OnResize(UINT width, UINT height)
 {
-	if (Renderer::m_pRenderTarget)
+	if (Renderer::renderTarget)
 	{
 		// Note: This method can fail, but it's okay to ignore the
 		// error here, because the error will be returned again
 		// the next time EndDraw is called.
-		Renderer::m_pRenderTarget->Resize(D2D1::SizeU(width, height));
+		Renderer::renderTarget->Resize(D2D1::SizeU(width, height));
 		scaleManager->OnResize(width);
 	}
 }
@@ -237,11 +237,11 @@ HRESULT Renderer::CreateIwicFactory()
 
 ID2D1HwndRenderTarget * Renderer::GetRenderTarget()
 {
-	return Renderer::m_pRenderTarget;
+	return Renderer::renderTarget;
 }
 
 void Renderer::DiscardDeviceResources()
 {
-	SafeRelease(&Renderer::m_pRenderTarget);
+	SafeRelease(&Renderer::renderTarget);
 	SafeRelease(&colorBrush);
 }

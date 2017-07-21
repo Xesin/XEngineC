@@ -18,7 +18,7 @@ public:
 	void Preload() {}
 
 	void Test(unsigned int keycode) {
-		gameObjects[0]->transform.p.y += 10 ;
+		
 	}
 
 	void Start() {
@@ -40,7 +40,7 @@ public:
 			gameObjects[i]->Update(deltaTime);
 		}
 
-		if (XEngine::instance->inputManager->IsDown(VK_D)) {
+		/*if (XEngine::instance->inputManager->IsDown(VK_D)) {
 			gameObjects[0]->transform.p.x += 60 * deltaTime;
 		}
 		if (XEngine::instance->inputManager->IsDown(VK_A)) {
@@ -51,16 +51,22 @@ public:
 		}
 		if (XEngine::instance->inputManager->IsDown(VK_W)) {
 			gameObjects[0]->transform.p.y -= 60 * deltaTime;
-			//POINT point = XEngine::instance->inputManager->CursorPos();
+			POINT point = XEngine::instance->inputManager->CursorPos();
 			gameObjects[0]->transform.p.y += 60;
-		}
+		}*/
 
+		if (XEngine::instance->inputManager->IsMouseButtonDown(MOUSE_LEFT)) {
+			
+			POINT point = XEngine::instance->inputManager->CursorPos();
+			gameObjects[0]->transform.p.x = point.x;
+			gameObjects[0]->transform.p.y = point.y;
+		}
 
 	}
 	void OnDestroy() {}
-	void Render(HWND hwnd, Renderer* renderer) {
+	void Render(Renderer* renderer) {
 		for (int i = 0; i < gameObjects.size_of_list(); i++) {
-			renderer->OnRender(hwnd, gameObjects[i]);
+			renderer->OnRenderObject(gameObjects[i]);
 		}
 	}
 

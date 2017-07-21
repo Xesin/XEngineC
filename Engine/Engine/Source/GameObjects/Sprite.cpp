@@ -2,7 +2,6 @@
 #include "GameObjects\Sprite.h"
 #include "Renderer\CachedImage.h"
 #include "Renderer\Renderer.h"
-#include <math.h>
 
 Sprite::Sprite(b2Vec2 spawn_position, CachedImage * image) : GameObject(spawn_position)
 {
@@ -28,6 +27,9 @@ void Sprite::OnRender(Renderer * renderer)
 		column = currentFrame % columns;
 	}
 	int row = floor(currentFrame / columns);
+	float32 angle = RADS_TO_DEGREES(transform.q.GetAngle());
+	
+	renderer->SetTransform(D2D1::Matrix3x2F::Rotation(angle, D2D1::Point2F(worldPos.p.x, worldPos.p.y)));
 	renderer->RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight);
 }
 

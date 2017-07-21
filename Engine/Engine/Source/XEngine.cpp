@@ -26,9 +26,12 @@ void XEngine::RunMessageLoop()
 		}
 		else {
 			pDemoApp->Update();
-			pDemoApp->renderer->PreRender();
-			pDemoApp->currentScene->Render(m_hwnd, pDemoApp->renderer);
-			pDemoApp->renderer->EndRender();
+			HRESULT hr;
+			hr = pDemoApp->renderer->PreRender(m_hwnd);
+			if (SUCCEEDED(hr)) {
+				pDemoApp->currentScene->Render(pDemoApp->renderer);
+				pDemoApp->renderer->EndRender();
+			}
 		}
 	}
 }
@@ -50,7 +53,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 	HRESULT hr;
 	currentScene = initialScene;
 	renderer = new Renderer();
-	inputManager = new InputManager();
+
 	XEngine::instance = this;
 	// as the Direct2D factory.
 	hr = renderer->Initialize();
@@ -102,6 +105,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 			renderer->CreateDeviceResources(m_hwnd);
 		}
 
+		inputManager = new InputManager(m_hwnd);
 		pDemoApp = this;
 		
 		currentTime = GetTime();
@@ -167,7 +171,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			{
 
 				ValidateRect(hwnd, NULL);
-				pDemoApp->currentScene->Render(hwnd, pDemoApp->renderer);
+				pDemoApp->currentScene->Render(pDemoApp->renderer);
 				result = 0;
 				wasHandled = true;
 				break;

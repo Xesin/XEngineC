@@ -6,13 +6,14 @@ InputManager::~InputManager()
 {
 }
 
-InputManager::InputManager()
+InputManager::InputManager(HWND NewhwndInstance)
 {
 	for (unsigned int i = 0; i < sizeof(keyDowns); i++) {
 		keyDowns[i] = false;
 	}
 	isMouseDown = false;
 	mouseButtonDown = -1;
+	hwndInstance = NewhwndInstance;
 }
 
 void InputManager::KeyDown(unsigned int vKeyCode)
@@ -52,5 +53,11 @@ bool InputManager::IsDown(unsigned int vKeyCode)
 POINT InputManager::CursorPos() {
 	POINT point;
 	GetCursorPos(&point);
+	ScreenToClient(hwndInstance, &point);
+	
 	return point;
+}
+
+bool InputManager::IsMouseButtonDown(unsigned int position){
+	return isMouseDown && position == mouseButtonDown;
 }

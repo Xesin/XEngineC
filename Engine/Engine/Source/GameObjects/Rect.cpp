@@ -11,7 +11,8 @@ Rect::Rect(b2Vec2 spawn_pos, float32 _width, float32 _height, D2D1::ColorF _colo
 void Rect::OnRender(Renderer* renderer){
 	b2Transform worldPos;
 	WorldTransform(&worldPos);
-	renderer->RenderRect(worldPos.p.x, worldPos.p.y, width, height, color, fill, strokeWith);
+	renderer->SetTransform(D2D1::Matrix3x2F::Scale(scale));
+	renderer->RenderRect(worldPos.p.x, worldPos.p.y, width, height, color, scale, fill, strokeWith);
 }
 
 //void Rect::Update(float deltaTime)

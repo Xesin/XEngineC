@@ -1,12 +1,9 @@
 #pragma once
 #include "Utils\ArrayList.h"
-#include "GameObjects\Sprite.h"
 #include "GameObjects\GameObject.h"
 #include "Renderer\Renderer.h"
 #include "Managers\CacheManager.h"
-#include "Managers\AnimationManager.h"
-#include "Utils\Animation.h"
-#include "Managers\InputManager.h"
+
 
 class EngineScene {
 

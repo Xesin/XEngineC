@@ -1,4 +1,5 @@
 #pragma once
+#include "Utils\Delegates\DelegatesSettings.h"
 
 class Sprite;
 
@@ -23,7 +24,11 @@ public:
 	int refreshRate = 100;
 	bool isPlaying = false;
 	bool loop = false;
+
+	DEFINE_MULTICAST_DELEGATE(OnLoop, void(int repeatCount));
+	DEFINE_MULTICAST_DELEGATE(OnEnd, void());
 private:
 	int frameTime = 0;
+	int loopCount = 0;
 	Sprite* sprite;
 };

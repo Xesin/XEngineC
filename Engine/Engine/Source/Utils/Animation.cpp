@@ -6,6 +6,7 @@ Animation::Animation(int* frames, int refreshRate) {
 	this->frames = frames;
 	frameCount = sizeof(*frames);
 	this->refreshRate = refreshRate;
+	loopCount = 0;
 }
 
 void Animation::SetSprite(Sprite * spriteRef)
@@ -25,6 +26,8 @@ void Animation::Update(float deltaTime)
 		if (currentFrame >= frameCount) {
 			if (loop) {
 				currentFrame = 0;
+				loopCount++;
+				OnLoop(loopCount);
 			}
 			else {
 				Stop();
@@ -53,4 +56,5 @@ void Animation::Stop()
 	isPlaying = false;
 	animTime = 0;
 	currentFrame = 0;
+	OnEnd();
 }

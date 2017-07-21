@@ -9,6 +9,8 @@ public:
 	GameObject(b2Vec2 spawn_position) {
 		transform.p = spawn_position;
 		transform.q.SetIdentity();
+		scale.width = 1.f;
+		scale.height = 1.f;
 	}
 
 	virtual void OnRender(Renderer* renderer) = 0;
@@ -29,4 +31,5 @@ public:
 	b2Transform transform;
 	GameObject* parent = NULL;
 	float alpha = 1.0;
+	D2D_SIZE_F scale;
 };

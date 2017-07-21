@@ -134,13 +134,13 @@ void Renderer::SetTransform(D2D1::Matrix3x2F transform)
 	renderTarget->SetTransform(transform);
 }
 
-void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, bool fill, float strokeWith)
+void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
 {
 	D2D1_RECT_F rectangle = D2D1::RectF(
-		PixelsToDipsX(posX),
-		PixelsToDipsY(posY),
-		PixelsToDipsX(posX) + PixelsToDipsX(width),
-		PixelsToDipsY(posY) + PixelsToDipsY(height)
+		PixelsToDipsX(posX / scale.width),
+		PixelsToDipsY(posY / scale.height),
+		PixelsToDipsX(posX / scale.width) + PixelsToDipsX(width),
+		PixelsToDipsY(posY / scale.height) + PixelsToDipsY(height)
 	);
 
 	colorBrush->SetColor(color);
@@ -153,9 +153,11 @@ void Renderer::RenderRect(float posX, float posY, float width, float height, D2D
 	}
 }
 
-void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, bool fill, float strokeWith)
+void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
 {
-	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(PixelsToDipsX(posX), PixelsToDipsY(posY)),
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(
+		PixelsToDipsX(posX / scale.width),
+		PixelsToDipsY(posY / scale.height)),
 		PixelsToDipsX(radiusX),
 		PixelsToDipsY(radiusY));
 
@@ -168,9 +170,9 @@ void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY
 	}
 }
 
-void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight)
+void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, D2D_SIZE_F scale)
 {
-	
+	SetTransform(D2D1::Matrix3x2F::Scale(scale));
 	ID2D1Bitmap* bitmapToRender = imageToRender->Get2D2Bitmap();
 	if (bitmapToRender)
 	{
@@ -182,10 +184,10 @@ void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, i
 		);
 
 		D2D1_RECT_F destination = D2D1::RectF(
-			PixelsToDipsX(posX),
-			PixelsToDipsY(posY),
-			PixelsToDipsX(posX) + frameWidth,
-			PixelsToDipsY(posY) + frameHeight
+			PixelsToDipsX(posX / scale.width),
+			PixelsToDipsY(posY / scale.height),
+			PixelsToDipsX(posX / scale.width) + frameWidth,
+			PixelsToDipsY(posY / scale.height) + frameHeight
 		);
 	
 		Renderer::renderTarget->DrawBitmap(

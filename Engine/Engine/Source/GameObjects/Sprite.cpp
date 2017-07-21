@@ -29,8 +29,8 @@ void Sprite::OnRender(Renderer * renderer)
 	int row = floor(currentFrame / columns);
 	float32 angle = RADS_TO_DEGREES(transform.q.GetAngle());
 	
-	renderer->SetTransform(D2D1::Matrix3x2F::Rotation(angle, D2D1::Point2F(worldPos.p.x, worldPos.p.y)));
-	renderer->RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight);
+	renderer->SetTransform(D2D1::Matrix3x2F::Scale(scale));
+	renderer->RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
 }
 
 void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)

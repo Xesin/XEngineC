@@ -1,5 +1,5 @@
 #pragma once
-
+#include <stddef.h>
 using namespace std;
 template <class T>
 class ArrayList

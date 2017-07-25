@@ -14,10 +14,6 @@ public:
 
 	void Preload() {}
 
-	void Test(unsigned int keycode) {
-		
-	}
-
 	virtual void Start() = 0;
 	virtual void Update(float deltaTime) {
 		for (int i = 0; i < gameObjects.size; i++) {

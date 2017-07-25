@@ -74,9 +74,6 @@
     <ClInclude Include="Headers\GameObjects\Circle.h">
       <Filter>Headers\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\GameObjects\GameObject.h">
-      <Filter>Headers\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\GameObjects\Rect.h">
       <Filter>Headers\GameObjects</Filter>
     </ClInclude>
@@ -127,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="Headers\Scenes\InitialScene.h">
       <Filter>Headers\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\GameObjects\GameObject.h">
+      <Filter>Headers\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -75,13 +75,13 @@ private:
 	template <typename T>
 	float PixelsToDipsX(T x)
 	{
-		return std::round((static_cast<float>(x) / DPIScaleX) * scaleManager->scaleX);
+		return (static_cast<float>(x) / DPIScaleX) * scaleManager->scaleX;
 	}
 
 	template <typename T>
 	float PixelsToDipsY(T y)
 	{
-		return std::round((static_cast<float>(y) / DPIScaleY) * scaleManager->scaleY);
+		return (static_cast<float>(y) / DPIScaleY) * scaleManager->scaleY;
 	}
 	
 public:

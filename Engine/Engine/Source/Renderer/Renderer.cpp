@@ -175,7 +175,6 @@ void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY
 
 void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, D2D_SIZE_F scale)
 {
-	SetTransform(D2D1::Matrix3x2F::Scale(scale));
 	ID2D1Bitmap* bitmapToRender = imageToRender.Get2D2Bitmap();
 	if (bitmapToRender)
 	{
@@ -187,9 +186,9 @@ void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, i
 		);
 
 		D2D1_RECT_F destination = D2D1::RectF(
-			PixelsToDipsX(posX / scale.width - frameWidth * 0.5f) ,
+			PixelsToDipsX(posX / scale.width) ,
 			PixelsToDipsY(posY / scale.height),
-			PixelsToDipsX(posX / scale.width + frameWidth * 0.5f) ,
+			PixelsToDipsX(posX / scale.width + frameWidth),
 			PixelsToDipsY(posY / scale.height + frameHeight)
 		);
 	

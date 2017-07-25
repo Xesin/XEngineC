@@ -188,7 +188,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			case WM_KEYDOWN:
 			{
-				pDemoApp->inputManager->KeyDown(wParam);
+				pDemoApp->inputManager->KeyDown((unsigned int) wParam);
 				result = 0;
 				wasHandled = true;
 				break;
@@ -196,7 +196,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			case WM_KEYUP:
 			{
-				pDemoApp->inputManager->KeyUp(wParam);
+				pDemoApp->inputManager->KeyUp((unsigned int) wParam);
 				result = 0;
 				wasHandled = true;
 				break;

@@ -19,16 +19,15 @@ Sprite::~Sprite() {
 void Sprite::OnRender(Renderer &renderer)
 {
 	b2Transform worldPos;
-	WorldTransform(&worldPos);
+	WorldTransform(worldPos);
 	int column = columns;
 
 	if (column > columns - 1) {
 		column = currentFrame % columns;
 	}
-	int row = floor(currentFrame / columns);
-	float32 angle = RADS_TO_DEGREES(transform.q.GetAngle());
-	
-	renderer.SetTransform(D2D1::Matrix3x2F::Scale(scale));
+	int row = (int) floor(currentFrame / columns);
+
+	SetRotation(renderer, frameWidth, frameHeight);
 	renderer.RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
 }
 

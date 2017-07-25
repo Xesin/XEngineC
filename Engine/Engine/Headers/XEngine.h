@@ -46,6 +46,7 @@ public:
 			milliseconds(1);
 		return (long)time;
 	}
+	void StartScene(EngineScene* sceneToStart);
 
 private:
 	// The windows procedure.
@@ -58,7 +59,6 @@ private:
 
 	void Update();
 
-	void StartScene(EngineScene* sceneToStart);
 
 public:
 	static XEngine* instance;

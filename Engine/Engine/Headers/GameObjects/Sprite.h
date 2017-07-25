@@ -9,7 +9,7 @@ public:
 	Sprite(b2Vec2 spawn_position, CachedImage &image);
 	~Sprite();
 	void Update(float deltaTime) override;
-	void OnRender(Renderer &renderer);
+	void OnRender(Renderer &renderer) override;
 	void SetSpriteSheet(int frameWidth, int frameHeight);
 
 public:

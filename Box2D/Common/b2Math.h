@@ -22,8 +22,8 @@
 #include "Box2D/Common/b2Settings.h"
 #include <math.h>
 #define _USE_MATH_DEFINES
-#define RADS_TO_DEGREES(radians) radians * 180 / M_PI 
-#define DEGREES_TO_RADS(angle) angle * M_PI / 180
+#define RADS_TO_DEGREES(radians) (float) radians * 180 / M_PI 
+#define DEGREES_TO_RADS(angle)(float) angle * M_PI / 180
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 inline bool b2IsValid(float32 x)

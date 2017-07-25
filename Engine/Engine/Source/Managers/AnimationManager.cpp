@@ -2,10 +2,11 @@
 #include "Managers\AnimationManager.h"
 #include "Utils\Animation.h"
 
-AnimationManager::AnimationManager(Sprite* parent):
-	currentAnimation(NULL)
+AnimationManager::AnimationManager():
+	currentAnimation(NULL),
+	parent(NULL)
 {
-	this->parent = parent;
+
 }
 
 void AnimationManager::Update(float deltaTime) {

@@ -6,7 +6,7 @@ class Sprite;
 
 class AnimationManager {
 public:
-	AnimationManager(Sprite* parent);
+	AnimationManager();
 	void Update(float deltaTime);
 	void AddAnim(LPCWSTR name, Animation* anim);
 	void PlayAnim(LPCWSTR name);
@@ -15,5 +15,7 @@ public:
 private:
 	std::map<LPCWSTR,Animation*> animations;
 	Animation* currentAnimation;
+
+public:
 	Sprite* parent;
 };

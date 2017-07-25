@@ -4,6 +4,10 @@
 
 #include "Renderer\Renderer.h"
 
+CachedImage::CachedImage()
+{
+}
+
 CachedImage::CachedImage(LPCWSTR _imageName)
 {
 	// Create a decoder

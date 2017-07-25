@@ -103,7 +103,7 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 
 void Renderer::OnRenderObject(GameObject* gameObject)
 {
-	gameObject->OnRender(this);
+	gameObject->OnRender(*this);
 }
 
 HRESULT Renderer::PreRender(HWND m_hwnd)
@@ -139,8 +139,8 @@ void Renderer::RenderRect(float posX, float posY, float width, float height, D2D
 	D2D1_RECT_F rectangle = D2D1::RectF(
 		PixelsToDipsX(posX / scale.width),
 		PixelsToDipsY(posY / scale.height),
-		PixelsToDipsX(posX / scale.width) + PixelsToDipsX(width),
-		PixelsToDipsY(posY / scale.height) + PixelsToDipsY(height)
+		PixelsToDipsX(posX / scale.width + width),
+		PixelsToDipsY(posY / scale.height + height)
 	);
 
 	colorBrush->SetColor(color);
@@ -170,10 +170,10 @@ void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY
 	}
 }
 
-void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, D2D_SIZE_F scale)
+void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, D2D_SIZE_F scale)
 {
 	SetTransform(D2D1::Matrix3x2F::Scale(scale));
-	ID2D1Bitmap* bitmapToRender = imageToRender->Get2D2Bitmap();
+	ID2D1Bitmap* bitmapToRender = imageToRender.Get2D2Bitmap();
 	if (bitmapToRender)
 	{
 		D2D1_RECT_F src = D2D1::RectF(
@@ -184,10 +184,10 @@ void Renderer::RenderImage(float posX, float posY, CachedImage* imageToRender, i
 		);
 
 		D2D1_RECT_F destination = D2D1::RectF(
-			PixelsToDipsX(posX / scale.width) - frameWidth * 0.5f,
+			PixelsToDipsX(posX / scale.width - frameWidth * 0.5f) ,
 			PixelsToDipsY(posY / scale.height),
-			PixelsToDipsX(posX / scale.width) + frameWidth * 0.5f,
-			PixelsToDipsY(posY / scale.height) + frameHeight
+			PixelsToDipsX(posX / scale.width + frameWidth * 0.5f) ,
+			PixelsToDipsY(posY / scale.height + frameHeight)
 		);
 	
 		Renderer::renderTarget->DrawBitmap(

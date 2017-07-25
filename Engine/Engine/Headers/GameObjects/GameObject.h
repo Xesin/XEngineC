@@ -13,7 +13,7 @@ public:
 		scale.height = 1.f;
 	}
 
-	virtual void OnRender(Renderer* renderer) = 0;
+	virtual void OnRender(Renderer &renderer) = 0;
 	virtual void Update(float deltaTime) = 0;
 	void SetParent(GameObject* newParent) {
 		parent = newParent;

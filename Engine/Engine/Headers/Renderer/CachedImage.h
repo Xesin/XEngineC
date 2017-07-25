@@ -5,6 +5,7 @@
 class CachedImage {
 
 public:
+	CachedImage();
 	CachedImage(LPCWSTR imageName);
 	~CachedImage();
 

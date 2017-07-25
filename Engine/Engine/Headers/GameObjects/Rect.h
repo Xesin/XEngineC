@@ -4,7 +4,7 @@
 
 class Rect : public GameObject {
 public:
-	void OnRender(Renderer* renderer);
+	void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) override {};
 	Rect(b2Vec2 spawn_pos, float32 _width, float32 _height, D2D1::ColorF color);
 public:

@@ -4,6 +4,7 @@
 #include <wincodec.h>
 #include <algorithm>
 #include "Utils\Delegates\DelegatesSettings.h"
+#include "Utils\ArrayList.h"
 
 template<class Interface>
 inline void SafeRelease(
@@ -34,7 +35,7 @@ public:
 	void GetDesktopDpi(FLOAT* dpiX, FLOAT* dpiY);
 
 	// Draw content.
-	void OnRenderObject(GameObject* gameObject);
+	void OnRenderObject(ArrayList<GameObject*> &gameObject);
 
 	// InitializeRender
 	HRESULT PreRender(HWND m_hwnd);

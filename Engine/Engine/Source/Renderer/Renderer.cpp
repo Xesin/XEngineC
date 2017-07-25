@@ -101,9 +101,12 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 
 
 
-void Renderer::OnRenderObject(GameObject* gameObject)
+void Renderer::OnRenderObject(ArrayList<GameObject*> &gameObjects)
 {
-	gameObject->OnRender(*this);
+	Renderer &ref = *this;
+	for (int i = 0; i < gameObjects.size; i++) {
+		gameObjects[i]->OnRender(ref);
+	}
 }
 
 HRESULT Renderer::PreRender(HWND m_hwnd)

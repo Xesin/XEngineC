@@ -20,16 +20,14 @@ public:
 
 	virtual void Start() = 0;
 	virtual void Update(float deltaTime) {
-		for (int i = 0; i < gameObjects.size_of_list(); i++) {
+		for (int i = 0; i < gameObjects.size; i++) {
 			gameObjects[i]->Update(deltaTime);
 		}
 
 	}
 	void OnDestroy() {}
-	void Render(Renderer* renderer) {
-		for (int i = 0; i < gameObjects.size_of_list(); i++) {
-			renderer->OnRenderObject(gameObjects[i]);
-		}
+	void Render(Renderer &renderer) {
+		renderer.OnRenderObject(gameObjects);
 	}
 
 public:

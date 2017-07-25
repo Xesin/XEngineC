@@ -29,7 +29,7 @@ void XEngine::RunMessageLoop()
 			HRESULT hr;
 			hr = pDemoApp->renderer->PreRender(m_hwnd);
 			if (SUCCEEDED(hr)) {
-				pDemoApp->currentScene->Render(pDemoApp->renderer);
+				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
 				pDemoApp->renderer->EndRender();
 			}
 		}
@@ -171,7 +171,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			{
 
 				ValidateRect(hwnd, NULL);
-				pDemoApp->currentScene->Render(pDemoApp->renderer);
+				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
 				result = 0;
 				wasHandled = true;
 				break;

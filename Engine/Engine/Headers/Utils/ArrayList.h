@@ -5,8 +5,11 @@ template <class T>
 class ArrayList
 {
 private:
-	int size, capacity;
+	int capacity;
 	T *obj;
+
+public:
+	int size;
 public:
 	ArrayList()
 	{

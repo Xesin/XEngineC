@@ -23,7 +23,7 @@ void CacheManager::FlushCache()
 
 void CacheManager::RefreshCache()
 {
-	for (int i = 0; i < cachedImages.size_of_list(); i++) {
+	for (int i = 0; i < cachedImages.size; i++) {
 		cachedImages[i]->OnRecreateResources();
 	}
 }

@@ -10,12 +10,14 @@
 Sprite* sprite;
 Rect* rect;
 
+DEFINE_DELEGATE(newDel, void(unsigned int));
 void InitialScene::OnKeyDown(unsigned int keyCode)
 {
 	if (keyCode == VK_ESCAPE) {
 		XEngine::instance->StartScene(new InitialScene());
 	}
 }
+
 
 void InitialScene::Start()
 {
@@ -46,8 +48,12 @@ void InitialScene::Start()
 	rect->transform.q.Set(DEGREES_TO_RADS(90.f));
 	/*gameObjects.insert(rect);
 	gameObjects.insert(rect2);*/
-	DEFINE_DELEGATE(newDel, void(unsigned int)) = CREATE_MULTICAST_DELEGATE(XEngine::instance->inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
-	XEngine::instance->inputManager->OnKeyDown += newDel;
+	newDel = CREATE_MULTICAST_DELEGATE(XEngine::instance->inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
+	//XEngine::instance->inputManager->OnKeyDown += newDel;
+}
+
+void InitialScene::OnDestroy() {
+	XEngine::instance->inputManager->OnKeyDown -= newDel;
 }
 
 void InitialScene::Update(float deltaTime)

@@ -34,7 +34,7 @@ public:
 	~XEngine();
 
 	// Register the window class and call methods for instantiating drawing resources
-	HRESULT Initialize(EngineScene* initialScene, float resolutionX, float resolutionY);
+	HRESULT Initialize(EngineScene* initialScene, HINSTANCE instance, float resolutionX, float resolutionY);
 
 	// Process and dispatch messages
 	void RunMessageLoop();
@@ -68,6 +68,7 @@ private:
 	HWND m_hwnd;
 	Renderer* renderer;
 	EngineScene* currentScene;
+	EngineScene* previous;
 	unsigned long currentTime = 0;
 	unsigned long newTime = 0;
 	float dt = 0;

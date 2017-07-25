@@ -60,7 +60,7 @@ HRESULT Renderer::CreateDeviceIndependentResources()
 HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 {
 	HRESULT hr = S_OK;
-
+	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pDirect2dFactory);
 	if (!Renderer::renderTarget)
 	{
 		RECT rc;

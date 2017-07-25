@@ -48,7 +48,7 @@ XEngine::~XEngine()
 	delete inputManager;
 }
 
-HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float resolutionY)
+HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float resolutionX, float resolutionY)
 {
 	HRESULT hr;
 	currentScene = initialScene;
@@ -68,8 +68,10 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		wcex.hInstance = HINST_THISCOMPONENT;
 		wcex.hbrBackground = NULL;
 		wcex.lpszMenuName = NULL;
+		wcex.hIcon = LoadIcon(0, IDI_APPLICATION);
 		wcex.hCursor = LoadCursor(NULL, IDI_APPLICATION);
 		wcex.lpszClassName = L"D2DDemoApp";
+
 
 		RegisterClassEx(&wcex);
 
@@ -80,20 +82,19 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		// The factory returns the current system DPI. This is also the value it will use
 		// to create its own windows.
 		renderer->GetDesktopDpi(&dpiX, &dpiY);
-
-
 		// Create the window.
+
 		m_hwnd = CreateWindow(
 			L"D2DDemoApp",
 			L"Direct2D Demo App",
 			WS_OVERLAPPEDWINDOW,
-			CW_USEDEFAULT,
-			CW_USEDEFAULT,
+			0,
+			0,
 			static_cast<UINT>(ceil(resolutionX * dpiX / 96.f)),
 			static_cast<UINT>(ceil(resolutionY * dpiY / 96.f)),
 			NULL,
 			NULL,
-			HINST_THISCOMPONENT,
+			instance,
 			this
 		);
 		hr = m_hwnd ? S_OK : E_FAIL;
@@ -113,6 +114,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		dt = 1.f / 60.f;
 		currentScene->Preload();
 		currentScene->Start();
+		currentScene->pendingActivation = false;
 	}
 
 	return hr;
@@ -125,17 +127,22 @@ void XEngine::Update() {
 	double frameTime = (newTime - currentTime) * 0.001;
 	currentTime = newTime;
 	float deltaTime = (float) min(frameTime, dt);
-
+	if (currentScene->pendingActivation)
+	{
+		previous->OnDestroy();
+		currentScene->Preload();
+		currentScene->Start();
+		currentScene->pendingActivation = false;
+	}
 	currentScene->Update(deltaTime);
 }
 
 void XEngine::StartScene(EngineScene * sceneToStart)
 {
-	currentScene->OnDestroy();
 	CacheManager::GetInstance()->FlushCache();
+	previous = currentScene;
 	currentScene = sceneToStart;
-	currentScene->Preload();
-	currentScene->Start();
+
 }
 
 LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -171,7 +178,8 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			{
 
 				ValidateRect(hwnd, NULL);
-				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
+				Renderer* render = pDemoApp->renderer;
+				pDemoApp->currentScene->Render(*render);
 				result = 0;
 				wasHandled = true;
 				break;

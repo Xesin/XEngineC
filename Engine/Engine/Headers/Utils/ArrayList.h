@@ -31,7 +31,7 @@ public:
 		}
 	}
 	int size_of_list();
-	bool empty();
+	void empty();
 	void reserve(int);
 	T& operator[](int);
 	T at(int);
@@ -49,12 +49,11 @@ int ArrayList<T>::size_of_list()
 	return size;
 }
 template<class T>
-bool ArrayList<T>::empty()
+void ArrayList<T>::empty()
 {
-	if (size == 0)
-		return true;
-	else
-		return false;
+	size = capacity = 0;
+	delete obj;
+	obj = new T[0];
 }
 template<class T>
 void ArrayList<T>::reserve(int Num)

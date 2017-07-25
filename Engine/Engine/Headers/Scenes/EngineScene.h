@@ -21,11 +21,12 @@ public:
 		}
 
 	}
-	void OnDestroy() {}
+	virtual void OnDestroy() = 0;
 	void Render(Renderer &renderer) {
 		renderer.OnRenderObject(gameObjects);
 	}
 
 public:
+	bool pendingActivation = true;
 	ArrayList<GameObject*> gameObjects;
 };

@@ -8,7 +8,7 @@
 #include "Scenes\InitialScene.h"
 
 int WINAPI WinMain(
-	HINSTANCE /* hInstance */,
+	HINSTANCE hInstance/* hInstance */,
 	HINSTANCE /* hPrevInstance */,
 	LPSTR /* lpCmdLine */,
 	int /* nCmdShow */
@@ -26,7 +26,7 @@ int WINAPI WinMain(
 		{
 			XEngine engine;
 
-			if (SUCCEEDED(engine.Initialize(new InitialScene(), 1280.f, 720.f)))
+			if (SUCCEEDED(engine.Initialize(new InitialScene(), hInstance, 1280.f, 720.f)))
 			{
 				engine.RunMessageLoop();
 			}

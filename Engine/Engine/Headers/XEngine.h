@@ -27,6 +27,7 @@ class GameObject;
 class InputManager;
 class EngineScene;
 class Physics;
+class b2Vec2;
 
 class XEngine
 {
@@ -48,6 +49,9 @@ public:
 		return (long)time;
 	}
 	void StartScene(EngineScene* sceneToStart);
+
+	b2Vec2 WorldToScreenPixels(b2Vec2 worldUnit);
+	b2Vec2 ScreenToWorldUnits(b2Vec2 screenPixel);
 
 private:
 	// The windows procedure.

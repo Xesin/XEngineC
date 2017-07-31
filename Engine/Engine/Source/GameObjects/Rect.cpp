@@ -13,10 +13,13 @@ Rect::Rect(b2Vec2 spawn_pos, XEngine& ref, float32 _width, float32 _height, D2D1
 void Rect::SetPhysics(bool active, bool dynamic)
 {
 	if (active && rigidBody == NULL) {
+		anchor.Set(0.5f, 0.5f);
 		b2BodyDef bodyDef;
-		bodyDef.position.Set(transform.p.x, transform.p.y);
+		b2Vec2 worldPos = coreRef.ScreenToWorldUnits(transform.p);
+		bodyDef.position.Set(worldPos.x, worldPos.y);
 		b2PolygonShape box;
-		box.SetAsBox(width / 2, height / 2);
+		b2Vec2 worldBounds = coreRef.ScreenToWorldUnits(b2Vec2(width / 2, height / 2));
+		box.SetAsBox(worldBounds.x, worldBounds.y);
 		if (dynamic) {
 			bodyDef.type = b2_dynamicBody;
 			rigidBody = coreRef.physics->world.CreateBody(&bodyDef);
@@ -43,7 +46,7 @@ void Rect::OnRender(Renderer &renderer){
 void Rect::Update(float deltaTime)
 {
 	if (rigidBody != NULL) {
-		transform.p = rigidBody->GetPosition();
+		transform.p = coreRef.WorldToScreenPixels(rigidBody->GetPosition());
 		transform.q.Set(rigidBody->GetAngle());
 	}
 }

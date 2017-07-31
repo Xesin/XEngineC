@@ -27,9 +27,9 @@ void InitialScene::Start()
 {
 	newDel = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
 
-	Rect* rect = new Rect(b2Vec2(0.f, 0.f), coreRef, 100.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
+	Rect* rect = new Rect(b2Vec2(450.f, 50.f), coreRef, 900.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
 	rect->SetPhysics(true, false);
-	Rect* rectDyn = new Rect(b2Vec2(0.f, 200.f), coreRef, 100.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.9f));
+	Rect* rectDyn = new Rect(b2Vec2(120.f, 400.f), coreRef, 100.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.9f));
 	rectDyn->SetPhysics(true, true);
 	gameObjects.insert(rect);
 	gameObjects.insert(rectDyn);

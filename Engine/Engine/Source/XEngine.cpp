@@ -145,6 +145,18 @@ void XEngine::StartScene(EngineScene * sceneToStart)
 
 }
 
+b2Vec2 XEngine::WorldToScreenPixels(b2Vec2 worldUnit)
+{
+	b2Vec2 pu = b2Vec2(50.f * worldUnit.x, 50.f * worldUnit.y);
+	return pu;
+}
+
+b2Vec2 XEngine::ScreenToWorldUnits(b2Vec2 screenPixel)
+{
+	b2Vec2 pu = b2Vec2(0.02f * screenPixel.x, 0.02f * screenPixel.y);
+	return pu;
+}
+
 LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;

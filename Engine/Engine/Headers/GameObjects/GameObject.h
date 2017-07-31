@@ -37,7 +37,7 @@ public:
 			outTransform.q = b2Mul(outTransform.q, parent->transform.q);
 		}
 	}
-
+protected:
 	void SetRotation(Renderer &renderer, int width, int height);
 
 public:

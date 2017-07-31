@@ -147,7 +147,7 @@ void XEngine::StartScene(EngineScene * sceneToStart)
 
 b2Vec2 XEngine::WorldToScreenPixels(b2Vec2 worldUnit)
 {
-	b2Vec2 pu = b2Vec2(50.f * worldUnit.x, 50.f * worldUnit.y);
+	b2Vec2 pu = (b2Vec2(floor(50.f * worldUnit.x), floor(50.f * worldUnit.y)));
 	return pu;
 }
 

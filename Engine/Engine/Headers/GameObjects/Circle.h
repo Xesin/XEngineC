@@ -6,7 +6,7 @@ public:
 	Circle(b2Vec2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radiusY, D2D1::ColorF color);
 	void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) override {};
-	virtual void SetPhysics(bool active, bool dynamic = false) override;
+	virtual void SetPhysics(bool active, bool dynamic = false, float32 friction = 1.0f) override;
 public:
 	float32 radiusX = 1;
 	float32 radiusY = 1;

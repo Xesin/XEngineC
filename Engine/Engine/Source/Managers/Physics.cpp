@@ -3,7 +3,7 @@
 
 Physics::Physics()
 {
-	gravity = b2Vec2(0.0f, -10.0f);
+	gravity = b2Vec2(0.0f, -25.0f);
 	world = *(new b2World(gravity));
 }
 

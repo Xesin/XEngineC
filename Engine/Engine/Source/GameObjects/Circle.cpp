@@ -9,11 +9,11 @@ Circle::Circle(b2Vec2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radius
 	color = newColor;
 }
 
-void Circle::SetPhysics(bool active, bool dynamic)
+void Circle::SetPhysics(bool active, bool dynamic, float32 friction)
 {
 }
 
 void Circle::OnRender(Renderer &renderer) {
-	SetRotation(renderer, radiusX * 2.f, radiusY * 2.f);
+	SetTransform(renderer, radiusX * 2.f, radiusY * 2.f);
 	renderer.RenderCircle(transform.p.x, transform.p.y, radiusX, radiusY, color, scale, fill, strokeWith);
 }

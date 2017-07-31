@@ -10,9 +10,8 @@ public:
 	~Sprite();
 	void Update(float deltaTime) override;
 	void OnRender(Renderer &renderer) override;
-	virtual void SetPhysics(bool active, bool dynamic = false) override;
+	virtual void SetPhysics(bool active, bool dynamic = false, float32 friction = 1.0f) override;
 	void SetSpriteSheet(int frameWidth, int frameHeight);
-
 public:
 	CachedImage cachedImage;
 	int frameWidth;

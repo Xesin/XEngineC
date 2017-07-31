@@ -14,6 +14,7 @@ public:
 
 	~EngineScene() {
 		gameObjects.empty();
+		updateList.empty();
 	}
 
 	void Preload() {}
@@ -21,7 +22,7 @@ public:
 	virtual void Start() = 0;
 	virtual void Update(float deltaTime) {
 		for (int i = 0; i < gameObjects.size; i++) {
-			gameObjects[i]->Update(deltaTime);
+			updateList[i]->Update(deltaTime);
 		}
 
 	}
@@ -33,6 +34,7 @@ public:
 public:
 	bool pendingActivation = true;
 	ArrayList<GameObject*> gameObjects;
+	ArrayList<GameObject*> updateList;
 
 protected:
 	XEngine& coreRef;

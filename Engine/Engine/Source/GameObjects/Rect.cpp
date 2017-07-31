@@ -10,7 +10,7 @@ Rect::Rect(b2Vec2 spawn_pos, XEngine& ref, float32 _width, float32 _height, D2D1
 	color = _color;
 }
 
-void Rect::SetPhysics(bool active, bool dynamic)
+void Rect::SetPhysics(bool active, bool dynamic, float32 friction)
 {
 	if (active && rigidBody == NULL) {
 		anchor.Set(0.5f, 0.5f);
@@ -26,7 +26,7 @@ void Rect::SetPhysics(bool active, bool dynamic)
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &box;
 			fixtureDef.density = 1.0f;
-			fixtureDef.friction = 0.3f;
+			fixtureDef.friction = friction;
 			rigidBody->CreateFixture(&fixtureDef);
 		}
 		else {
@@ -39,7 +39,7 @@ void Rect::SetPhysics(bool active, bool dynamic)
 void Rect::OnRender(Renderer &renderer){
 	b2Transform worldPos;
 	WorldTransform(worldPos);
-	SetRotation(renderer, width, height);
+	SetTransform(renderer, width, height);
 	renderer.RenderRect(worldPos.p.x, worldPos.p.y, width, height, color, scale, fill, strokeWith);
 }
 

@@ -7,7 +7,7 @@ public:
 	Rect(b2Vec2 spawn_pos, XEngine& ref, float32 _width, float32 _height, D2D1::ColorF color);
 	void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) override;
-	virtual void SetPhysics(bool active, bool dynamic = false) override;
+	virtual void SetPhysics(bool active, bool dynamic = false, float32 friction = 1.0f) override;
 public:
 	float32 width;
 	float32 height;

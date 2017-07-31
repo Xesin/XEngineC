@@ -27,7 +27,7 @@ public:
 		parent = newParent;
 	}
 
-	virtual void SetPhysics(bool active, bool dynamic = false) = 0;
+	virtual void SetPhysics(bool active, bool dynamic = false, float32 friction = 1.0f) = 0;
 
 	inline void WorldTransform(b2Transform &outTransform) {
 		outTransform.p = transform.p;
@@ -38,7 +38,7 @@ public:
 		}
 	}
 protected:
-	void SetRotation(Renderer &renderer, int width, int height);
+	virtual void SetTransform(Renderer &renderer, int width, int height);
 
 public:
 	b2Transform transform;

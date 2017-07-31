@@ -3,7 +3,7 @@
 #include "Renderer\Renderer.h"
 #include "XEngine.h"
 
-void GameObject::SetRotation(Renderer & renderer, int width, int height)
+void GameObject::SetTransform(Renderer & renderer, int width, int height)
 {
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(scale);
 	float32 angle = RADS_TO_DEGREES(transform.q.GetAngle());
@@ -18,8 +18,8 @@ void GameObject::SetRotation(Renderer & renderer, int width, int height)
 		)
 	);
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-width * anchor.x,
-		-height * anchor.y
+		-width * anchor.x * scale.width,
+		-height * anchor.y * scale.height
 	);
 	scaleMatrix = scaleMatrix * translationMatrix * transformMatrix;
 	renderer.SetTransform(scaleMatrix);

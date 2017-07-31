@@ -128,6 +128,9 @@
     <ClInclude Include="Headers\GameObjects\GameObject.h">
       <Filter>Headers\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Managers\Physics.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -174,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\InitialScene.cpp">
       <Filter>Source\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Managers\Physics.cpp">
+      <Filter>Source\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -92,6 +92,14 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 			);
 			
 		}
+		
+		//LEFT BOTTOM COORDINATES MATRIX
+		float canvasHeight = renderTarget->GetPixelSize().height;
+		canvasScaleMatrix = D2D1::Matrix3x2F::Scale(1.0, -1.0f);
+		canvasTranslationMatrix = D2D1::Matrix3x2F::Translation(
+			0,
+			canvasHeight
+		);
 
 		CacheManager::GetInstance()->RefreshCache();
 	}
@@ -134,7 +142,8 @@ void Renderer::EndRender()
 
 void Renderer::SetTransform(D2D1::Matrix3x2F transform)
 {
-	renderTarget->SetTransform(transform);
+	//APPLY LEFT BOTTOM COORDINATES
+	renderTarget->SetTransform(transform * canvasScaleMatrix * canvasTranslationMatrix);
 }
 
 void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)

@@ -90,6 +90,8 @@ public:
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1SolidColorBrush* colorBrush;
+	D2D1::Matrix3x2F canvasScaleMatrix;
+	D2D1::Matrix3x2F canvasTranslationMatrix;
 	float DPIScaleX = 1.f;
 	float DPIScaleY = 1.f;
 	ScaleManager* scaleManager;

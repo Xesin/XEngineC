@@ -6,10 +6,11 @@
 class Sprite : public GameObject {
 
 public:
-	Sprite(b2Vec2 spawn_position, CachedImage &image);
+	Sprite(b2Vec2 spawn_position, XEngine& ref, CachedImage &image);
 	~Sprite();
 	void Update(float deltaTime) override;
 	void OnRender(Renderer &renderer) override;
+	virtual void SetPhysics(bool active, bool dynamic = false) override;
 	void SetSpriteSheet(int frameWidth, int frameHeight);
 
 public:

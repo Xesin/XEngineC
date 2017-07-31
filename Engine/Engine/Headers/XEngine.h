@@ -26,6 +26,7 @@ class Renderer;
 class GameObject;
 class InputManager;
 class EngineScene;
+class Physics;
 
 class XEngine
 {
@@ -61,8 +62,8 @@ private:
 
 
 public:
-	static XEngine* instance;
 	InputManager* inputManager;
+	Physics* physics;
 private:
 	ArrayList<GameObject*> gameObjects;
 	HWND m_hwnd;

@@ -8,6 +8,10 @@
 class EngineScene {
 
 public:
+	EngineScene(XEngine& ref):coreRef(ref)
+	{
+	}
+
 	~EngineScene() {
 		gameObjects.empty();
 	}
@@ -29,4 +33,7 @@ public:
 public:
 	bool pendingActivation = true;
 	ArrayList<GameObject*> gameObjects;
+
+protected:
+	XEngine& coreRef;
 };

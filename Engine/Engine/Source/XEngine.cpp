@@ -10,9 +10,9 @@
 #include "GameObjects\Rect.h"
 #include "Scenes\EngineScene.h"
 #include "Managers\InputManager.h"
+#include "Managers\Physics.h"
 
 XEngine* pDemoApp;
-XEngine* XEngine::instance = NULL;
 
 void XEngine::RunMessageLoop()
 {
@@ -38,7 +38,6 @@ void XEngine::RunMessageLoop()
 
 XEngine::XEngine() 
 {
-	XEngine::instance = NULL;
 	m_hwnd = NULL;
 	inputManager = NULL;
 }
@@ -54,7 +53,6 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 	currentScene = initialScene;
 	renderer = new Renderer();
 
-	XEngine::instance = this;
 	// as the Direct2D factory.
 	hr = renderer->Initialize();
 	if (SUCCEEDED(hr))
@@ -106,6 +104,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 			renderer->CreateDeviceResources(m_hwnd);
 		}
 
+		physics = new Physics();
 		inputManager = new InputManager(m_hwnd);
 		pDemoApp = this;
 		
@@ -134,6 +133,7 @@ void XEngine::Update() {
 		currentScene->Start();
 		currentScene->pendingActivation = false;
 	}
+	physics->Update(deltaTime);
 	currentScene->Update(deltaTime);
 }
 

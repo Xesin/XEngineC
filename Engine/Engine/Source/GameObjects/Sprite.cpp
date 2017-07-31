@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "GameObjects\Sprite.h"
 #include "Renderer\Renderer.h"
+#include "XEngine.h"
 
-Sprite::Sprite(b2Vec2 spawn_position, CachedImage &image) : GameObject(spawn_position)
+Sprite::Sprite(b2Vec2 spawn_position, XEngine& ref, CachedImage &image) : GameObject(spawn_position, ref)
 {
 	cachedImage = image;
 	frameWidth = image.Get2D2Bitmap()->GetPixelSize().width;
@@ -29,6 +30,10 @@ void Sprite::OnRender(Renderer &renderer)
 
 	SetRotation(renderer, frameWidth, frameHeight);
 	renderer.RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
+}
+
+void Sprite::SetPhysics(bool active, bool dynamic)
+{
 }
 
 void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)

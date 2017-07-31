@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameObjects\GameObject.h"
 #include "Renderer\Renderer.h"
+#include "XEngine.h"
 
 void GameObject::SetRotation(Renderer & renderer, int width, int height)
 {
@@ -8,6 +9,7 @@ void GameObject::SetRotation(Renderer & renderer, int width, int height)
 	float32 angle = RADS_TO_DEGREES(transform.q.GetAngle());
 	float32 x = transform.p.x;
 	float32 y = transform.p.y;
+	//LEFT BOTTOM COORDINATES
 	D2D1::Matrix3x2F transformMatrix = D2D1::Matrix3x2F::Rotation(
 		angle,
 		D2D1::Point2F(
@@ -19,8 +21,6 @@ void GameObject::SetRotation(Renderer & renderer, int width, int height)
 		-width * anchor.x,
 		-height * anchor.y
 	);
-	scaleMatrix = translationMatrix * scaleMatrix * transformMatrix;
-	b2Transform transform;
-	WorldTransform(transform);
+	scaleMatrix = scaleMatrix * translationMatrix * transformMatrix;
 	renderer.SetTransform(scaleMatrix);
 }

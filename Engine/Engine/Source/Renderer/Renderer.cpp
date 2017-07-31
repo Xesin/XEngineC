@@ -94,11 +94,11 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 		}
 		
 		//LEFT BOTTOM COORDINATES MATRIX
-		float canvasHeight = renderTarget->GetPixelSize().height;
+		UINT32 canvasHeight = renderTarget->GetPixelSize().height;
 		canvasScaleMatrix = D2D1::Matrix3x2F::Scale(1.0, -1.0f);
 		canvasTranslationMatrix = D2D1::Matrix3x2F::Translation(
-			0,
-			canvasHeight
+			0.f,
+			(float) canvasHeight
 		);
 
 		CacheManager::GetInstance()->RefreshCache();
@@ -109,11 +109,15 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 
 
 
-void Renderer::OnRenderObject(ArrayList<GameObject*> &gameObjects)
+void Renderer::OnRenderGroup(ArrayList<GameObject*> &gameObjects)
 {
 	Renderer &ref = *this;
+	
 	for (int i = 0; i < gameObjects.size; i++) {
-		gameObjects[i]->OnRender(ref);
+		GameObject& go = *gameObjects[i];
+		if (!go.isPendingDestroy) {
+			go.OnRender(ref);
+		}
 	}
 }
 
@@ -146,7 +150,7 @@ void Renderer::SetTransform(D2D1::Matrix3x2F transform)
 	renderTarget->SetTransform(transform * canvasScaleMatrix * canvasTranslationMatrix);
 }
 
-void Renderer::RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
+void Renderer::RenderRect(float posX, float posY, int width, int height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
 {
 	D2D1_RECT_F rectangle = D2D1::RectF(
 		PixelsToDipsX(posX / scale.width),

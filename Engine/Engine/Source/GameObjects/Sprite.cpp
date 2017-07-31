@@ -12,7 +12,7 @@ Sprite::Sprite(b2Vec2 spawn_position, XEngine& ref, CachedImage &image) : GameOb
 	columns = 1;
 	rows = 1;
 	animationManager.parent = this;
-	transform.q.Set(DEGREES_TO_RADS(180));
+	transform.q.Set(DEGREES_TO_RADS(180.f));
 	scale.width = -1;
 }
 
@@ -42,7 +42,7 @@ void Sprite::SetPhysics(bool active, bool dynamic, float32 friction)
 		b2Vec2 worldPos = coreRef.ScreenToWorldUnits(transform.p);
 		bodyDef.position.Set(worldPos.x, worldPos.y);
 		b2PolygonShape box;
-		b2Vec2 worldBounds = coreRef.ScreenToWorldUnits(b2Vec2(frameWidth / 2, frameHeight / 2));
+		b2Vec2 worldBounds = coreRef.ScreenToWorldUnits(b2Vec2(frameWidth / 2.f, frameHeight / 2.f));
 		box.SetAsBox(worldBounds.x, worldBounds.y);
 		if (dynamic) {
 			bodyDef.type = b2_dynamicBody;

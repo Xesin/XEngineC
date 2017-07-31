@@ -21,14 +21,29 @@ public:
 
 	virtual void Start() = 0;
 	virtual void Update(float deltaTime) {
-		for (int i = 0; i < gameObjects.size; i++) {
-			updateList[i]->Update(deltaTime);
+		for (int i = gameObjects.size - 1 ; i >= 0; i--) {
+			GameObject& go = *updateList[i];
+			if (go.isPendingDestroy) {
+				delete updateList[i];
+				updateList.erase(i);
+			}
+			else {
+				go.Update(deltaTime);
+			}
+			
 		}
 
 	}
 	virtual void OnDestroy() = 0;
 	void Render(Renderer &renderer) {
-		renderer.OnRenderObject(gameObjects);
+		renderer.OnRenderGroup(gameObjects);
+	}
+protected:
+	void AddGameObject(GameObject* go, bool mustUpdate) {
+		gameObjects.insert(go);
+		if (mustUpdate) {
+			updateList.insert(go);
+		}
 	}
 
 public:

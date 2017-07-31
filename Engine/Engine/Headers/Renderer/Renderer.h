@@ -35,7 +35,7 @@ public:
 	void GetDesktopDpi(FLOAT* dpiX, FLOAT* dpiY);
 
 	// Draw content.
-	void OnRenderObject(ArrayList<GameObject*> &gameObject);
+	void OnRenderGroup(ArrayList<GameObject*> &gameObject);
 
 	// InitializeRender
 	HRESULT PreRender(HWND m_hwnd);
@@ -45,7 +45,7 @@ public:
 
 	void SetTransform(D2D1::Matrix3x2F transform);
 
-	void RenderRect(float posX, float posY, float width, float height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill = true, float strokeWith = 1);
+	void RenderRect(float posX, float posY, int width, int height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill = true, float strokeWith = 1);
 
 	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, D2D_SIZE_F scale, bool fill = true, float strokeWith = 1);
 

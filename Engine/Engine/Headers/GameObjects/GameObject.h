@@ -19,6 +19,7 @@ public:
 		scale.height = 1.f;
 		anchor.x = 0.0L;
 		anchor.y = 0.0L;
+		isPendingDestroy = false;
 	}
 
 	virtual void OnRender(Renderer &renderer) = 0;
@@ -37,16 +38,25 @@ public:
 			outTransform.q = b2Mul(outTransform.q, parent->transform.q);
 		}
 	}
+
+	inline void Destroy() {
+		isPendingDestroy = true;
+		if (rigidBody != NULL) {
+			rigidBody->GetWorld()->DestroyBody(rigidBody);
+			rigidBody = NULL;
+		}
+	}
 protected:
 	virtual void SetTransform(Renderer &renderer, int width, int height);
 
 public:
 	b2Transform transform;
-	GameObject* parent = NULL;
-	float alpha = 1.0;
-	D2D_SIZE_F scale;
 	b2Vec2 anchor;
 	b2Body* rigidBody = NULL;
+	GameObject* parent = NULL;
+	D2D_SIZE_F scale;
+	float alpha = 1.0;
+	bool isPendingDestroy = false;
 protected:
 	XEngine& coreRef;
 };

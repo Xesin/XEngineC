@@ -4,7 +4,7 @@
 #include "Managers\Physics.h"
 #include "XEngine.h"
 
-Rect::Rect(b2Vec2 spawn_pos, XEngine& ref, float32 _width, float32 _height, D2D1::ColorF _color) : GameObject(spawn_pos, ref) {
+Rect::Rect(b2Vec2 spawn_pos, XEngine& ref, int _width, int _height, D2D1::ColorF _color) : GameObject(spawn_pos, ref) {
 	width = _width;
 	height = _height;
 	color = _color;
@@ -18,7 +18,7 @@ void Rect::SetPhysics(bool active, bool dynamic, float32 friction)
 		b2Vec2 worldPos = coreRef.ScreenToWorldUnits(transform.p);
 		bodyDef.position.Set(worldPos.x, worldPos.y);
 		b2PolygonShape box;
-		b2Vec2 worldBounds = coreRef.ScreenToWorldUnits(b2Vec2(width / 2, height / 2));
+		b2Vec2 worldBounds = coreRef.ScreenToWorldUnits(b2Vec2(width / 2.f, height / 2.f));
 		box.SetAsBox(worldBounds.x, worldBounds.y);
 		if (dynamic) {
 			bodyDef.type = b2_dynamicBody;

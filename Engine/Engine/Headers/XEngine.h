@@ -27,7 +27,7 @@ class GameObject;
 class InputManager;
 class EngineScene;
 class Physics;
-class b2Vec2;
+struct b2Vec2;
 
 class XEngine
 {

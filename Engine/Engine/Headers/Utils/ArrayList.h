@@ -105,9 +105,10 @@ void ArrayList<T>::erase(int i)
 {
 	if (i >= 0 && i<size)
 	{
-		for (int j = 0; j<size; j++)
+		for (int j = i; j<size-1; j++)
 		{
-			obj[j] = obj[j + 1];
+			T objSwp = obj[j + 1];
+			obj[j] = objSwp;
 		}
 		obj[size] = NULL;
 		size--;

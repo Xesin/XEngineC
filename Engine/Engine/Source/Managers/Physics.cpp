@@ -11,7 +11,6 @@ Physics::Physics(Renderer& ref)
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
-	flags += b2Draw::e_aabbBit;
 	flags += b2Draw::e_pairBit;
 	flags += b2Draw::e_centerOfMassBit;
 	ref.SetFlags(flags);

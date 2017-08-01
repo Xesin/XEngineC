@@ -60,7 +60,6 @@ HRESULT Renderer::CreateDeviceIndependentResources()
 HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 {
 	HRESULT hr = S_OK;
-	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pDirect2dFactory);
 	if (!Renderer::renderTarget)
 	{
 		RECT rc;
@@ -258,7 +257,7 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 	ID2D1PathGeometry *geo;
 	ID2D1GeometrySink *sink;
 	ID2D1SolidColorBrush *brush;
-	D2D1::ColorF dColor(color.r, color.g, color.b);
+	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
 	SetTransform(D2D1::Matrix3x2F::Identity());
@@ -267,17 +266,17 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 	hr = geo->Open(&sink);
 	sink->SetFillMode(D2D1_FILL_MODE_WINDING);
 	// first point
-	sink->BeginFigure(D2D1::Point2F(vertices[0].x, vertices[0].y), D2D1_FIGURE_BEGIN_FILLED);
+	sink->BeginFigure(D2D1::Point2F(WorldToScreenPixels(vertices[0].x), WorldToScreenPixels(vertices[0].y)), D2D1_FIGURE_BEGIN_FILLED);
 	// middle points
 	vertices++;
 	vertexCount--;
 	for (i = 0; i < vertexCount; i++, vertices++)
 	{
-		points[i].x = vertices->x;
-		points[i].y = vertices->y;
+		points[i].x = WorldToScreenPixels(vertices->x);
+		points[i].y = WorldToScreenPixels(vertices->y);
 	}
-	points[vertexCount].x = points[0].x;
-	points[vertexCount].y = points[0].y;
+	points[vertexCount].x = WorldToScreenPixels(points[0].x);
+	points[vertexCount].y = WorldToScreenPixels(points[0].y);
 	sink->AddLines(points, vertexCount);
 	// close it
 	sink->EndFigure(D2D1_FIGURE_END_CLOSED);
@@ -289,7 +288,7 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 
 	delete[] points;
 	SafeRelease(&geo);
-	renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	SafeRelease(&brush);
 }
 
 void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
@@ -298,7 +297,7 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	ID2D1PathGeometry *geo;
 	ID2D1GeometrySink *sink;
 	ID2D1SolidColorBrush *brush;
-	D2D1::ColorF dColor(color.r, color.g, color.b);
+	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
 	SetTransform(D2D1::Matrix3x2F::Identity());
@@ -307,17 +306,17 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	hr = geo->Open(&sink);
 	sink->SetFillMode(D2D1_FILL_MODE_WINDING);
 	// first point
-	sink->BeginFigure(D2D1::Point2F(vertices[0].x, vertices[0].y), D2D1_FIGURE_BEGIN_FILLED);
+	sink->BeginFigure(D2D1::Point2F(WorldToScreenPixels(vertices[0].x), WorldToScreenPixels(vertices[0].y)), D2D1_FIGURE_BEGIN_FILLED);
 	// middle points
 	vertices++;
 	vertexCount--;
 	for (i = 0; i < vertexCount; i++, vertices++)
 	{
-		points[i].x = vertices->x;
-		points[i].y = vertices->y;
+		points[i].x = WorldToScreenPixels(vertices->x);
+		points[i].y = WorldToScreenPixels(vertices->y);
 	}
-	points[vertexCount].x = points[0].x;
-	points[vertexCount].y = points[0].y;
+	points[vertexCount].x = WorldToScreenPixels(points[0].x);
+	points[vertexCount].y = WorldToScreenPixels(points[0].y);
 	sink->AddLines(points, vertexCount);
 	// close it
 	sink->EndFigure(D2D1_FIGURE_END_CLOSED);
@@ -327,25 +326,49 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	renderTarget->CreateSolidColorBrush(dColor, &brush);
 	renderTarget->FillGeometry(geo, brush);
 
-	delete points;
+	delete[] points;
 	SafeRelease(&geo);
-	renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	SafeRelease(&brush);
 }
 
 void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color & color)
 {
+	b2Vec2 centerScreen = WorldToScreenPixels(center);
+	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
+	float32 radiusScreen = WorldToScreenPixels(radius);
+	D2D1_SIZE_F scale;
+	scale.height = 1.f;
+	scale.width = 1.f;
+	RenderCircle(center.x, center.y, radiusScreen, radiusScreen, dColor, scale, false);
 }
 
 void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Vec2 & axis, const b2Color & color)
 {
+	b2Vec2 centerScreen = WorldToScreenPixels(center);
+	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
+	float32 radiusScreen = WorldToScreenPixels(radius);
+	D2D1_SIZE_F scale;
+	scale.height = 1.f;
+	scale.width = 1.f;
+	RenderCircle(center.x, center.y, radiusScreen, radiusScreen, dColor, scale, true);
 }
 
 void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color & color)
 {
+	b2Vec2 p1Screen = WorldToScreenPixels(p1);
+	b2Vec2 p2Screen = WorldToScreenPixels(p2);
+	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
+	colorBrush->SetColor(dColor);
+	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x, p1Screen.y), D2D1::Point2F(p2Screen.x, p2Screen.y), colorBrush);
 }
 
 void Renderer::DrawTransform(const b2Transform & xf)
 {
+	b2Vec2 p1Screen = WorldToScreenPixels(xf.p);
+	b2Vec2 p2Screen = WorldToScreenPixels(b2Mul(xf.q, p1Screen));
+	D2D1::ColorF dColor(1.0f, 1.0f, 1.0f, 0.7f);
+	colorBrush->SetColor(dColor);
+	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x, p1Screen.y), D2D1::Point2F(p2Screen.x, p2Screen.y), colorBrush);
 }
 
 void Renderer::DrawPoint(const b2Vec2 & p, float32 size, const b2Color & color)

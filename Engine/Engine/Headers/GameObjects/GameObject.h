@@ -1,4 +1,6 @@
 #pragma once
+#include "Managers\Physics.h"
+#include "XEngine.h"
 #include "Box2D\Common\b2Math.h"
 #include "Box2D\Box2D.h"
 #include <d2d1.h>
@@ -6,8 +8,7 @@
 #define _USE_MATH_DEFINES
 
 class Renderer;
-class XEngine;
-
+ 
 class GameObject {
 public:
 	GameObject(b2Vec2 spawn_position, XEngine& ref) 
@@ -53,7 +54,7 @@ public:
 protected:
 	virtual void SetTransform(Renderer &renderer, int width, int height);
 	inline void DestroyBody() {
-		rigidBody->GetWorld()->DestroyBody(rigidBody);
+		coreRef.physics->world.DestroyBody(rigidBody);
 		rigidBody = NULL;
 	}
 public:

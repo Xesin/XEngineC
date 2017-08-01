@@ -29,11 +29,10 @@ void XEngine::RunMessageLoop()
 			HRESULT hr;
 			hr = pDemoApp->renderer->PreRender(m_hwnd);
 			if (SUCCEEDED(hr)) {
+				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
 				if (physics->drawDebug) {
 					physics->world.DrawDebugData();
 				}
-				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
-				
 				pDemoApp->renderer->EndRender();
 			}
 		}
@@ -183,6 +182,9 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 				ValidateRect(hwnd, NULL);
 				Renderer* render = pDemoApp->renderer;
+				if (pDemoApp->physics->drawDebug) {
+					pDemoApp->physics->world.DrawDebugData();
+				}
 				pDemoApp->currentScene->Render(*render);
 				result = 0;
 				wasHandled = true;

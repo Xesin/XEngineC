@@ -339,7 +339,7 @@ void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color &
 	D2D1_SIZE_F scale;
 	scale.height = 1.f;
 	scale.width = 1.f;
-	RenderCircle(center.x, center.y, radiusScreen, radiusScreen, dColor, scale, false);
+	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, false);
 }
 
 void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Vec2 & axis, const b2Color & color)
@@ -350,7 +350,7 @@ void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Ve
 	D2D1_SIZE_F scale;
 	scale.height = 1.f;
 	scale.width = 1.f;
-	RenderCircle(center.x, center.y, radiusScreen, radiusScreen, dColor, scale, true);
+	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, true);
 }
 
 void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color & color)
@@ -364,11 +364,27 @@ void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color &
 
 void Renderer::DrawTransform(const b2Transform & xf)
 {
-	b2Vec2 p1Screen = WorldToScreenPixels(xf.p);
-	b2Vec2 p2Screen = WorldToScreenPixels(b2Mul(xf.q, p1Screen));
-	D2D1::ColorF dColor(1.0f, 1.0f, 1.0f, 0.7f);
-	colorBrush->SetColor(dColor);
+	const float32 k_axisScale = 0.4f;
+	b2Color red(1.0f, 0.0f, 0.0f);
+	b2Color green(0.0f, 1.0f, 0.0f);
+	b2Vec2 p1 = xf.p, p2;
+	b2Vec2 p1Screen, p2Screen;
+
+	D2D1::ColorF dColorRed(red.r, red.g, red.b, 0.7f);
+	colorBrush->SetColor(dColorRed);
+	p2 = p1 + k_axisScale * xf.q.GetXAxis();
+	p1Screen = WorldToScreenPixels(p1);
+	p2Screen = WorldToScreenPixels(p2);
 	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x, p1Screen.y), D2D1::Point2F(p2Screen.x, p2Screen.y), colorBrush);
+
+	D2D1::ColorF dColorGreen(green.r, green.g, green.b, 0.7f);
+	colorBrush->SetColor(dColorGreen);
+	p2 = p1 + k_axisScale * xf.q.GetYAxis();
+	p1Screen = WorldToScreenPixels(p1);
+	p2Screen = WorldToScreenPixels(p2);
+	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x, p1Screen.y), D2D1::Point2F(p2Screen.x, p2Screen.y), colorBrush);
+
+	
 }
 
 void Renderer::DrawPoint(const b2Vec2 & p, float32 size, const b2Color & color)

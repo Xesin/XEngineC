@@ -66,7 +66,7 @@ void Sprite::InitializeSpritePhysics(PhysicShape shape, bool dynamic, float32 fr
 	{
 	case PhysicShape::Circle:
 	{
-		circShape.m_radius = Renderer::ScreenToWorldUnits(1.f);
+		circShape.m_radius = Renderer::ScreenToWorldUnits(radius);
 		fixtureDef.shape = &circShape;
 		fixtureDef.density = 1.0f;
 		fixtureDef.friction = friction;

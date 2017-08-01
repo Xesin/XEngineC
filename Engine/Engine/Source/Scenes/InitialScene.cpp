@@ -42,7 +42,7 @@ void InitialScene::Start()
 	Mario = new Sprite(b2Vec2(50, 200.f), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
 	//Mario->scale.height = -1.f;
-	Mario->SetPhysics(true, PhysicShape::Box, true, 0.0f);
+	Mario->SetPhysics(true, PhysicShape::Circle, true, 0.0f, 10.f);
 	Mario->rigidBody->SetFixedRotation(true);
 	Mario->rigidBody->SetLinearDamping(5.f);
 	Rect* rect = new Rect(b2Vec2(450.f, 50.f), coreRef, 900.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));

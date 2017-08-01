@@ -46,9 +46,16 @@ public:
 			rigidBody = NULL;
 		}
 	}
+
+	inline bool IsValid() {
+		return test == 54;
+	}
 protected:
 	virtual void SetTransform(Renderer &renderer, int width, int height);
-
+	inline void DestroyBody() {
+		rigidBody->GetWorld()->DestroyBody(rigidBody);
+		rigidBody = NULL;
+	}
 public:
 	b2Transform transform;
 	b2Vec2 anchor;
@@ -59,4 +66,6 @@ public:
 	bool isPendingDestroy = false;
 protected:
 	XEngine& coreRef;
+private:
+	int test = 54;
 };

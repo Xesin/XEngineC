@@ -8,6 +8,7 @@ public:
 	void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) override;
 	virtual void SetPhysics(bool active, bool dynamic = false, float32 friction = 1.0f) override;
+	void InitializeRectPhysics(bool dynamic, float32 friction);
 public:
 	int width;
 	int height;

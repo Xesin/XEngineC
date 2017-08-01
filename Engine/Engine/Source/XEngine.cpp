@@ -29,7 +29,11 @@ void XEngine::RunMessageLoop()
 			HRESULT hr;
 			hr = pDemoApp->renderer->PreRender(m_hwnd);
 			if (SUCCEEDED(hr)) {
+				if (physics->drawDebug) {
+					physics->world.DrawDebugData();
+				}
 				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
+				
 				pDemoApp->renderer->EndRender();
 			}
 		}
@@ -104,7 +108,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 			renderer->CreateDeviceResources(m_hwnd);
 		}
 
-		physics = new Physics();
+		physics = new Physics(*renderer);
 		inputManager = new InputManager(m_hwnd);
 		pDemoApp = this;
 		
@@ -143,18 +147,6 @@ void XEngine::StartScene(EngineScene * sceneToStart)
 	previous = currentScene;
 	currentScene = sceneToStart;
 
-}
-
-b2Vec2 XEngine::WorldToScreenPixels(b2Vec2 worldUnit)
-{
-	b2Vec2 pu = (b2Vec2(floor(50.f * worldUnit.x), floor(50.f * worldUnit.y)));
-	return pu;
-}
-
-b2Vec2 XEngine::ScreenToWorldUnits(b2Vec2 screenPixel)
-{
-	b2Vec2 pu = b2Vec2(0.02f * screenPixel.x, 0.02f * screenPixel.y);
-	return pu;
 }
 
 LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

@@ -2,7 +2,6 @@
 #include "GameObjects\Sprite.h"
 #include "Renderer\Renderer.h"
 #include "XEngine.h"
-#include "Managers\Physics.h"
 
 Sprite::Sprite(b2Vec2 spawn_position, XEngine& ref, CachedImage &image) : GameObject(spawn_position, ref)
 {
@@ -34,31 +33,13 @@ void Sprite::OnRender(Renderer &renderer)
 	renderer.RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
 }
 
-void Sprite::SetPhysics(bool active, bool dynamic, float32 friction)
+void Sprite::SetPhysics(bool active, PhysicShape shape, bool dynamic, float32 friction, float32 radius)
 {
 	if (active && rigidBody == NULL) {
-		anchor.Set(0.5f, 0.5f);
-		b2BodyDef bodyDef;
-		b2Vec2 worldPos = coreRef.ScreenToWorldUnits(transform.p);
-		bodyDef.position.Set(worldPos.x, worldPos.y);
-		b2PolygonShape box;
-		b2Vec2 worldBounds = coreRef.ScreenToWorldUnits(b2Vec2(frameWidth / 2.f, frameHeight / 2.f));
-		box.SetAsBox(worldBounds.x, worldBounds.y);
-		if (dynamic) {
-			bodyDef.type = b2_dynamicBody;
-			rigidBody = coreRef.physics->world.CreateBody(&bodyDef);
-			b2FixtureDef fixtureDef;
-			fixtureDef.shape = &box;
-			fixtureDef.density = 1.0f;
-			fixtureDef.friction = friction;
-			rigidBody->CreateFixture(&fixtureDef);
-		}
-		else {
-			rigidBody = coreRef.physics->world.CreateBody(&bodyDef);
-			rigidBody->CreateFixture(&box, 0.0f);
-		}
-		float32 angle = transform.q.GetAngle();
-		rigidBody->SetTransform(rigidBody->GetPosition(), angle);
+		InitializeSpritePhysics(shape, dynamic, friction, radius);
+	}
+	else if (rigidBody != NULL) {
+		DestroyBody();
 	}
 }
 
@@ -71,10 +52,51 @@ void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)
 	frameHeight = newFrameHeight;
 }
 
+void Sprite::InitializeSpritePhysics(PhysicShape shape, bool dynamic, float32 friction, float32 radius)
+{
+	anchor.Set(0.5f, 0.5f);
+	b2BodyDef bodyDef;
+	b2Vec2 worldPos = Renderer::ScreenToWorldUnits(transform.p);
+	bodyDef.position.Set(worldPos.x, worldPos.y);
+	b2PolygonShape boxShape;
+	b2CircleShape circShape;
+	b2FixtureDef fixtureDef;
+	
+	switch (shape)
+	{
+	case PhysicShape::Circle:
+	{
+		circShape.m_radius = Renderer::ScreenToWorldUnits(1.f);
+		fixtureDef.shape = &circShape;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = friction;
+		break;
+	}
+	case PhysicShape::Box:
+	{
+		b2Vec2 worldBounds = Renderer::ScreenToWorldUnits(b2Vec2(frameWidth / 2.f, frameHeight / 2.f));
+		boxShape.SetAsBox(worldBounds.x, worldBounds.y);
+		fixtureDef.shape = &boxShape;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = friction;
+		break;
+	}
+	default:
+		break;
+	}	
+	if (dynamic) {
+		bodyDef.type = b2_dynamicBody;
+	}
+	rigidBody = coreRef.physics->world.CreateBody(&bodyDef);
+	rigidBody->CreateFixture(&fixtureDef);
+	float32 angle = transform.q.GetAngle();
+	rigidBody->SetTransform(rigidBody->GetPosition(), angle);
+}
+
 void Sprite::Update(float deltaTime) {
 	animationManager.Update(deltaTime);
 	if (rigidBody != NULL) {
-		transform.p = coreRef.WorldToScreenPixels(rigidBody->GetPosition());
+		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
 		transform.q.Set(rigidBody->GetAngle());
 	}
 }

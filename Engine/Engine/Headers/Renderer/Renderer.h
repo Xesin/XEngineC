@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "Utils\Delegates\DelegatesSettings.h"
 #include "Utils\ArrayList.h"
+#include "Box2D\Common\b2Draw.h"
 
 template<class Interface>
 inline void SafeRelease(
@@ -23,7 +24,7 @@ class GameObject;
 class CachedImage;
 class ScaleManager;
 
-class Renderer
+class Renderer : public b2Draw
 {
 public:
 	Renderer();
@@ -62,8 +63,29 @@ public:
 
 	static ID2D1HwndRenderTarget* GetRenderTarget();
 
+
+	void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
+
+	void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
+
+	void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color) override;
+
+	void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) override;
+
+	void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
+
+	void DrawTransform(const b2Transform& xf) override;
+
+	void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) override;
+
 	// Initialize device-dependent resources.
 	HRESULT CreateDeviceResources(HWND m_hwnd);
+
+	static b2Vec2 WorldToScreenPixels(b2Vec2 worldUnit);
+	static b2Vec2 ScreenToWorldUnits(b2Vec2 screenPixel);
+
+	static float WorldToScreenPixels(float worldUnit);
+	static float ScreenToWorldUnits(float screenPixel);
 
 private:
 	// Initialize device-independent resources.

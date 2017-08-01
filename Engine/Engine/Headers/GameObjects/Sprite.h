@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObjects\GameObject.h"
 #include "Managers\AnimationManager.h"
+#include "Managers\Physics.h"
 #include "Renderer\CachedImage.h"
 
 class Sprite : public GameObject {
@@ -10,8 +11,11 @@ public:
 	~Sprite();
 	void Update(float deltaTime) override;
 	void OnRender(Renderer &renderer) override;
-	virtual void SetPhysics(bool active, bool dynamic = false, float32 friction = 1.0f) override;
+	void SetPhysics(bool active, PhysicShape shape = PhysicShape::Box, bool dynamic = false, float32 friction = 1.0f, float32 radius = 1.0f);
 	void SetSpriteSheet(int frameWidth, int frameHeight);
+	void InitializeSpritePhysics(PhysicShape shape, bool dynamic, float32 friction, float32 radius);
+private:
+	virtual void SetPhysics(bool active, bool dynamic = false, float32 friction = 1.0f) override {}
 public:
 	CachedImage cachedImage;
 	int frameWidth;

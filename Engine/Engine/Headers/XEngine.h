@@ -50,9 +50,6 @@ public:
 	}
 	void StartScene(EngineScene* sceneToStart);
 
-	b2Vec2 WorldToScreenPixels(b2Vec2 worldUnit);
-	b2Vec2 ScreenToWorldUnits(b2Vec2 screenPixel);
-
 private:
 	// The windows procedure.
 	static LRESULT CALLBACK WndProc(

@@ -25,6 +25,7 @@ void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, 
 }
 
 void Circle::OnRender(Renderer &renderer) {
+	GameObject::OnRender(renderer);
 	SetTransform(renderer, radiusX * 2.f, radiusY * 2.f);
 	renderer.RenderCircle(transform.p.x, transform.p.y, radiusX, radiusY, color, scale, fill, strokeWith);
 }

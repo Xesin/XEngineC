@@ -23,7 +23,7 @@ public:
 		isPendingDestroy = false;
 	}
 
-	virtual void OnRender(Renderer &renderer) = 0;
+	virtual void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) = 0;
 	inline void SetParent(GameObject* newParent) {
 		parent = newParent;

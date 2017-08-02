@@ -4,6 +4,14 @@
 #include "Renderer\Camera.h"
 #include "XEngine.h"
 
+void GameObject::OnRender(Renderer & renderer)
+{
+	if (rigidBody != NULL) {
+		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
+		transform.q.Set(rigidBody->GetAngle());
+	}
+}
+
 void GameObject::SetTransform(Renderer & renderer, int width, int height)
 {
 	D2D1_SIZE_F correctedScale = D2D1::SizeF(scale.width, scale.height * -1.f);

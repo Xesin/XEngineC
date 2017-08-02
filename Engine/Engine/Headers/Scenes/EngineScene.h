@@ -13,7 +13,7 @@ public:
 	}
 
 	~EngineScene() {
-		gameObjects.empty();
+		renderList.empty();
 		updateList.empty();
 	}
 
@@ -36,11 +36,11 @@ public:
 	}
 	virtual void OnDestroy() = 0;
 	void Render(Renderer &renderer) {
-		renderer.OnRenderGroup(gameObjects);
+		renderer.OnRenderGroup(renderList);
 	}
 protected:
 	void AddGameObject(GameObject* go, bool mustUpdate) {
-		gameObjects.insert(go);
+		renderList.insert(go);
 		if (mustUpdate) {
 			updateList.insert(go);
 		}
@@ -48,7 +48,7 @@ protected:
 
 public:
 	bool pendingActivation = true;
-	ArrayList<GameObject*> gameObjects;
+	ArrayList<GameObject*> renderList;
 	ArrayList<GameObject*> updateList;
 
 protected:

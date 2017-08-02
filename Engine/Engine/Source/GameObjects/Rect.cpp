@@ -30,6 +30,7 @@ void Rect::InitializeRectPhysics(PhysicBodyType bodyType, float32 friction, bool
 }
 
 void Rect::OnRender(Renderer &renderer){
+	GameObject::OnRender(renderer);
 	b2Transform worldPos;
 	WorldTransform(worldPos);
 	SetTransform(renderer, width, height);
@@ -38,8 +39,4 @@ void Rect::OnRender(Renderer &renderer){
 
 void Rect::Update(float deltaTime)
 {
-	if (rigidBody != NULL) {
-		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
-		transform.q.Set(rigidBody->GetAngle());
-	}
 }

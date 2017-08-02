@@ -22,6 +22,7 @@ Sprite::~Sprite() {
 
 void Sprite::OnRender(Renderer &renderer)
 {
+	GameObject::OnRender(renderer);
 	b2Transform worldPos;
 	WorldTransform(worldPos);
 	int column = columns;
@@ -80,8 +81,4 @@ void Sprite::InitializeSpritePhysics(PhysicShape shape, PhysicBodyType bodyType,
 
 void Sprite::Update(float deltaTime) {
 	animationManager.Update(deltaTime);
-	if (rigidBody != NULL) {
-		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
-		transform.q.Set(rigidBody->GetAngle());
-	}
 }

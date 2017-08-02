@@ -121,6 +121,7 @@ void XEngine::Update() {
 	newTime = GetTime();
 	double frameTime = (newTime - currentTime) * 0.001;
 	currentTime = newTime;
+	float fps = 1 / frameTime;
 	float deltaTime = (float) min(frameTime, dt);
 	if (currentScene->pendingActivation)
 	{

@@ -54,7 +54,7 @@ public:
 protected:
 	virtual void SetTransform(Renderer &renderer, int width, int height);
 	inline void DestroyBody() {
-		coreRef.physics->world.DestroyBody(rigidBody);
+		coreRef.physics->DestroyBody(rigidBody);
 		rigidBody = NULL;
 	}
 public:

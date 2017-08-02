@@ -26,15 +26,7 @@ void XEngine::RunMessageLoop()
 		}
 		else {
 			pDemoApp->Update();
-			HRESULT hr;
-			hr = pDemoApp->renderer->PreRender(m_hwnd);
-			if (SUCCEEDED(hr)) {
-				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
-				if (physics->drawDebug) {
-					physics->world.DrawDebugData();
-				}
-				pDemoApp->renderer->EndRender();
-			}
+			pDemoApp->Render();
 		}
 	}
 }
@@ -140,6 +132,18 @@ void XEngine::Update() {
 	currentScene->Update(deltaTime);
 }
 
+void XEngine::Render() {
+	HRESULT hr;
+	hr = renderer->PreRender(m_hwnd);
+	if (SUCCEEDED(hr)) {
+		pDemoApp->currentScene->Render(*renderer);
+		if (physics->isDebug) {
+			physics->DrawDebug();
+		}
+		renderer->EndRender();
+	}
+}
+
 void XEngine::StartScene(EngineScene * sceneToStart)
 {
 	CacheManager::GetInstance()->FlushCache();
@@ -181,11 +185,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			{
 
 				ValidateRect(hwnd, NULL);
-				Renderer* render = pDemoApp->renderer;
-				if (pDemoApp->physics->drawDebug) {
-					pDemoApp->physics->world.DrawDebugData();
-				}
-				pDemoApp->currentScene->Render(*render);
+				pDemoApp->Render();
 				result = 0;
 				wasHandled = true;
 				break;

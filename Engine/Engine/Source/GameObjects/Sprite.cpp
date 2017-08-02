@@ -11,8 +11,9 @@ Sprite::Sprite(b2Vec2 spawn_position, XEngine& ref, CachedImage &image) : GameOb
 	columns = 1;
 	rows = 1;
 	animationManager.parent = this;
-	transform.q.Set(DEGREES_TO_RADS(180.f));
-	scale.width = -1;
+	//transform.q.Set(DEGREES_TO_RADS(180.f));
+	scale.width = 1;
+	scale.height = -1;
 }
 
 Sprite::~Sprite() {
@@ -30,6 +31,7 @@ void Sprite::OnRender(Renderer &renderer)
 	}
 	int row = (int) floor(currentFrame / columns);
 	SetTransform(renderer, frameWidth, frameHeight);
+
 	renderer.RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
 }
 
@@ -55,40 +57,24 @@ void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)
 void Sprite::InitializeSpritePhysics(PhysicShape shape, bool dynamic, float32 friction, float32 radius)
 {
 	anchor.Set(0.5f, 0.5f);
-	b2BodyDef bodyDef;
 	b2Vec2 worldPos = Renderer::ScreenToWorldUnits(transform.p);
-	bodyDef.position.Set(worldPos.x, worldPos.y);
-	b2PolygonShape boxShape;
-	b2CircleShape circShape;
-	b2FixtureDef fixtureDef;
-	
+
 	switch (shape)
 	{
 	case PhysicShape::Circle:
 	{
-		circShape.m_radius = Renderer::ScreenToWorldUnits(radius);
-		fixtureDef.shape = &circShape;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = friction;
+		rigidBody = coreRef.physics->CreateCircleBody(worldPos, radius, 1.0, friction, dynamic);
 		break;
 	}
 	case PhysicShape::Box:
 	{
 		b2Vec2 worldBounds = Renderer::ScreenToWorldUnits(b2Vec2(frameWidth / 2.f, frameHeight / 2.f));
-		boxShape.SetAsBox(worldBounds.x, worldBounds.y);
-		fixtureDef.shape = &boxShape;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = friction;
+		rigidBody = coreRef.physics->CreateBoxBody(worldPos, worldBounds, 1.0, friction, dynamic);
 		break;
 	}
 	default:
 		break;
 	}	
-	if (dynamic) {
-		bodyDef.type = b2_dynamicBody;
-	}
-	rigidBody = coreRef.physics->world.CreateBody(&bodyDef);
-	rigidBody->CreateFixture(&fixtureDef);
 	float32 angle = transform.q.GetAngle();
 	rigidBody->SetTransform(rigidBody->GetPosition(), angle);
 }

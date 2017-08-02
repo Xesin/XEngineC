@@ -23,25 +23,12 @@ void Rect::SetPhysics(bool active, bool dynamic, float32 friction)
 void Rect::InitializeRectPhysics(bool dynamic, float32 friction)
 {
 	anchor.Set(0.5f, 0.5f);
-	b2BodyDef bodyDef;
+
 	b2Vec2 worldPos = Renderer::ScreenToWorldUnits(transform.p);
-	bodyDef.position.Set(worldPos.x, worldPos.y);
-	b2PolygonShape box;
 	b2Vec2 worldBounds = Renderer::ScreenToWorldUnits(b2Vec2(width / 2.f, height / 2.f));
-	box.SetAsBox(worldBounds.x, worldBounds.y);
-	if (dynamic) {
-		bodyDef.type = b2_dynamicBody;
-		rigidBody = coreRef.physics->world.CreateBody(&bodyDef);
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &box;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = friction;
-		rigidBody->CreateFixture(&fixtureDef);
-	}
-	else {
-		rigidBody = coreRef.physics->world.CreateBody(&bodyDef);
-		rigidBody->CreateFixture(&box, 0.0f);
-	}
+
+	rigidBody = coreRef.physics->CreateBoxBody(worldPos, worldBounds, 1.0, friction, dynamic);
+	
 }
 
 void Rect::OnRender(Renderer &renderer){

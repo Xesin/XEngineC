@@ -61,6 +61,8 @@ private:
 
 	void Update();
 
+	void Render();
+
 
 public:
 	InputManager* inputManager;

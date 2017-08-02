@@ -30,7 +30,7 @@ void InitialScene::OnKeyDown(unsigned int keyCode)
 		}
 	}
 	if (keyCode == VK_D) {
-		coreRef.physics->drawDebug = !coreRef.physics->drawDebug;
+		coreRef.physics->isDebug = !coreRef.physics->isDebug;
 	}
 }
 
@@ -41,14 +41,19 @@ void InitialScene::Start()
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/Mario-Idle-Walk.png"));
 	Mario = new Sprite(b2Vec2(50, 200.f), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
-	//Mario->scale.height = -1.f;
-	Mario->SetPhysics(true, PhysicShape::Circle, true, 0.0f, 10.f);
+	Mario->anchor.Set(0.5f, 0.5f);
+	/*Mario->scale.height = -1.f;*/
+	Mario->SetPhysics(true, PhysicShape::Box, true, 0.0f, 10.f);
 	Mario->rigidBody->SetFixedRotation(true);
 	Mario->rigidBody->SetLinearDamping(5.f);
+
+	coreRef.physics->AddCircleFixture(Mario->rigidBody, b2Vec2(1.0f, 0.f), 0.5, 1.f, 1.f);
+
 	Rect* rect = new Rect(b2Vec2(450.f, 50.f), coreRef, 900.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
 	rect->SetPhysics(true, false);
 	rectDyn = new Rect(b2Vec2(120.f, 400.f), coreRef, 100.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.9f));
 	rectDyn->SetPhysics(true, true);
+	
 	gameObjects.insert(rect);
 	gameObjects.insert(rectDyn);
 	gameObjects.insert(Mario);

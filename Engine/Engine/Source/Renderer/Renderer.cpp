@@ -333,6 +333,7 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 
 void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color & color)
 {
+	SetTransform(D2D1::Matrix3x2F::Identity());
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);
@@ -344,6 +345,7 @@ void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color &
 
 void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Vec2 & axis, const b2Color & color)
 {
+	SetTransform(D2D1::Matrix3x2F::Identity());
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);

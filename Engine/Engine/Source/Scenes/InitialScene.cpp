@@ -3,9 +3,11 @@
 #include "Managers\AnimationManager.h"
 #include "Managers\InputManager.h"
 #include "Utils\Animation.h"
+#include "Utils\MathUtils.h"
 #include "GameObjects\Sprite.h"
 #include "GameObjects\Rect.h"
 #include "GameObjects\Circle.h"
+
 
 Sprite* sprite;
 Rect* rect;
@@ -15,7 +17,7 @@ InitialScene::InitialScene(XEngine& ref) : EngineScene(ref) {
 }
 
 Sprite* Mario;
-Rect* rectDyn;
+
 DEFINE_DELEGATE(newDel, void(unsigned int));
 void InitialScene::OnKeyDown(unsigned int keyCode)
 {
@@ -23,12 +25,7 @@ void InitialScene::OnKeyDown(unsigned int keyCode)
 	if (keyCode == VK_SPACE) {
  		Mario->rigidBody->ApplyForce(b2Vec2(0.0f, 150.f), Mario->rigidBody->GetWorldCenter(), true);
 	}
-	if (keyCode == VK_ESCAPE) {
-		//Mario->Destroy();
-		if (rectDyn->IsValid()) {
-			rectDyn->Destroy();
-		}
-	}
+
 	if (keyCode == VK_D) {
 		coreRef.physics->isDebug = !coreRef.physics->isDebug;
 	}
@@ -43,24 +40,51 @@ void InitialScene::Start()
 	Mario->SetSpriteSheet(17, 33);
 	int idle[1] = { 0 };
 	int walk[4] = { 1, 2, 3, 4 };
-	Mario->animationManager.AddAnim(TEXT("idle"), new Animation(idle, 100, 1));
-	Mario->animationManager.AddAnim(TEXT("walk"), new Animation(idle, 100, 1));
+	Mario->animationManager.AddAnim(TEXT("idle"), new Animation(idle, 150, 1, true));
+	Mario->animationManager.AddAnim(TEXT("walk"), new Animation(walk, 150, 4, true));
 	Mario->anchor.Set(0.5f, 0.5f);
 	/*Mario->scale.height = -1.f;*/
 	Mario->SetPhysics(true, PhysicShape::Box, PhysicBodyType::Kinematic, 0.0f, 10.f);
 	Mario->rigidBody->SetFixedRotation(true);
 	Mario->rigidBody->SetLinearDamping(5.f);
 
-	Rect* rect = new Rect(b2Vec2(450.f, 50.f), coreRef, 900.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
+	coreRef.physics->CreateBoxBody(Renderer::ScreenToWorldUnits(b2Vec2(40.f, 720.f / 2.f)), Renderer::ScreenToWorldUnits(b2Vec2(30.f, 720.f)), 0.0f, 1.0f, PhysicBodyType::Static);
+	coreRef.physics->CreateBoxBody(Renderer::ScreenToWorldUnits(b2Vec2(1230.f, 720.f / 2.f)), Renderer::ScreenToWorldUnits(b2Vec2(30.f, 720.f)), 0.0f, 1.0f, PhysicBodyType::Static);
+
+	Rect* rect = new Rect(b2Vec2(1280.f / 2.f, 50.f), coreRef, 1280.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
 	rect->SetPhysics(true, PhysicBodyType::Kinematic);
-	rectDyn = new Rect(b2Vec2(120.f, 400.f), coreRef, 100.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.9f));
-	rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+
+	for (int i = 0; i < 40; i++) {
+		Circle* rectDyn = new Circle(b2Vec2(i * 25.f + 100.f, 400.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+		gameObjects.insert(rectDyn);
+		updateList.insert(rectDyn);
+
+		rectDyn = new Circle(b2Vec2(i * 25.f + 110.f, 460.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+		gameObjects.insert(rectDyn);
+		updateList.insert(rectDyn);
+
+		rectDyn = new Circle(b2Vec2(i * 25.f + 100.f, 490.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+		gameObjects.insert(rectDyn);
+		updateList.insert(rectDyn);
+
+		rectDyn = new Circle(b2Vec2(i * 25.f + 110.f, 520.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+		gameObjects.insert(rectDyn);
+		updateList.insert(rectDyn);
+
+		rectDyn = new Circle(b2Vec2(i * 25.f + 100.f, 550.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+		gameObjects.insert(rectDyn);
+		updateList.insert(rectDyn);
+	}
 	
+
+
 	gameObjects.insert(rect);
-	gameObjects.insert(rectDyn);
 	gameObjects.insert(Mario);
-	updateList.insert(rect);
-	updateList.insert(rectDyn);
 	updateList.insert(Mario);
 }
 
@@ -73,32 +97,34 @@ void InitialScene::OnDestroy() {
 void InitialScene::Update(float deltaTime)
 {
 	EngineScene::Update(deltaTime);
-
+	b2Vec2 currentVel = Mario->rigidBody->GetLinearVelocity();
 	if (coreRef.inputManager->IsDown(VK_RIGHT)) {
-		if (Mario->animationManager.IsPlaying(TEXT("idle"))) {
+		if (!Mario->animationManager.IsPlaying(TEXT("walk"))) {
 			Mario->animationManager.PlayAnim(TEXT("walk"));
 		}
-		Mario->rigidBody->SetLinearVelocity(b2Vec2(5.f, 0.f));
 
-		Mario->scale.width = -1;
-	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
-		if (Mario->animationManager.IsPlaying(TEXT("idle"))) {
-			Mario->animationManager.PlayAnim(TEXT("walk"));
-		}
-		Mario->rigidBody->SetLinearVelocity(b2Vec2(-5.f, 0.f));
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(5.f, currentVel.y));
 
 		Mario->scale.width = 1;
+	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
+		if (!Mario->animationManager.IsPlaying(TEXT("walk"))) {
+			Mario->animationManager.PlayAnim(TEXT("walk"));
+		}
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(-5.f, currentVel.y));
+
+		Mario->scale.width = -1;
 	}
 	else {
 		if (!Mario->animationManager.IsPlaying(TEXT("idle"))) {
 			Mario->animationManager.PlayAnim(TEXT("idle"));
 		}
-		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
-		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, vel.y));
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, currentVel.y));
 	}
 
+	currentVel = Mario->rigidBody->GetLinearVelocity();
+
 	if (coreRef.inputManager->IsDown(VK_UP)) {
-		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, 5.f));
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(currentVel.x, 5.f));
 		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
 		if (vel.x > 5.f) {
 			vel.x = 5.f;
@@ -106,7 +132,7 @@ void InitialScene::Update(float deltaTime)
 		}
 	}
 	else if (coreRef.inputManager->IsDown(VK_DOWN)) {
-		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, -5.f));
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(currentVel.x, -5.f));
 		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
 		if (vel.x < -5.f) {
 			vel.x = -5.f;
@@ -115,8 +141,7 @@ void InitialScene::Update(float deltaTime)
 
 	}
 	else {
-		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
-		Mario->rigidBody->SetLinearVelocity(b2Vec2(vel.x, 0.f));
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(currentVel.x, 0.f));
 	}
 	
 }

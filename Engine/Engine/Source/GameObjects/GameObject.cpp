@@ -5,6 +5,7 @@
 
 void GameObject::SetTransform(Renderer & renderer, int width, int height)
 {
+	D2D1_SIZE_F correctedScale = D2D1::SizeF(scale.width, scale.height * -1.f);
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(scale);
 	float32 angle = RADS_TO_DEGREES(transform.q.GetAngle());
 	float32 x = transform.p.x;

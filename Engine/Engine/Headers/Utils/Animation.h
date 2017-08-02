@@ -5,7 +5,7 @@ class Sprite;
 
 class Animation {
 public:
-	Animation(int* const frames, int refreshRate, int size);
+	Animation(int* const frames, int refreshRate, int size, bool loop = false);
 	
 	void SetSprite(Sprite* spriteRef);
 

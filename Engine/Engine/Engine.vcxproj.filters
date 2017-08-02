@@ -131,6 +131,9 @@
     <ClInclude Include="Headers\Managers\Physics.h">
       <Filter>Headers\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Utils\MathUtils.h">
+      <Filter>Headers\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">

@@ -138,7 +138,7 @@ void Physics::AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 
 	b2FixtureDef fixtureDef;
 	b2PolygonShape boxShape;
 
-	boxShape.SetAsBox(bounds.x, bounds.y, center, 0.0f);
+	boxShape.SetAsBox(bounds.x - 0.01f, bounds.y - 0.01f, center, 0.0f);
 
 	fixtureDef.shape = &boxShape;
 	fixtureDef.density = density;
@@ -152,7 +152,7 @@ void Physics::AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, floa
 	b2FixtureDef fixtureDef;
 	b2CircleShape circShape;
 
-	circShape.m_radius = radius;
+	circShape.m_radius = radius - 0.01f;
 	circShape.m_p = center;
 
 	fixtureDef.shape = &circShape;

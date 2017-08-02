@@ -189,6 +189,7 @@
     <ClInclude Include="Headers\Utils\Delegates\DelegateBase.h" />
     <ClInclude Include="Headers\Utils\Delegates\DelegatesSettings.h" />
     <ClInclude Include="Headers\Utils\Delegates\MultiCastDelegate.h" />
+    <ClInclude Include="Headers\Utils\MathUtils.h" />
     <ClInclude Include="Headers\XEngine.h" />
     <ClInclude Include="Source\Managers\CacheManager.h" />
   </ItemGroup>

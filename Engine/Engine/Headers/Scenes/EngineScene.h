@@ -21,7 +21,7 @@ public:
 
 	virtual void Start() = 0;
 	virtual void Update(float deltaTime) {
-		for (int i = gameObjects.size - 1 ; i >= 0; i--) {
+		for (int i = updateList.size - 1 ; i >= 0; i--) {
 			GameObject& go = *updateList[i];
 			if (go.isPendingDestroy) {
 				delete updateList[i];

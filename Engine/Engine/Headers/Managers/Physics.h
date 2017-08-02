@@ -23,6 +23,7 @@ public:
 	void DestroyBody(b2Body* bodyToDestroy);
 	b2Body* CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, PhysicBodyType bodyType);
 	b2Body* CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType);
+	b2Body* CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, PhysicBodyType bodyType);
 
 	void AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction);
 	void AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, float32 density, float32 friction);

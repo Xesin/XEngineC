@@ -98,6 +98,41 @@ b2Body * Physics::CreateCircleBody(b2Vec2 center, float32 radius, float32 densit
 	return rigidBody;
 }
 
+b2Body * Physics::CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, PhysicBodyType bodyType)
+{
+	b2BodyDef bodyDef;
+
+	b2Body* rigidBody;
+	bodyDef.position.Set(center.x, center.y);
+
+	switch (bodyType)
+	{
+	case PhysicBodyType::Static:
+	{
+		bodyDef.type = b2_staticBody;
+	}
+	break;
+	case PhysicBodyType::Kinematic:
+	{
+		bodyDef.type = b2_kinematicBody;
+	}
+	break;
+	case PhysicBodyType::Dynamic:
+	{
+		bodyDef.type = b2_dynamicBody;
+	}
+	break;
+
+	default:
+		break;
+	}
+
+	rigidBody = world.CreateBody(&bodyDef);
+	AddEdgeFixture(rigidBody, p1, p2, density, friction);
+
+	return rigidBody;
+}
+
 void Physics::AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction)
 {
 	b2FixtureDef fixtureDef;

@@ -43,16 +43,14 @@ void InitialScene::Start()
 	Mario->SetSpriteSheet(17, 33);
 	Mario->anchor.Set(0.5f, 0.5f);
 	/*Mario->scale.height = -1.f;*/
-	Mario->SetPhysics(true, PhysicShape::Box, true, 0.0f, 10.f);
+	Mario->SetPhysics(true, PhysicShape::Box, PhysicBodyType::Kinematic, 0.0f, 10.f);
 	Mario->rigidBody->SetFixedRotation(true);
 	Mario->rigidBody->SetLinearDamping(5.f);
 
-	coreRef.physics->AddCircleFixture(Mario->rigidBody, b2Vec2(1.0f, 0.f), 0.5, 1.f, 1.f);
-
 	Rect* rect = new Rect(b2Vec2(450.f, 50.f), coreRef, 900.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
-	rect->SetPhysics(true, false);
+	rect->SetPhysics(true, PhysicBodyType::Kinematic);
 	rectDyn = new Rect(b2Vec2(120.f, 400.f), coreRef, 100.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.9f));
-	rectDyn->SetPhysics(true, true);
+	rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
 	
 	gameObjects.insert(rect);
 	gameObjects.insert(rectDyn);
@@ -72,21 +70,42 @@ void InitialScene::Update(float deltaTime)
 {
 	EngineScene::Update(deltaTime);
 
-	/*if (coreRef.inputManager->IsDown(VK_RIGHT)) {
-		Mario->rigidBody->ApplyForce(b2Vec2(10.f, 0.f), Mario->rigidBody->GetWorldCenter(), true);
+	if (coreRef.inputManager->IsDown(VK_RIGHT)) {
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(5.f, 0.f));
 		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
 		if (vel.x > 5.f) {
 			vel.x = 5.f;
 			Mario->rigidBody->SetLinearVelocity(vel);
 		}
 	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
-		Mario->rigidBody->ApplyForce(b2Vec2(-10.f, 0.f), Mario->rigidBody->GetWorldCenter(), true);
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(-5.f, 0.f));
+		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
+	}
+	else {
+		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, vel.y));
+	}
+
+	if (coreRef.inputManager->IsDown(VK_UP)) {
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, 5.f));
+		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
+		if (vel.x > 5.f) {
+			vel.x = 5.f;
+			Mario->rigidBody->SetLinearVelocity(vel);
+		}
+	}
+	else if (coreRef.inputManager->IsDown(VK_DOWN)) {
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, -5.f));
 		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
 		if (vel.x < -5.f) {
 			vel.x = -5.f;
 			Mario->rigidBody->SetLinearVelocity(vel);
 		}
 
-	}*/
+	}
+	else {
+		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(vel.x, 0.f));
+	}
 	
 }

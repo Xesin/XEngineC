@@ -27,15 +27,33 @@ void Physics::DestroyBody(b2Body * bodyToDestroy)
 	world.DestroyBody(bodyToDestroy);
 }
 
-b2Body * Physics::CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, bool dynamic)
+b2Body * Physics::CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, PhysicBodyType bodyType)
 {
 	b2BodyDef bodyDef;
 
 	b2Body* rigidBody;
 	bodyDef.position.Set(center.x, center.y);
 
-	if (dynamic) {
+	switch (bodyType)
+	{
+	case PhysicBodyType::Static:
+	{
+		bodyDef.type = b2_staticBody;
+	}
+		break;
+	case PhysicBodyType::Kinematic:
+	{
+		bodyDef.type = b2_kinematicBody;
+	}
+		break;
+	case PhysicBodyType::Dynamic:
+	{
 		bodyDef.type = b2_dynamicBody;
+	}
+		break;
+	
+	default:
+		break;
 	}
 
 	rigidBody = world.CreateBody(&bodyDef);
@@ -44,7 +62,7 @@ b2Body * Physics::CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, f
 	return rigidBody;
 }
 
-b2Body * Physics::CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, bool dynamic)
+b2Body * Physics::CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType)
 {
 	
 	b2BodyDef bodyDef;
@@ -52,8 +70,26 @@ b2Body * Physics::CreateCircleBody(b2Vec2 center, float32 radius, float32 densit
 	b2Body* rigidBody;
 
 	bodyDef.position.Set(center.x, center.y);
-	if (dynamic) {
+	switch (bodyType)
+	{
+	case PhysicBodyType::Static:
+	{
+		bodyDef.type = b2_staticBody;
+	}
+	break;
+	case PhysicBodyType::Kinematic:
+	{
+		bodyDef.type = b2_kinematicBody;
+	}
+	break;
+	case PhysicBodyType::Dynamic:
+	{
 		bodyDef.type = b2_dynamicBody;
+	}
+	break;
+
+	default:
+		break;
 	}
 	rigidBody = world.CreateBody(&bodyDef);
 

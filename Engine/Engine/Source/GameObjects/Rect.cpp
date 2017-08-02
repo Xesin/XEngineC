@@ -10,24 +10,22 @@ Rect::Rect(b2Vec2 spawn_pos, XEngine& ref, int _width, int _height, D2D1::ColorF
 	color = _color;
 }
 
-void Rect::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction)
+void Rect::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)
 {
 	if (active && rigidBody == NULL) {
-		InitializeRectPhysics(bodyType, friction);
+		InitializeRectPhysics(bodyType, friction, isSensor);
 	}
 	else if(rigidBody != NULL) {
 		DestroyBody();
 	}
 }
 
-void Rect::InitializeRectPhysics(PhysicBodyType bodyType, float32 friction)
+void Rect::InitializeRectPhysics(PhysicBodyType bodyType, float32 friction, bool isSensor)
 {
-	anchor.Set(0.5f, 0.5f);
+	anchor.Set(width / 2.f, height / 2.f);
+	b2Vec2 bounds = b2Vec2(width / 2.f, height / 2.f);
 
-	b2Vec2 worldPos = Renderer::ScreenToWorldUnits(transform.p);
-	b2Vec2 worldBounds = Renderer::ScreenToWorldUnits(b2Vec2(width / 2.f, height / 2.f));
-
-	rigidBody = coreRef.physics->CreateBoxBody(worldPos, worldBounds, 1.0, friction, bodyType);
+	rigidBody = coreRef.physics->CreateBoxBody(transform.p, bounds, 1.0, friction, bodyType, isSensor);
 	
 }
 

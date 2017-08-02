@@ -9,13 +9,12 @@ Circle::Circle(b2Vec2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radius
 	color = newColor;
 }
 
-void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction)
+void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)
 {
 	if (active && rigidBody == NULL) {
 		//anchor.Set(0.5f, 0.5f);
-		b2Vec2 worldPos = Renderer::ScreenToWorldUnits(transform.p);
 
-		rigidBody = coreRef.physics->CreateCircleBody(worldPos, Renderer::ScreenToWorldUnits(radiusX), 1.0, friction, bodyType);
+		rigidBody = coreRef.physics->CreateCircleBody(transform.p, radiusX, 1.0, friction, bodyType, isSensor);
 			
 		float32 angle = transform.q.GetAngle();
 		rigidBody->SetTransform(rigidBody->GetPosition(), angle);

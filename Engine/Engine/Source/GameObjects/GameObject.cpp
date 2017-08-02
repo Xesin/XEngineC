@@ -20,8 +20,8 @@ void GameObject::SetTransform(Renderer & renderer, int width, int height)
 		)
 	);
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-width * anchor.x * scale.width - coreRef.camera->position.x,
-		-height * anchor.y * scale.height - coreRef.camera->position.y
+		(-anchor.x) * scale.width - coreRef.camera->position.x,
+		(-anchor.y) * scale.height - coreRef.camera->position.y
 	);
 	scaleMatrix = scaleMatrix * translationMatrix * transformMatrix;
 	renderer.SetTransform(scaleMatrix);

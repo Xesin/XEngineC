@@ -83,10 +83,10 @@ public:
 	HRESULT CreateDeviceResources(HWND m_hwnd);
 
 	static b2Vec2 WorldToScreenPixels(b2Vec2 worldUnit);
-	static b2Vec2 ScreenToWorldUnits(b2Vec2 screenPixel);
+	static b2Vec2 PixelsToWorldUnits(b2Vec2 screenPixel);
 
 	static float WorldToScreenPixels(float worldUnit);
-	static float ScreenToWorldUnits(float screenPixel);
+	static float PixelsToWorldUnits(float screenPixel);
 
 private:
 	// Initialize device-independent resources.

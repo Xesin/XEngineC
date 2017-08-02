@@ -27,12 +27,13 @@ void Physics::DestroyBody(b2Body * bodyToDestroy)
 	world.DestroyBody(bodyToDestroy);
 }
 
-b2Body * Physics::CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, PhysicBodyType bodyType)
+b2Body * Physics::CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor)
 {
 	b2BodyDef bodyDef;
 
 	b2Body* rigidBody;
-	bodyDef.position.Set(center.x, center.y);
+	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(center);
+	bodyDef.position.Set(centerInUnits.x, centerInUnits.y);
 
 	switch (bodyType)
 	{
@@ -57,19 +58,19 @@ b2Body * Physics::CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, f
 	}
 
 	rigidBody = world.CreateBody(&bodyDef);
-	AddBoxFixture(rigidBody, b2Vec2(.0f, .0f), bounds, density, friction);
+	AddBoxFixture(rigidBody, b2Vec2(.0f, .0f), bounds, density, friction, isSensor);
 
 	return rigidBody;
 }
 
-b2Body * Physics::CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType)
+b2Body * Physics::CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor)
 {
 	
 	b2BodyDef bodyDef;
 
 	b2Body* rigidBody;
-
-	bodyDef.position.Set(center.x, center.y);
+	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(center);
+	bodyDef.position.Set(centerInUnits.x, centerInUnits.y);
 	switch (bodyType)
 	{
 	case PhysicBodyType::Static:
@@ -93,17 +94,18 @@ b2Body * Physics::CreateCircleBody(b2Vec2 center, float32 radius, float32 densit
 	}
 	rigidBody = world.CreateBody(&bodyDef);
 
-	AddCircleFixture(rigidBody, b2Vec2(.0f, .0f), radius, density, friction);
+	AddCircleFixture(rigidBody, b2Vec2(.0f, .0f), radius, density, friction, isSensor);
 
 	return rigidBody;
 }
 
-b2Body * Physics::CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, PhysicBodyType bodyType)
+b2Body * Physics::CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor)
 {
 	b2BodyDef bodyDef;
 
 	b2Body* rigidBody;
-	bodyDef.position.Set(center.x, center.y);
+	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(center);
+	bodyDef.position.Set(centerInUnits.x, centerInUnits.y);
 
 	switch (bodyType)
 	{
@@ -128,49 +130,52 @@ b2Body * Physics::CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 den
 	}
 
 	rigidBody = world.CreateBody(&bodyDef);
-	AddEdgeFixture(rigidBody, p1, p2, density, friction);
+	AddEdgeFixture(rigidBody, p1, p2, density, friction, isSensor);
 
 	return rigidBody;
 }
 
-void Physics::AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction)
+void Physics::AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, bool isSensor)
 {
 	b2FixtureDef fixtureDef;
 	b2PolygonShape boxShape;
 
-	boxShape.SetAsBox(bounds.x - 0.01f, bounds.y - 0.01f, center, 0.0f);
+	boxShape.SetAsBox(Renderer::PixelsToWorldUnits(bounds.x) - 0.01f, Renderer::PixelsToWorldUnits(bounds.y) - 0.01f, Renderer::PixelsToWorldUnits(center), 0.0f);
 
 	fixtureDef.shape = &boxShape;
 	fixtureDef.density = density;
 	fixtureDef.friction = friction;
+	fixtureDef.isSensor = isSensor;
 
 	body->CreateFixture(&fixtureDef);
 }
 
-void Physics::AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, float32 density, float32 friction)
+void Physics::AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, float32 density, float32 friction, bool isSensor)
 {
 	b2FixtureDef fixtureDef;
 	b2CircleShape circShape;
 
-	circShape.m_radius = radius - 0.01f;
-	circShape.m_p = center;
+	circShape.m_radius = Renderer::PixelsToWorldUnits(radius) - 0.01f;
+	circShape.m_p = Renderer::PixelsToWorldUnits(center);
 
 	fixtureDef.shape = &circShape;
 	fixtureDef.density = density;
 	fixtureDef.friction = friction;
+	fixtureDef.isSensor = isSensor;
 
 	body->CreateFixture(&fixtureDef);
 }
 
-void Physics::AddEdgeFixture(b2Body * body, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction)
+void Physics::AddEdgeFixture(b2Body * body, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, bool isSensor)
 {
 	b2FixtureDef fixtureDef;
 	b2EdgeShape edgeShape;
-	edgeShape.Set(p1, p2);
+	edgeShape.Set(Renderer::PixelsToWorldUnits(p1), Renderer::PixelsToWorldUnits(p2));
 
 	fixtureDef.shape = &edgeShape;
 	fixtureDef.density = density;
 	fixtureDef.friction = friction;
+	fixtureDef.isSensor = isSensor;
 
 	body->CreateFixture(&fixtureDef);
 }

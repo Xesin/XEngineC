@@ -21,13 +21,13 @@ public:
 	Physics::Physics(Renderer& ref);
 	void Update(float32 deltaTime);
 	void DestroyBody(b2Body* bodyToDestroy);
-	b2Body* CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, PhysicBodyType bodyType);
-	b2Body* CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType);
-	b2Body* CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, PhysicBodyType bodyType);
+	b2Body* CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
+	b2Body* CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
+	b2Body* CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
 
-	void AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction);
-	void AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, float32 density, float32 friction);
-	void AddEdgeFixture(b2Body* body, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction);
+	void AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, bool isSensor = false);
+	void AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, float32 density, float32 friction, bool isSensor = false);
+	void AddEdgeFixture(b2Body* body, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, bool isSensor = false);
 
 	void SetGravity(b2Vec2 newGravity);
 	void DrawDebug();

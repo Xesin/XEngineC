@@ -35,10 +35,10 @@ void Sprite::OnRender(Renderer &renderer)
 	renderer.RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
 }
 
-void Sprite::SetPhysics(bool active, PhysicShape shape, PhysicBodyType bodyType, float32 friction, float32 radius)
+void Sprite::SetPhysics(bool active, PhysicShape shape, PhysicBodyType bodyType, bool isSensor, float32 friction, float32 radius)
 {
 	if (active && rigidBody == NULL) {
-		InitializeSpritePhysics(shape, bodyType, friction, radius);
+		InitializeSpritePhysics(shape, bodyType, friction, isSensor, radius);
 	}
 	else if (rigidBody != NULL) {
 		DestroyBody();
@@ -54,22 +54,21 @@ void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)
 	frameHeight = newFrameHeight;
 }
 
-void Sprite::InitializeSpritePhysics(PhysicShape shape, PhysicBodyType bodyType, float32 friction, float32 radius)
+void Sprite::InitializeSpritePhysics(PhysicShape shape, PhysicBodyType bodyType, float32 friction, bool isSensor, float32 radius)
 {
-	anchor.Set(0.5f, 0.5f);
-	b2Vec2 worldPos = Renderer::ScreenToWorldUnits(transform.p);
+	anchor.Set(frameWidth / 2.f, frameHeight / 2.f);
 
 	switch (shape)
 	{
 	case PhysicShape::Circle:
 	{
-		rigidBody = coreRef.physics->CreateCircleBody(worldPos, radius, 1.0, friction, bodyType);
+		rigidBody = coreRef.physics->CreateCircleBody(transform.p, radius, 1.0, friction, bodyType, isSensor);
 		break;
 	}
 	case PhysicShape::Box:
 	{
-		b2Vec2 worldBounds = Renderer::ScreenToWorldUnits(b2Vec2(frameWidth / 2.f, frameHeight / 2.f));
-		rigidBody = coreRef.physics->CreateBoxBody(worldPos, worldBounds, 1.0, friction, bodyType);
+		b2Vec2 bounds = b2Vec2(frameWidth / 2.f, frameHeight / 2.f);
+		rigidBody = coreRef.physics->CreateBoxBody(transform.p, bounds, 1.0, friction, bodyType, isSensor);
 		break;
 	}
 	default:

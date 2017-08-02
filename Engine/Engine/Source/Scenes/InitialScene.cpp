@@ -39,18 +39,26 @@ void InitialScene::Start()
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/Mario-Idle-Walk.png"));
 	Mario = new Sprite(b2Vec2(50, 200.f), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
+
+	//SET MARIO ANIM
 	int idle[1] = { 0 };
 	int walk[4] = { 1, 2, 3, 4 };
 	Mario->animationManager.AddAnim(TEXT("idle"), new Animation(idle, 150, 1, true));
 	Mario->animationManager.AddAnim(TEXT("walk"), new Animation(walk, 150, 4, true));
-	Mario->anchor.Set(0.5f, 0.5f);
-	/*Mario->scale.height = -1.f;*/
-	Mario->SetPhysics(true, PhysicShape::Box, PhysicBodyType::Kinematic, 0.0f, 10.f);
+	
+	//SET MARIO PHYSICS
+	Mario->SetPhysics(true, PhysicShape::Circle, PhysicBodyType::Kinematic, false, 0.0f, 8.f);
+	Mario->anchor.y = 26.f;
+	b2MassData massData;
+	Mario->rigidBody->GetMassData(&massData);
+	massData.center = Renderer::PixelsToWorldUnits(Mario->anchor);
+	Mario->rigidBody->SetMassData(&massData);
 	Mario->rigidBody->SetFixedRotation(true);
-	Mario->rigidBody->SetLinearDamping(5.f);
+	coreRef.physics->AddBoxFixture(Mario->rigidBody, b2Vec2(0.f, Mario->anchor.y - (Mario->frameHeight / 2.f)),b2Vec2(Mario->frameWidth / 2.f, Mario->frameHeight / 2.f), 0.0f, 0.0f, true);
 
-	coreRef.physics->CreateBoxBody(Renderer::ScreenToWorldUnits(b2Vec2(40.f, 720.f / 2.f)), Renderer::ScreenToWorldUnits(b2Vec2(30.f, 720.f)), 0.0f, 1.0f, PhysicBodyType::Static);
-	coreRef.physics->CreateBoxBody(Renderer::ScreenToWorldUnits(b2Vec2(1230.f, 720.f / 2.f)), Renderer::ScreenToWorldUnits(b2Vec2(30.f, 720.f)), 0.0f, 1.0f, PhysicBodyType::Static);
+	//OTHER PHYSICS OBJECTS
+	coreRef.physics->CreateBoxBody(b2Vec2(40.f, 720.f / 2.f), b2Vec2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
+	coreRef.physics->CreateBoxBody(b2Vec2(1230.f, 720.f / 2.f), b2Vec2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
 
 	Rect* rect = new Rect(b2Vec2(1280.f / 2.f, 50.f), coreRef, 1280.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
 	rect->SetPhysics(true, PhysicBodyType::Kinematic);

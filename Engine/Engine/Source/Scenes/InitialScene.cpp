@@ -41,6 +41,10 @@ void InitialScene::Start()
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/Mario-Idle-Walk.png"));
 	Mario = new Sprite(b2Vec2(50, 200.f), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
+	int idle[1] = { 0 };
+	int walk[4] = { 1, 2, 3, 4 };
+	Mario->animationManager.AddAnim(TEXT("idle"), new Animation(idle, 100, 1));
+	Mario->animationManager.AddAnim(TEXT("walk"), new Animation(idle, 100, 1));
 	Mario->anchor.Set(0.5f, 0.5f);
 	/*Mario->scale.height = -1.f;*/
 	Mario->SetPhysics(true, PhysicShape::Box, PhysicBodyType::Kinematic, 0.0f, 10.f);
@@ -71,17 +75,24 @@ void InitialScene::Update(float deltaTime)
 	EngineScene::Update(deltaTime);
 
 	if (coreRef.inputManager->IsDown(VK_RIGHT)) {
-		Mario->rigidBody->SetLinearVelocity(b2Vec2(5.f, 0.f));
-		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
-		if (vel.x > 5.f) {
-			vel.x = 5.f;
-			Mario->rigidBody->SetLinearVelocity(vel);
+		if (Mario->animationManager.IsPlaying(TEXT("idle"))) {
+			Mario->animationManager.PlayAnim(TEXT("walk"));
 		}
+		Mario->rigidBody->SetLinearVelocity(b2Vec2(5.f, 0.f));
+
+		Mario->scale.width = -1;
 	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
+		if (Mario->animationManager.IsPlaying(TEXT("idle"))) {
+			Mario->animationManager.PlayAnim(TEXT("walk"));
+		}
 		Mario->rigidBody->SetLinearVelocity(b2Vec2(-5.f, 0.f));
-		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
+
+		Mario->scale.width = 1;
 	}
 	else {
+		if (!Mario->animationManager.IsPlaying(TEXT("idle"))) {
+			Mario->animationManager.PlayAnim(TEXT("idle"));
+		}
 		b2Vec2 vel = Mario->rigidBody->GetLinearVelocity();
 		Mario->rigidBody->SetLinearVelocity(b2Vec2(0.f, vel.y));
 	}

@@ -127,6 +127,19 @@ void Physics::AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, floa
 	body->CreateFixture(&fixtureDef);
 }
 
+void Physics::AddEdgeFixture(b2Body * body, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction)
+{
+	b2FixtureDef fixtureDef;
+	b2EdgeShape edgeShape;
+	edgeShape.Set(p1, p2);
+
+	fixtureDef.shape = &edgeShape;
+	fixtureDef.density = density;
+	fixtureDef.friction = friction;
+
+	body->CreateFixture(&fixtureDef);
+}
+
 
 
 void Physics::SetGravity(b2Vec2 newGravity)

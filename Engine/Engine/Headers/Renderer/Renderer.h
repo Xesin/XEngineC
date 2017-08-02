@@ -34,7 +34,16 @@ public:
 	// Register the window class and call methods for instantiating drawing resources
 	HRESULT Initialize(Camera* newCamera);
 
+	// Initialize device-dependent resources.
+	HRESULT CreateDeviceResources(HWND m_hwnd);
+
 	void GetDesktopDpi(FLOAT* dpiX, FLOAT* dpiY);
+
+	static IWICImagingFactory* GetIwicFactory();
+
+	static HRESULT CreateIwicFactory();
+
+	static ID2D1HwndRenderTarget* GetRenderTarget();
 
 	// Draw content.
 	void OnRenderGroup(ArrayList<GameObject*> &gameObject);
@@ -58,13 +67,6 @@ public:
 		UINT height
 	);
 
-	static IWICImagingFactory* GetIwicFactory();
-
-	static HRESULT CreateIwicFactory();
-
-	static ID2D1HwndRenderTarget* GetRenderTarget();
-
-
 	void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
 
 	void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
@@ -78,9 +80,6 @@ public:
 	void DrawTransform(const b2Transform& xf) override;
 
 	void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) override;
-
-	// Initialize device-dependent resources.
-	HRESULT CreateDeviceResources(HWND m_hwnd);
 
 	static b2Vec2 WorldToScreenPixels(b2Vec2 worldUnit);
 	static b2Vec2 PixelsToWorldUnits(b2Vec2 screenPixel);

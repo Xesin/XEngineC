@@ -181,7 +181,6 @@ void Physics::AddEdgeFixture(b2Body * body, b2Vec2 p1, b2Vec2 p2, float32 densit
 }
 
 
-
 void Physics::SetGravity(b2Vec2 newGravity)
 {
 	world.SetGravity(newGravity);

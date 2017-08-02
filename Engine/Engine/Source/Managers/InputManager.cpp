@@ -2,10 +2,6 @@
 #include "Managers\InputManager.h"
 #include "Renderer\Renderer.h"
 
-InputManager::~InputManager()
-{
-}
-
 InputManager::InputManager(HWND NewhwndInstance)
 {
 	for (unsigned int i = 0; i < sizeof(keyDowns); i++) {
@@ -14,6 +10,10 @@ InputManager::InputManager(HWND NewhwndInstance)
 	isMouseDown = false;
 	mouseButtonDown = -1;
 	hwndInstance = NewhwndInstance;
+}
+
+InputManager::~InputManager()
+{
 }
 
 void InputManager::KeyDown(unsigned int vKeyCode)
@@ -45,6 +45,10 @@ void InputManager::MouseUp(unsigned int position)
 	mouseButtonDown = -1;
 }
 
+bool InputManager::IsMouseButtonDown(unsigned int position){
+	return isMouseDown && position == mouseButtonDown;
+}
+
 bool InputManager::IsDown(unsigned int vKeyCode)
 {
 	return keyDowns[vKeyCode];
@@ -56,8 +60,4 @@ POINT InputManager::CursorPos() {
 	ScreenToClient(hwndInstance, &point);
 	
 	return point;
-}
-
-bool InputManager::IsMouseButtonDown(unsigned int position){
-	return isMouseDown && position == mouseButtonDown;
 }

@@ -20,6 +20,10 @@ Sprite::~Sprite() {
 
 }
 
+void Sprite::Update(float deltaTime) {
+	animationManager.Update(deltaTime);
+}
+
 void Sprite::OnRender(Renderer &renderer)
 {
 	GameObject::OnRender(renderer);
@@ -46,15 +50,6 @@ void Sprite::SetPhysics(bool active, PhysicShape shape, PhysicBodyType bodyType,
 	}
 }
 
-void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)
-{
-	columns = (frameWidth / newFrameWidth);
-	rows = (frameHeight / newFrameHeight);
-
-	frameWidth = newFrameWidth;
-	frameHeight = newFrameHeight;
-}
-
 void Sprite::InitializeSpritePhysics(PhysicShape shape, PhysicBodyType bodyType, float32 friction, bool isSensor, float32 radius)
 {
 	anchor.Set(frameWidth / 2.f, frameHeight / 2.f);
@@ -79,6 +74,11 @@ void Sprite::InitializeSpritePhysics(PhysicShape shape, PhysicBodyType bodyType,
 	rigidBody->SetTransform(rigidBody->GetPosition(), angle);
 }
 
-void Sprite::Update(float deltaTime) {
-	animationManager.Update(deltaTime);
+void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)
+{
+	columns = (frameWidth / newFrameWidth);
+	rows = (frameHeight / newFrameHeight);
+
+	frameWidth = newFrameWidth;
+	frameHeight = newFrameHeight;
 }

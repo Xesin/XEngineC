@@ -9,6 +9,19 @@ Circle::Circle(b2Vec2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radius
 	color = newColor;
 }
 
+void Circle::OnRender(Renderer &renderer) {
+	GameObject::OnRender(renderer);
+	SetTransform(renderer, radiusX * 2.f, radiusY * 2.f);
+	renderer.RenderCircle(transform.p.x, transform.p.y, radiusX, radiusY, color, scale, fill, strokeWith);
+}
+
+void Circle::Update(float deltaTime) {
+	if (rigidBody != NULL) {
+		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
+		transform.q.Set(rigidBody->GetAngle());
+	}
+}
+
 void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)
 {
 	if (active && rigidBody == NULL) {
@@ -21,18 +34,5 @@ void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, 
 	}
 	else if (rigidBody != NULL) {
 		DestroyBody();
-	}
-}
-
-void Circle::OnRender(Renderer &renderer) {
-	GameObject::OnRender(renderer);
-	SetTransform(renderer, radiusX * 2.f, radiusY * 2.f);
-	renderer.RenderCircle(transform.p.x, transform.p.y, radiusX, radiusY, color, scale, fill, strokeWith);
-}
-
-void Circle::Update(float deltaTime) {
-	if (rigidBody != NULL) {
-		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
-		transform.q.Set(rigidBody->GetAngle());
 	}
 }

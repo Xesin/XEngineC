@@ -48,21 +48,6 @@ void Renderer::GetDesktopDpi(FLOAT *dpiX, FLOAT* dpiY) {
 	m_pDirect2dFactory->GetDesktopDpi(dpiX, dpiY);
 }
 
-HRESULT Renderer::CreateDeviceIndependentResources()
-{
-	HRESULT hr = S_OK;
-
-	// Create a Direct2D factory.
-	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pDirect2dFactory);
-
-	if (SUCCEEDED(hr)) {
-		// Initialize COM
-		hr = CreateIwicFactory();
-	}
-
-	return hr;
-}
-
 HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 {
 	HRESULT hr = S_OK;
@@ -112,7 +97,48 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 	return hr;
 }
 
+HRESULT Renderer::CreateDeviceIndependentResources()
+{
+	HRESULT hr = S_OK;
 
+	// Create a Direct2D factory.
+	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pDirect2dFactory);
+
+	if (SUCCEEDED(hr)) {
+		// Initialize COM
+		hr = CreateIwicFactory();
+	}
+
+	return hr;
+}
+
+IWICImagingFactory * Renderer::GetIwicFactory()
+{
+	if (Renderer::wicFactory == nullptr) {
+		CreateIwicFactory();
+	}
+	return Renderer::wicFactory;
+}
+
+HRESULT Renderer::CreateIwicFactory()
+{
+	CoInitialize(NULL);
+
+	// Create the COM imaging factory
+	HRESULT hr = CoCreateInstance(
+		CLSID_WICImagingFactory,
+		NULL,
+		CLSCTX_INPROC_SERVER,
+		IID_PPV_ARGS(&Renderer::wicFactory)
+	);
+
+	return hr;
+}
+
+ID2D1HwndRenderTarget * Renderer::GetRenderTarget()
+{
+	return Renderer::renderTarget;
+}
 
 void Renderer::OnRenderGroup(ArrayList<GameObject*> &gameObjects)
 {
@@ -221,7 +247,6 @@ void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, i
 }
 
 
-
 void Renderer::OnResize(UINT width, UINT height)
 {
 	if (Renderer::renderTarget)
@@ -234,28 +259,7 @@ void Renderer::OnResize(UINT width, UINT height)
 	}
 }
 
-IWICImagingFactory * Renderer::GetIwicFactory()
-{
-	if (Renderer::wicFactory == nullptr) {
-		CreateIwicFactory();
-	}
-	return Renderer::wicFactory;
-}
 
-HRESULT Renderer::CreateIwicFactory()
-{
-	CoInitialize(NULL);
-
-	// Create the COM imaging factory
-	HRESULT hr = CoCreateInstance(
-		CLSID_WICImagingFactory,
-		NULL,
-		CLSCTX_INPROC_SERVER,
-		IID_PPV_ARGS(&Renderer::wicFactory)
-	);
-
-	return hr;
-}
 
 void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2Color & color)
 {
@@ -420,17 +424,11 @@ void Renderer::DrawPoint(const b2Vec2 & p, float32 size, const b2Color & color)
 {
 }
 
-ID2D1HwndRenderTarget * Renderer::GetRenderTarget()
-{
-	return Renderer::renderTarget;
-}
-
 void Renderer::DiscardDeviceResources()
 {
 	SafeRelease(&Renderer::renderTarget);
 	SafeRelease(&colorBrush);
 }
-
 
 b2Vec2 Renderer::WorldToScreenPixels(b2Vec2 worldUnit)
 {

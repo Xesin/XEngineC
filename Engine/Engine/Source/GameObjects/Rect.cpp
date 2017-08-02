@@ -10,6 +10,18 @@ Rect::Rect(b2Vec2 spawn_pos, XEngine& ref, int _width, int _height, D2D1::ColorF
 	color = _color;
 }
 
+void Rect::OnRender(Renderer &renderer){
+	GameObject::OnRender(renderer);
+	b2Transform worldPos;
+	WorldTransform(worldPos);
+	SetTransform(renderer, width, height);
+	renderer.RenderRect(worldPos.p.x, worldPos.p.y, width, height, color, scale, fill, strokeWith);
+}
+
+void Rect::Update(float deltaTime)
+{
+}
+
 void Rect::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)
 {
 	if (active && rigidBody == NULL) {
@@ -27,16 +39,4 @@ void Rect::InitializeRectPhysics(PhysicBodyType bodyType, float32 friction, bool
 
 	rigidBody = coreRef.physics->CreateBoxBody(transform.p, bounds, 1.0, friction, bodyType, isSensor);
 	
-}
-
-void Rect::OnRender(Renderer &renderer){
-	GameObject::OnRender(renderer);
-	b2Transform worldPos;
-	WorldTransform(worldPos);
-	SetTransform(renderer, width, height);
-	renderer.RenderRect(worldPos.p.x, worldPos.p.y, width, height, color, scale, fill, strokeWith);
-}
-
-void Rect::Update(float deltaTime)
-{
 }

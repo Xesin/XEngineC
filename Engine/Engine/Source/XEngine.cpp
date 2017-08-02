@@ -6,6 +6,7 @@
 
 #include "XEngine.h"
 #include "Renderer\Renderer.h"
+#include "Renderer\Camera.h"
 #include "GameObjects\GameObject.h"
 #include "GameObjects\Rect.h"
 #include "Scenes\EngineScene.h"
@@ -48,8 +49,8 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 	currentScene = initialScene;
 	renderer = new Renderer();
 
-	// as the Direct2D factory.
-	hr = renderer->Initialize();
+	camera = new Camera(b2Vec2(resolutionX, resolutionY));
+	hr = renderer->Initialize(camera);
 	if (SUCCEEDED(hr))
 	{
 		// Register the window class.

@@ -134,6 +134,9 @@
     <ClInclude Include="Headers\Utils\MathUtils.h">
       <Filter>Headers\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Renderer\Camera.h">
+      <Filter>Headers\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -183,6 +186,9 @@
     </ClCompile>
     <ClCompile Include="Source\Managers\Physics.cpp">
       <Filter>Source\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Camera.cpp">
+      <Filter>Source\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

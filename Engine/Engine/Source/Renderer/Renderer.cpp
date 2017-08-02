@@ -2,6 +2,7 @@
 #include "Renderer\Renderer.h"
 #include "GameObjects\GameObject.h"
 #include "Renderer\CachedImage.h"
+#include "Renderer\Camera.h"
 #include "Managers\ScaleManager.h"
 #include "Managers\CacheManager.h"
 
@@ -11,7 +12,8 @@ ID2D1HwndRenderTarget* Renderer::renderTarget = nullptr;
 Renderer::Renderer() :
 	m_pDirect2dFactory(NULL),
 	colorBrush(NULL),
-	scaleManager(NULL)
+	scaleManager(NULL),
+	camera(NULL)
 {
 	Renderer::wicFactory = NULL;
 	Renderer::renderTarget = NULL;
@@ -26,16 +28,20 @@ Renderer::~Renderer()
 	delete scaleManager;
 }
 
-HRESULT Renderer::Initialize()
+HRESULT Renderer::Initialize(Camera* newCamera)
 {
-	return CreateDeviceIndependentResources();
 	FLOAT dpiX;
 	FLOAT dpiY;
+	HRESULT hr = CreateDeviceIndependentResources();
+	if (SUCCEEDED(hr)) {
+		GetDesktopDpi(&dpiX, &dpiY);
+		DPIScaleX = dpiX / 96.0f;
+		DPIScaleY = dpiY / 96.0f;
 
-	GetDesktopDpi(&dpiX, &dpiY);
+		camera = newCamera;
+	}
 
-	DPIScaleX = dpiX / 96.0f;
-	DPIScaleY = dpiY / 96.0f;
+	return hr;
 }
 
 void Renderer::GetDesktopDpi(FLOAT *dpiX, FLOAT* dpiY) {
@@ -260,7 +266,11 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
-	SetTransform(D2D1::Matrix3x2F::Identity());
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		-camera->position.x,
+		-camera->position.y
+	);
+	SetTransform(translationMatrix);
 	// create a direct2d pathGeometry
 	hr = m_pDirect2dFactory->CreatePathGeometry(&geo);
 	hr = geo->Open(&sink);
@@ -300,7 +310,11 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
-	SetTransform(D2D1::Matrix3x2F::Identity());
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		-camera->position.x,
+		-camera->position.y
+	);
+	SetTransform(translationMatrix);
 	// create a direct2d pathGeometry
 	hr = m_pDirect2dFactory->CreatePathGeometry(&geo);
 	hr = geo->Open(&sink);
@@ -333,7 +347,11 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 
 void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color & color)
 {
-	SetTransform(D2D1::Matrix3x2F::Identity());
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		-camera->position.x,
+		-camera->position.y
+	);
+	SetTransform(translationMatrix);
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);
@@ -345,7 +363,11 @@ void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color &
 
 void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Vec2 & axis, const b2Color & color)
 {
-	SetTransform(D2D1::Matrix3x2F::Identity());
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		-camera->position.x,
+		-camera->position.y
+	);
+	SetTransform(translationMatrix);
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);
@@ -357,6 +379,11 @@ void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Ve
 
 void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color & color)
 {
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		-camera->position.x,
+		-camera->position.y
+	);
+	SetTransform(translationMatrix);
 	b2Vec2 p1Screen = WorldToScreenPixels(p1);
 	b2Vec2 p2Screen = WorldToScreenPixels(p2);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);

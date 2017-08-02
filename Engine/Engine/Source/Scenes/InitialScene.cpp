@@ -7,6 +7,7 @@
 #include "GameObjects\Sprite.h"
 #include "GameObjects\Rect.h"
 #include "GameObjects\Circle.h"
+#include "Renderer\Camera.h"
 
 
 Sprite* sprite;
@@ -142,6 +143,10 @@ void InitialScene::Update(float deltaTime)
 	}
 	else {
 		Mario->rigidBody->SetLinearVelocity(b2Vec2(currentVel.x, 0.f));
+	}
+
+	if (coreRef.inputManager->IsDown(VK_L)) {
+		coreRef.camera->position.y += 20.f * deltaTime;
 	}
 	
 }

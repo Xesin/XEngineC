@@ -23,6 +23,7 @@ inline void SafeRelease(
 class GameObject;
 class CachedImage;
 class ScaleManager;
+class Camera;
 
 class Renderer : public b2Draw
 {
@@ -31,7 +32,7 @@ public:
 	~Renderer();
 
 	// Register the window class and call methods for instantiating drawing resources
-	HRESULT Initialize();
+	HRESULT Initialize(Camera* newCamera);
 
 	void GetDesktopDpi(FLOAT* dpiX, FLOAT* dpiY);
 
@@ -117,6 +118,7 @@ private:
 	float DPIScaleX = 1.f;
 	float DPIScaleY = 1.f;
 	ScaleManager* scaleManager;
+	Camera* camera;
 };
 
 

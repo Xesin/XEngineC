@@ -27,6 +27,8 @@ class GameObject;
 class InputManager;
 class EngineScene;
 class Physics;
+class Camera;
+
 struct b2Vec2;
 
 class XEngine
@@ -67,6 +69,7 @@ private:
 public:
 	InputManager* inputManager;
 	Physics* physics;
+	Camera* camera;
 private:
 	ArrayList<GameObject*> gameObjects;
 	HWND m_hwnd;

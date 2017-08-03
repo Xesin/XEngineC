@@ -11,11 +11,11 @@ Rect::Rect(Vector2 spawn_pos, XEngine& ref, int _width, int _height, D2D1::Color
 }
 
 void Rect::OnRender(Renderer &renderer){
-	GameObject::OnRender(renderer);
 	Transform worldPos;
 	WorldTransform(&worldPos);
 	SetTransform(renderer, width, height);
 	renderer.RenderRect(worldPos.position.x, worldPos.position.y, width, height, color, scale, fill, strokeWith);
+	GameObject::OnRender(renderer);
 }
 
 void Rect::Update(float deltaTime)

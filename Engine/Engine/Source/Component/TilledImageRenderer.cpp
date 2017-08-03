@@ -35,7 +35,6 @@ void TilledImageRenderer::OnRender(Renderer & renderer)
 	Component::OnRender(renderer);
 	Transform worldPos;
 	parent->WorldTransform(&worldPos);
-	renderer.SetTransform(D2D1::Matrix3x2F::Identity());
 	int column = currentFrame % columns;
 	int row = (int)floor(((float)currentFrame / columns));
 

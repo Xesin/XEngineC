@@ -26,7 +26,6 @@ void Sprite::Update(float deltaTime) {
 
 void Sprite::OnRender(Renderer &renderer)
 {
-	GameObject::OnRender(renderer);
 	Transform worldPos;
 	WorldTransform(&worldPos);
 
@@ -37,6 +36,7 @@ void Sprite::OnRender(Renderer &renderer)
 
 	renderer.RenderImage(worldPos.position.x, worldPos.position.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
 	
+	GameObject::OnRender(renderer);
 }
 
 void Sprite::SetPhysics(bool active, PhysicShape shape, PhysicBodyType bodyType, bool isSensor, float32 friction, float32 radius)

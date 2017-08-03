@@ -62,6 +62,10 @@ public:
 	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, D2D_SIZE_F scale, bool fill = true, float strokeWith = 1);
 
 	void RenderImage(float posX, float posY, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, D2D_SIZE_F scale);
+
+	void RenderTilledImage(Vector2 position, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, Vector2 frameSize, Vector2 tileScroll, Vector2 tileSize, Vector2 anchor);
+
+	void CreateTilledBitmapBrush(CachedImage & imageToRender, int frameColumn, int frameRow, int frame, Vector2 frameSize, ID2D1BitmapBrush **m_pBitmapBrush, Vector2 tileScroll);
 	// Resize the render target.
 	void OnResize(
 		UINT width,
@@ -114,6 +118,7 @@ public:
 	static IWICImagingFactory *wicFactory;
 	static ID2D1HwndRenderTarget* renderTarget;
 	ScaleManager* scaleManager;
+	ID2D1BitmapBrush* tilledBrush;
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1SolidColorBrush* colorBrush;

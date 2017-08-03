@@ -8,6 +8,7 @@
 #include "GameObjects\Rect.h"
 #include "GameObjects\Circle.h"
 #include "Renderer\Camera.h"
+#include "Component\TilledImageRenderer.h"
 
 
 Sprite* sprite;
@@ -24,6 +25,10 @@ void InitialScene::OnKeyDown(unsigned int keyCode)
 	unsigned int test = VK_SPACE;
 	if (keyCode == VK_SPACE) {
  		Mario->rigidBody->ApplyForce(b2Vec2(0.0f, 150.f), Mario->rigidBody->GetWorldCenter(), true);
+	}
+
+	if (keyCode == VK_ESCAPE) {
+		Mario->Destroy();
 	}
 
 	if (keyCode == VK_D) {
@@ -55,8 +60,15 @@ void InitialScene::Start()
 	Mario->rigidBody->SetFixedRotation(true);
 	coreRef.physics->AddBoxFixture(Mario->rigidBody, Vector2(0.f, Mario->anchor.y - (Mario->frameHeight / 2.f)), Vector2(Mario->frameWidth / 2.f, Mario->frameHeight / 2.f), 0.0f, 0.0f, true);
 
+	GameObject* emptyObject = new GameObject(Vector2(10.f, 10.f), coreRef);
+	AddGameObject(emptyObject);
+	TilledImageRenderer& tilledRenderer = emptyObject->AddComponent<TilledImageRenderer>(false, true);
+
+	tilledRenderer.SetImage(image);
+	tilledRenderer.SetSpriteSheet(17, 33);
+	tilledRenderer.SetTilleSize(Vector2(50.f, 50.f));
 	//OTHER PHYSICS OBJECTS (no need to add this objects to update list or render list, there are only present in the physics engine)
-	coreRef.physics->CreateBoxBody(Vector2(40.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
+	/*coreRef.physics->CreateBoxBody(Vector2(40.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
 	coreRef.physics->CreateBoxBody(Vector2(1230.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
 
 	Rect* rect = new Rect(Vector2(1280.f / 2.f, 50.f), coreRef, 1280, 100, D2D1::ColorF(0.5f, 0.f, 0.5f));
@@ -82,8 +94,16 @@ void InitialScene::Start()
 		rectDyn = new Circle(Vector2(i * 25.f + 100.f, 550.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
 		AddGameObject(rectDyn);
-	}
-	AddGameObject(rect);
+
+		rectDyn = new Circle(Vector2(i * 25.f + 100.f, 580.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+		AddGameObject(rectDyn);
+
+		rectDyn = new Circle(Vector2(i * 25.f + 100.f, 610.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
+		AddGameObject(rectDyn);
+	}*/
+	//AddGameObject(rect);
 	AddGameObject(Mario);
 }
 

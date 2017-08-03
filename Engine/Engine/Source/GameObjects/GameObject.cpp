@@ -13,15 +13,19 @@ void GameObject::OnRender(Renderer & renderer)
 		transform->rotation.angles = RADS_TO_DEGREES(rigidBody->GetAngle());
 	}
 
-	std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
-	for (it; it != componentsMap.rend(); ++it) {
+	std::map<std::type_index, Component*>::iterator it = componentsMap.begin();
+	while(it != componentsMap.end()) {
 		Component* componentToCheck = it->second;
-		if (componentToCheck->markedToDestroy) {
+		if (componentToCheck != nullptr && componentToCheck->markedToDestroy) {
 			componentsMap.erase(it->first);
 			delete componentToCheck;
 		}
 		else if (componentToCheck->mustRender) {
 			componentToCheck->OnRender(renderer);
+			++it;
+		}
+		else {
+			++it;
 		}
 	}
 }

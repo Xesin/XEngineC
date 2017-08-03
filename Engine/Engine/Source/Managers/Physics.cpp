@@ -140,7 +140,7 @@ void Physics::AddBoxFixture(b2Body* body, Vector2 center, Vector2 bounds, float3
 	b2FixtureDef fixtureDef;
 	b2PolygonShape boxShape;
 	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(b2Vec2(center.x, center.y));
-	boxShape.SetAsBox(Renderer::PixelsToWorldUnits(bounds.x) - 0.01f, Renderer::PixelsToWorldUnits(bounds.y) - 0.01f, Renderer::PixelsToWorldUnits(centerInUnits), 0.0f);
+	boxShape.SetAsBox(Renderer::PixelsToWorldUnits(bounds.x) - 0.01f, Renderer::PixelsToWorldUnits(bounds.y) - 0.01f, centerInUnits, 0.0f);
 
 	fixtureDef.shape = &boxShape;
 	fixtureDef.density = density;

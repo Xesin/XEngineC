@@ -62,7 +62,7 @@ public:
 		return *transform;
 	}
 
-	virtual void SetPhysics(bool active, PhysicBodyType bodyType = PhysicBodyType::Static, float32 friction = 1.0f, bool isSensor = false) = 0;
+	virtual void SetPhysics(bool active, PhysicBodyType bodyType = PhysicBodyType::Static, float32 friction = 1.0f, bool isSensor = false) {}
 
 	inline void WorldTransform(Transform* outTransform) {
 		outTransform->position = transform->position;

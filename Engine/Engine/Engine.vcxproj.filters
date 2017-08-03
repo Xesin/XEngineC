@@ -149,6 +149,9 @@
     <ClInclude Include="Headers\Component\Transform.h">
       <Filter>Headers\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Component\TilledImageRenderer.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -201,6 +204,9 @@
     </ClCompile>
     <ClCompile Include="Source\Renderer\Camera.cpp">
       <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\TilledImageRenderer.cpp">
+      <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -36,6 +36,7 @@ void Sprite::OnRender(Renderer &renderer)
 	SetTransform(renderer, frameWidth, frameHeight);
 
 	renderer.RenderImage(worldPos.position.x, worldPos.position.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
+	
 }
 
 void Sprite::SetPhysics(bool active, PhysicShape shape, PhysicBodyType bodyType, bool isSensor, float32 friction, float32 radius)

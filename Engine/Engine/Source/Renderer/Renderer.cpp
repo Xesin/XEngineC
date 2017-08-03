@@ -13,7 +13,8 @@ Renderer::Renderer() :
 	m_pDirect2dFactory(NULL),
 	colorBrush(NULL),
 	scaleManager(NULL),
-	camera(NULL)
+	camera(NULL),
+	tilledBrush(NULL)
 {
 	Renderer::wicFactory = NULL;
 	Renderer::renderTarget = NULL;
@@ -239,13 +240,101 @@ void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, i
 			PixelsToDipsY(posY / scale.height + frameHeight)
 		);
 	
-		Renderer::renderTarget->DrawBitmap(
+		renderTarget->DrawBitmap(
 			bitmapToRender, 
 			destination, 
 			1.0f, 
 			D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, 
 			src
 		);
+	}
+}
+
+void Renderer::RenderTilledImage(Vector2 position, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, Vector2 frameSize, Vector2 tileScroll, Vector2 tileSize, Vector2 anchor)
+{
+	ID2D1BitmapBrush *m_pBitmapBrush;
+
+	CreateTilledBitmapBrush(imageToRender, frameColumn, frameRow, frame, frameSize, &m_pBitmapBrush, tileScroll);
+
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		-camera->position.x,
+		-camera->position.y
+	);
+	
+	SetTransform(translationMatrix);
+	renderTarget->FillRectangle(
+		D2D1::RectF(
+			position.x - anchor.x, 
+			position.y - anchor.y, 
+			position.x - anchor.x + tileSize.x, 
+			position.y - anchor.y + tileSize.y
+		),
+		m_pBitmapBrush
+	);
+
+	SafeRelease(&m_pBitmapBrush);
+}
+
+void Renderer::CreateTilledBitmapBrush(CachedImage & imageToRender, int frameColumn, int frameRow, int frame, Vector2 frameSize, ID2D1BitmapBrush **m_pBitmapBrush, Vector2 tileScroll)
+{
+	ID2D1Bitmap* bitmapToRender = imageToRender.Get2D2Bitmap();
+	if (bitmapToRender)
+	{
+		D2D1_RECT_F src = D2D1::RectF(
+			(float)frameColumn * frameSize.x ,
+			(float)frameRow * frameSize.y ,
+			(float)frameColumn * frameSize.x + frameSize.x ,
+			(float)frameRow * frameSize.y + frameSize.y
+		);
+
+		D2D1_RECT_F destination = D2D1::RectF(
+			PixelsToDipsX(0.f),
+			PixelsToDipsY(0.f),
+			PixelsToDipsX(frameSize.x),
+			PixelsToDipsY(frameSize.y)
+		);
+
+		ID2D1BitmapRenderTarget *pCompatibleRenderTarget = NULL;
+		HRESULT hr = renderTarget->CreateCompatibleRenderTarget(
+			D2D1::SizeF(frameSize.x, frameSize.y),
+			&pCompatibleRenderTarget
+		);
+		if (SUCCEEDED(hr))
+		{
+			pCompatibleRenderTarget->BeginDraw();
+			pCompatibleRenderTarget->Clear();
+			//APPLY LEFT BOTTOM COORDINATES
+
+			D2D1::Matrix3x2F translation = D2D1::Matrix3x2F::Translation(
+				0.f,
+				(float)frameSize.y
+			);
+
+			pCompatibleRenderTarget->SetTransform(canvasScaleMatrix * translation);
+			pCompatibleRenderTarget->DrawBitmap(
+				bitmapToRender,
+				destination,
+				1.0f,
+				D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+				src
+			);
+			pCompatibleRenderTarget->EndDraw();
+
+			// Retrieve the bitmap from the render target.
+			ID2D1Bitmap *pGridBitmap = NULL;
+			hr = pCompatibleRenderTarget->GetBitmap(&pGridBitmap);
+			if (SUCCEEDED(hr))
+			{
+				// Choose the tiling mode for the bitmap brush.
+				D2D1_BITMAP_BRUSH_PROPERTIES brushProperties =
+					D2D1::BitmapBrushProperties(D2D1_EXTEND_MODE_WRAP, D2D1_EXTEND_MODE_WRAP);
+
+				hr = renderTarget->CreateBitmapBrush(pGridBitmap, brushProperties, m_pBitmapBrush);
+
+				pGridBitmap->Release();
+			}
+			pCompatibleRenderTarget->Release();
+		}
 	}
 }
 
@@ -270,10 +359,12 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-camera->position.x,
 		-camera->position.y
 	);
+
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
 	SetTransform(translationMatrix * scaleMatrix);
 	// create a direct2d pathGeometry

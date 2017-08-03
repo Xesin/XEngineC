@@ -11,7 +11,6 @@ Sprite::Sprite(Vector2 spawn_position, XEngine& ref, CachedImage &image) : GameO
 	columns = 1;
 	rows = 1;
 	animationManager.parent = this;
-	//transform.q.Set(DEGREES_TO_RADS(180.f));
 	scale.width = 1;
 	scale.height = -1;
 }
@@ -21,6 +20,7 @@ Sprite::~Sprite() {
 }
 
 void Sprite::Update(float deltaTime) {
+	GameObject::Update(deltaTime);
 	animationManager.Update(deltaTime);
 }
 

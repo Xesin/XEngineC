@@ -20,6 +20,7 @@ void Rect::OnRender(Renderer &renderer){
 
 void Rect::Update(float deltaTime)
 {
+	GameObject::Update(deltaTime);
 }
 
 void Rect::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)

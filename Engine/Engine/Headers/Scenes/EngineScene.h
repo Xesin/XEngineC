@@ -39,10 +39,14 @@ public:
 		renderer.OnRenderGroup(renderList);
 	}
 protected:
-	void AddGameObject(GameObject* go, bool mustUpdate) {
-		renderList.insert(go);
+	void AddGameObject(GameObject* go, bool mustUpdate = true, bool mustRender = true) {
+		
 		if (mustUpdate) {
 			updateList.insert(go);
+		}
+
+		if (mustRender) {
+			renderList.insert(go);
 		}
 	}
 

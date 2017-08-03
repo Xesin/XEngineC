@@ -4,4 +4,8 @@
 
 class RigidBody : public Component {
 
+public:
+	RigidBody(GameObject* parent) : Component(parent) {
+		
+	}
 };

@@ -1,5 +1,10 @@
 #pragma once
 #include <stdlib.h>
+#include <math.h>
+#define _USE_MATH_DEFINES
+
+#define RADS_TO_DEGREES(radians) (float) radians * 180 / (float) M_PI 
+#define DEGREES_TO_RADS(angle)(float) angle * (float) M_PI / 180.f
 
 class MathUtils {
 public:

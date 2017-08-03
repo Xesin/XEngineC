@@ -9,6 +9,8 @@
 
 #include <d2d1.h>
 #include <math.h>
+#include <map>
+#include <typeindex>
 #define _USE_MATH_DEFINES
 
 class Renderer;
@@ -19,7 +21,7 @@ public:
 	GameObject(Vector2 spawn_position, XEngine& ref) : 
 		coreRef(ref)
 	{
-		transform = new Transform(this);
+		transform = &AddComponent<Transform>(false, false);
 		transform->position = spawn_position;
 		scale.width = 1.f;
 		scale.height = 1.f;
@@ -28,8 +30,29 @@ public:
 		isPendingDestroy = false;
 	}
 
+	~GameObject()
+	{
+		DeleteComponents();
+		if (rigidBody != NULL) {
+			coreRef.physics->DestroyBody(rigidBody);
+			rigidBody = NULL;
+		}
+	}
+
 	virtual void OnRender(Renderer &renderer);
-	virtual void Update(float deltaTime) = 0;
+	virtual void Update(float deltaTime) {
+		std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
+		for (it; it != componentsMap.rend(); ++it) {
+			Component* componentToCheck = it->second;
+			if (componentToCheck->markedToDestroy) {
+				componentsMap.erase(it->first);
+				delete componentToCheck;
+			}
+			else if (componentToCheck->mustUpdate) {
+				componentToCheck->Update();
+			}
+		}
+	}
 
 	inline void SetParent(GameObject* newParent) {
 		parent = newParent;
@@ -58,10 +81,40 @@ public:
 			rigidBody->GetWorld()->DestroyBody(rigidBody);
 			rigidBody = NULL;
 		}
+
+		std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
+		for (it; it != componentsMap.rend(); ++it) {
+			Component* componentToCheck = it->second;
+			componentToCheck->Destroy();
+		}
+	}
+
+	inline void DeleteComponents() {
+		std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
+		while (it != componentsMap.rend()) {
+			Component* componentToCheck = it->second;
+			componentsMap.erase(it->first);
+			delete componentToCheck;
+		}
 	}
 
 	inline bool IsValid() {
 		return test == 54;
+	}
+
+	template <class T>
+	T& AddComponent(bool mustUpdate = true, bool mustRender = false) {
+		T* newComponent = new T(this);
+		componentsMap[typeid(T)] = newComponent;
+		newComponent->mustUpdate = mustUpdate;
+		newComponent->mustRender = mustRender;
+		return *newComponent;
+	}
+
+	template <typename T>
+	T& GetComponent() {
+		T* component = static_cast<T*>(componentsMap[typeid(T)]);
+		return *component;
 	}
 protected:
 	virtual void SetTransform(Renderer &renderer, int width, int height);
@@ -79,6 +132,7 @@ public:
 protected:
 	Transform* transform;
 	XEngine& coreRef;
+	std::map<std::type_index, Component*> componentsMap;
 private:
 	int test = 54;
 };

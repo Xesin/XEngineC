@@ -146,8 +146,11 @@ void Renderer::OnRenderGroup(ArrayList<GameObject*> &gameObjects)
 	
 	for (int i = 0; i < gameObjects.size; i++) {
 		GameObject& go = *gameObjects[i];
-		if (!go.isPendingDestroy) {
+		if (!go.isPendingDestroy && &go != nullptr) {
 			go.OnRender(ref);
+		}
+		else {
+			gameObjects.erase(i);
 		}
 	}
 }

@@ -15,6 +15,11 @@ void Circle::OnRender(Renderer &renderer) {
 	renderer.RenderCircle(transform->position.x, transform->position.y, radiusX, radiusY, color, scale, fill, strokeWith);
 }
 
+void Circle::Update(float deltaTime)
+{
+	GameObject::Update(deltaTime);
+}
+
 void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)
 {
 	if (active && rigidBody == NULL) {

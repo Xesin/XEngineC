@@ -4,6 +4,7 @@
 #include <math.h>
 #include <ctime>
 
+#include "resource.h"
 #include "XEngine.h"
 #include "Renderer\Renderer.h"
 #include "Renderer\Camera.h"
@@ -62,8 +63,8 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 		wcex.hInstance = HINST_THISCOMPONENT;
 		wcex.hbrBackground = NULL;
 		wcex.lpszMenuName = NULL;
-		wcex.hIcon = LoadIcon(0, IDI_APPLICATION);
-		wcex.hCursor = LoadCursor(NULL, IDI_APPLICATION);
+		wcex.hIcon = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ENGINE));
+		wcex.hCursor = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 		wcex.lpszClassName = L"D2DDemoApp";
 
 
@@ -80,7 +81,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 
 		m_hwnd = CreateWindow(
 			L"D2DDemoApp",
-			L"Direct2D Demo App",
+			L"Piscina de bolas",
 			WS_OVERLAPPEDWINDOW,
 			0,
 			0,

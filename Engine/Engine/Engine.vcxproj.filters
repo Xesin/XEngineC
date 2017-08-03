@@ -146,9 +146,6 @@
     <ClInclude Include="Headers\Component\Component.h">
       <Filter>Headers\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Component\RigidBody.h">
-      <Filter>Headers\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\Component\Transform.h">
       <Filter>Headers\Component</Filter>
     </ClInclude>

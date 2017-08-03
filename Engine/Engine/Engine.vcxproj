@@ -168,7 +168,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Component\Component.h" />
-    <ClInclude Include="Headers\Component\RigidBody.h" />
     <ClInclude Include="Headers\Component\Transform.h" />
     <ClInclude Include="Headers\Engine.h" />
     <ClInclude Include="Headers\GameObjects\Circle.h" />

@@ -12,6 +12,18 @@ void GameObject::OnRender(Renderer & renderer)
 		transform->position = Renderer::WorldToScreenPixels(Vector2(bodyPos.x, bodyPos.y));
 		transform->rotation.angles = RADS_TO_DEGREES(rigidBody->GetAngle());
 	}
+
+	std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
+	for (it; it != componentsMap.rend(); ++it) {
+		Component* componentToCheck = it->second;
+		if (componentToCheck->markedToDestroy) {
+			componentsMap.erase(it->first);
+			delete componentToCheck;
+		}
+		else if (componentToCheck->mustRender) {
+			componentToCheck->OnRender(renderer);
+		}
+	}
 }
 
 void GameObject::SetTransform(Renderer & renderer, int width, int height)

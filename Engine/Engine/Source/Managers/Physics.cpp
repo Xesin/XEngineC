@@ -155,7 +155,7 @@ void Physics::AddCircleFixture(b2Body* body, Vector2 center, float32 radius, flo
 	b2FixtureDef fixtureDef;
 	b2CircleShape circShape;
 
-	circShape.m_radius = Renderer::PixelsToWorldUnits(radius) - 0.01f;
+	circShape.m_radius = Renderer::PixelsToWorldUnits(radius);
 	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(b2Vec2(center.x, center.y));
 	circShape.m_p = Renderer::PixelsToWorldUnits(centerInUnits);
 
@@ -181,7 +181,6 @@ void Physics::AddEdgeFixture(b2Body * body, Vector2 p1, Vector2 p2, float32 dens
 
 	body->CreateFixture(&fixtureDef);
 }
-
 
 void Physics::SetGravity(Vector2 newGravity)
 {

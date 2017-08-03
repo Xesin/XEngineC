@@ -97,18 +97,19 @@ private:
 	template <typename T>
 	float PixelsToDipsX(T x)
 	{
-		return (static_cast<float>(x) / DPIScaleX) * scaleManager->scaleX;
+		return (static_cast<float>(x) / DPIScaleX) * scaleManager->renderTargetScaleX;
 	}
 
 	template <typename T>
 	float PixelsToDipsY(T y)
 	{
-		return (static_cast<float>(y) / DPIScaleY) * scaleManager->scaleY;
+		return (static_cast<float>(y) / DPIScaleY) * scaleManager->renderTargetScaleY;
 	}
 	
 public:
 	static IWICImagingFactory *wicFactory;
 	static ID2D1HwndRenderTarget* renderTarget;
+	ScaleManager* scaleManager;
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1SolidColorBrush* colorBrush;
@@ -116,7 +117,6 @@ private:
 	D2D1::Matrix3x2F canvasTranslationMatrix;
 	float DPIScaleX = 1.f;
 	float DPIScaleY = 1.f;
-	ScaleManager* scaleManager;
 	Camera* camera;
 };
 

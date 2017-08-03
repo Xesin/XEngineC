@@ -8,8 +8,8 @@ public:
 	void OnResize(int newResX);
 
 public:
-	float scaleX = 1.f;
-	float scaleY = 1.f;
+	float renderTargetScaleX = 1.f;
+	float renderTargetScaleY = 1.f;
 	float aspectRatio;
 
 private:

@@ -246,7 +246,6 @@ void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, i
 	}
 }
 
-
 void Renderer::OnResize(UINT width, UINT height)
 {
 	if (Renderer::renderTarget)
@@ -258,8 +257,6 @@ void Renderer::OnResize(UINT width, UINT height)
 		scaleManager->OnResize(width);
 	}
 }
-
-
 
 void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2Color & color)
 {
@@ -274,7 +271,8 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 		-camera->position.x,
 		-camera->position.y
 	);
-	SetTransform(translationMatrix);
+	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
+	SetTransform(translationMatrix * scaleMatrix);
 	// create a direct2d pathGeometry
 	hr = m_pDirect2dFactory->CreatePathGeometry(&geo);
 	hr = geo->Open(&sink);
@@ -318,7 +316,8 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 		-camera->position.x,
 		-camera->position.y
 	);
-	SetTransform(translationMatrix);
+	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
+	SetTransform(translationMatrix * scaleMatrix);
 	// create a direct2d pathGeometry
 	hr = m_pDirect2dFactory->CreatePathGeometry(&geo);
 	hr = geo->Open(&sink);
@@ -387,7 +386,8 @@ void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color &
 		-camera->position.x,
 		-camera->position.y
 	);
-	SetTransform(translationMatrix);
+	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
+	SetTransform(translationMatrix * scaleMatrix);
 	b2Vec2 p1Screen = WorldToScreenPixels(p1);
 	b2Vec2 p2Screen = WorldToScreenPixels(p2);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
@@ -402,6 +402,13 @@ void Renderer::DrawTransform(const b2Transform & xf)
 	b2Color green(0.0f, 1.0f, 0.0f);
 	b2Vec2 p1 = xf.p, p2;
 	b2Vec2 p1Screen, p2Screen;
+
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		-camera->position.x,
+		-camera->position.y
+	);
+	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
+	SetTransform(translationMatrix * scaleMatrix);
 
 	D2D1::ColorF dColorRed(red.r, red.g, red.b, 0.7f);
 	colorBrush->SetColor(dColorRed);

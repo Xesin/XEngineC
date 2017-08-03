@@ -64,7 +64,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 		wcex.hbrBackground = NULL;
 		wcex.lpszMenuName = NULL;
 		wcex.hIcon = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ENGINE));
-		wcex.hCursor = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+		wcex.hCursor = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 		wcex.lpszClassName = L"D2DDemoApp";
 
 

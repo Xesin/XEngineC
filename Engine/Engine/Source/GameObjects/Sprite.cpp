@@ -29,12 +29,10 @@ void Sprite::OnRender(Renderer &renderer)
 	GameObject::OnRender(renderer);
 	b2Transform worldPos;
 	WorldTransform(worldPos);
-	int column = columns;
 
-	if (column > columns - 1) {
-		column = currentFrame % columns;
-	}
-	int row = (int) floor(currentFrame / columns);
+	int column = currentFrame % columns;
+	int row = floor(((float)currentFrame / columns));
+
 	SetTransform(renderer, frameWidth, frameHeight);
 
 	renderer.RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);

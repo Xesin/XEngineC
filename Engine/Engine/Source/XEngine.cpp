@@ -38,6 +38,7 @@ XEngine::XEngine()
 	m_hwnd = NULL;
 	inputManager = NULL;
 }
+
 XEngine::~XEngine()
 {
 	delete renderer;
@@ -122,7 +123,7 @@ void XEngine::Update() {
 	newTime = GetTime();
 	double frameTime = (newTime - currentTime) * 0.001;
 	currentTime = newTime;
-	float fps = 1 / frameTime;
+	float fps =  1.f / (float) frameTime;
 	float deltaTime = (float) min(frameTime, dt);
 	if (currentScene->pendingActivation)
 	{

@@ -3,7 +3,7 @@
 #include "Renderer\Renderer.h"
 #include "XEngine.h"
 
-Sprite::Sprite(b2Vec2 spawn_position, XEngine& ref, CachedImage &image) : GameObject(spawn_position, ref)
+Sprite::Sprite(Vector2 spawn_position, XEngine& ref, CachedImage &image) : GameObject(spawn_position, ref)
 {
 	cachedImage = image;
 	frameWidth = image.Get2D2Bitmap()->GetPixelSize().width;
@@ -27,15 +27,15 @@ void Sprite::Update(float deltaTime) {
 void Sprite::OnRender(Renderer &renderer)
 {
 	GameObject::OnRender(renderer);
-	b2Transform worldPos;
-	WorldTransform(worldPos);
+	Transform worldPos;
+	WorldTransform(&worldPos);
 
 	int column = currentFrame % columns;
-	int row = floor(((float)currentFrame / columns));
+	int row = (int) floor(((float)currentFrame / columns));
 
 	SetTransform(renderer, frameWidth, frameHeight);
 
-	renderer.RenderImage(worldPos.p.x, worldPos.p.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
+	renderer.RenderImage(worldPos.position.x, worldPos.position.y, cachedImage, column, row, currentFrame, frameWidth, frameHeight, scale);
 }
 
 void Sprite::SetPhysics(bool active, PhysicShape shape, PhysicBodyType bodyType, bool isSensor, float32 friction, float32 radius)
@@ -56,19 +56,19 @@ void Sprite::InitializeSpritePhysics(PhysicShape shape, PhysicBodyType bodyType,
 	{
 	case PhysicShape::Circle:
 	{
-		rigidBody = coreRef.physics->CreateCircleBody(transform.p, radius, 1.0, friction, bodyType, isSensor);
+		rigidBody = coreRef.physics->CreateCircleBody(transform->position, radius, 1.0, friction, bodyType, isSensor);
 		break;
 	}
 	case PhysicShape::Box:
 	{
-		b2Vec2 bounds = b2Vec2(frameWidth / 2.f, frameHeight / 2.f);
-		rigidBody = coreRef.physics->CreateBoxBody(transform.p, bounds, 1.0, friction, bodyType, isSensor);
+		Vector2 bounds = Vector2(frameWidth / 2.f, frameHeight / 2.f);
+		rigidBody = coreRef.physics->CreateBoxBody(transform->position, bounds, 1.0, friction, bodyType, isSensor);
 		break;
 	}
 	default:
 		break;
 	}	
-	float32 angle = transform.q.GetAngle();
+	float32 angle = DEGREES_TO_RADS(transform->rotation.angles);
 	rigidBody->SetTransform(rigidBody->GetPosition(), angle);
 }
 

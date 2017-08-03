@@ -37,7 +37,7 @@ void InitialScene::Start()
 	newDel = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
 	coreRef.inputManager->OnKeyDown += newDel;
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/Mario-Idle-Walk.png"));
-	Mario = new Sprite(b2Vec2(50, 200.f), coreRef, *image);
+	Mario = new Sprite(Vector2(50, 200.f), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
 
 	//SET MARIO ANIM
@@ -54,33 +54,33 @@ void InitialScene::Start()
 	massData.center = Renderer::PixelsToWorldUnits(Mario->anchor);
 	Mario->rigidBody->SetMassData(&massData);
 	Mario->rigidBody->SetFixedRotation(true);
-	coreRef.physics->AddBoxFixture(Mario->rigidBody, b2Vec2(0.f, Mario->anchor.y - (Mario->frameHeight / 2.f)),b2Vec2(Mario->frameWidth / 2.f, Mario->frameHeight / 2.f), 0.0f, 0.0f, true);
+	coreRef.physics->AddBoxFixture(Mario->rigidBody, Vector2(0.f, Mario->anchor.y - (Mario->frameHeight / 2.f)), Vector2(Mario->frameWidth / 2.f, Mario->frameHeight / 2.f), 0.0f, 0.0f, true);
 
 	//OTHER PHYSICS OBJECTS (no need to add this objects to update list or render list, there are only present in the physics engine)
-	coreRef.physics->CreateBoxBody(b2Vec2(40.f, 720.f / 2.f), b2Vec2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
-	coreRef.physics->CreateBoxBody(b2Vec2(1230.f, 720.f / 2.f), b2Vec2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
+	coreRef.physics->CreateBoxBody(Vector2(40.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
+	coreRef.physics->CreateBoxBody(Vector2(1230.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
 
-	Rect* rect = new Rect(b2Vec2(1280.f / 2.f, 50.f), coreRef, 1280.f, 100.f, D2D1::ColorF(0.5f, 0.f, 0.5f));
+	Rect* rect = new Rect(Vector2(1280.f / 2.f, 50.f), coreRef, 1280, 100, D2D1::ColorF(0.5f, 0.f, 0.5f));
 	rect->SetPhysics(true, PhysicBodyType::Kinematic);
 
 	for (int i = 0; i < 40; i++) {
-		Circle* rectDyn = new Circle(b2Vec2(i * 25.f + 100.f, 400.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		Circle* rectDyn = new Circle(Vector2(i * 25.f + 100.f, 400.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
 		renderList.insert(rectDyn);
 
-		rectDyn = new Circle(b2Vec2(i * 25.f + 110.f, 460.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn = new Circle(Vector2(i * 25.f + 110.f, 460.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
 		renderList.insert(rectDyn);
 
-		rectDyn = new Circle(b2Vec2(i * 25.f + 100.f, 490.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn = new Circle(Vector2(i * 25.f + 100.f, 490.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
 		renderList.insert(rectDyn);
 
-		rectDyn = new Circle(b2Vec2(i * 25.f + 110.f, 520.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn = new Circle(Vector2(i * 25.f + 110.f, 520.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
 		renderList.insert(rectDyn);
 
-		rectDyn = new Circle(b2Vec2(i * 25.f + 100.f, 550.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		rectDyn = new Circle(Vector2(i * 25.f + 100.f, 550.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->SetPhysics(true, PhysicBodyType::Dynamic);
 		renderList.insert(rectDyn);
 	}

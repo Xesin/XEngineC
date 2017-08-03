@@ -7,7 +7,7 @@
 class Sprite : public GameObject {
 
 public:
-	Sprite(b2Vec2 spawn_position, XEngine& ref, CachedImage &image);
+	Sprite(Vector2 spawn_position, XEngine& ref, CachedImage &image);
 	~Sprite();
 	void Update(float deltaTime) override;
 	void OnRender(Renderer &renderer) override;

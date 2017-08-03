@@ -8,8 +8,9 @@
 void GameObject::OnRender(Renderer & renderer)
 {
 	if (rigidBody != NULL) {
-		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
-		transform.q.Set(rigidBody->GetAngle());
+		b2Vec2 bodyPos = rigidBody->GetPosition();
+		transform->position = Renderer::WorldToScreenPixels(Vector2(bodyPos.x, bodyPos.y));
+		transform->rotation.angles = RADS_TO_DEGREES(rigidBody->GetAngle());
 	}
 }
 
@@ -17,9 +18,9 @@ void GameObject::SetTransform(Renderer & renderer, int width, int height)
 {
 	D2D1_SIZE_F correctedScale = D2D1::SizeF(scale.width, scale.height * -1.f);
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(scale);
-	float32 angle = RADS_TO_DEGREES(transform.q.GetAngle());
-	float32 x = transform.p.x;
-	float32 y = transform.p.y;
+	float32 angle = transform->rotation.angles;
+	float32 x = transform->position.x;
+	float32 y = transform->position.y;
 	//LEFT BOTTOM COORDINATES
 	D2D1::Matrix3x2F transformMatrix = D2D1::Matrix3x2F::Rotation(
 		angle,

@@ -4,6 +4,7 @@
 #include <wincodec.h>
 #include <algorithm>
 #include "Utils\Delegates\DelegatesSettings.h"
+#include "Utils\MathUtils.h"
 #include "Utils\ArrayList.h"
 #include "Box2D\Common\b2Draw.h"
 
@@ -83,6 +84,9 @@ public:
 
 	static b2Vec2 WorldToScreenPixels(b2Vec2 worldUnit);
 	static b2Vec2 PixelsToWorldUnits(b2Vec2 screenPixel);
+
+	static Vector2 WorldToScreenPixels(Vector2 worldUnit);
+	static Vector2 PixelsToWorldUnits(Vector2 screenPixel);
 
 	static float WorldToScreenPixels(float worldUnit);
 	static float PixelsToWorldUnits(float screenPixel);

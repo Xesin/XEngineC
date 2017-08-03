@@ -1,21 +1,26 @@
 #pragma once
-#include "Managers\Physics.h"
 #include "XEngine.h"
+#include "Managers\Physics.h"
+#include "Component\Transform.h"
+#include "Utils\MathUtils.h"
+
 #include "Box2D\Common\b2Math.h"
 #include "Box2D\Box2D.h"
+
 #include <d2d1.h>
 #include <math.h>
 #define _USE_MATH_DEFINES
 
 class Renderer;
- 
+class Transform;
+
 class GameObject {
 public:
-	GameObject(b2Vec2 spawn_position, XEngine& ref) 
-		: coreRef(ref)
+	GameObject(Vector2 spawn_position, XEngine& ref) : 
+		coreRef(ref)
 	{
-		transform.p = spawn_position;
-		transform.q.SetIdentity();
+		transform = new Transform(this);
+		transform->position = spawn_position;
 		scale.width = 1.f;
 		scale.height = 1.f;
 		anchor.x = 0.0L;
@@ -25,18 +30,25 @@ public:
 
 	virtual void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) = 0;
+
 	inline void SetParent(GameObject* newParent) {
 		parent = newParent;
 	}
 
+	Transform& GetTransform() {
+		return *transform;
+	}
+
 	virtual void SetPhysics(bool active, PhysicBodyType bodyType = PhysicBodyType::Static, float32 friction = 1.0f, bool isSensor = false) = 0;
 
-	inline void WorldTransform(b2Transform &outTransform) {
-		outTransform.p = transform.p;
-		outTransform.q = transform.q;
+	inline void WorldTransform(Transform* outTransform) {
+		outTransform->position = transform->position;
+		outTransform->rotation = transform->rotation;
 		if (parent != NULL) {
-			outTransform.p += parent->transform.p;
-			outTransform.q = b2Mul(outTransform.q, parent->transform.q);
+			Transform parentTransform;
+			transform->parent->WorldTransform(&parentTransform);
+			outTransform->position += parentTransform.position;
+			outTransform->rotation += parentTransform.rotation;
 		}
 	}
 
@@ -58,7 +70,6 @@ protected:
 		rigidBody = NULL;
 	}
 public:
-	b2Transform transform;
 	b2Vec2 anchor;
 	b2Body* rigidBody = NULL;
 	GameObject* parent = NULL;
@@ -66,6 +77,7 @@ public:
 	float alpha = 1.0;
 	bool isPendingDestroy = false;
 protected:
+	Transform* transform;
 	XEngine& coreRef;
 private:
 	int test = 54;

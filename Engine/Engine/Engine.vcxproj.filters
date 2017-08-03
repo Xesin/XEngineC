@@ -49,6 +49,12 @@
     <Filter Include="Headers\Utils\Delegates">
       <UniqueIdentifier>{17fefc3c-2bd8-4fd6-8eec-839d8b7e3f76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Component">
+      <UniqueIdentifier>{7f845455-145d-4456-8cd2-8eb9eea2d155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component">
+      <UniqueIdentifier>{6ec38f5a-c1f1-4fe7-bd05-af4c8d4d811b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -136,6 +142,15 @@
     </ClInclude>
     <ClInclude Include="Headers\Renderer\Camera.h">
       <Filter>Headers\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\Component.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\RigidBody.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\Transform.h">
+      <Filter>Headers\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

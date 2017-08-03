@@ -1,6 +1,7 @@
 #pragma once
 #include "Box2D\Common\b2Math.h"
 #include "Box2D\Box2D.h"
+#include "Utils\MathUtils.h"
 
 class Renderer;
 
@@ -21,21 +22,21 @@ public:
 	Physics::Physics(Renderer& ref);
 	void Update(float32 deltaTime);
 	void DestroyBody(b2Body* bodyToDestroy);
-	b2Body* CreateBoxBody(b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
-	b2Body* CreateCircleBody(b2Vec2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
-	b2Body* CreateEgeBody(b2Vec2 center, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
+	b2Body* CreateBoxBody(Vector2 center, Vector2 bounds, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
+	b2Body* CreateCircleBody(Vector2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
+	b2Body* CreateEgeBody(Vector2 center, Vector2 p1, Vector2 p2, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
 
-	void AddBoxFixture(b2Body* body, b2Vec2 center, b2Vec2 bounds, float32 density, float32 friction, bool isSensor = false);
-	void AddCircleFixture(b2Body* body, b2Vec2 center, float32 radius, float32 density, float32 friction, bool isSensor = false);
-	void AddEdgeFixture(b2Body* body, b2Vec2 p1, b2Vec2 p2, float32 density, float32 friction, bool isSensor = false);
+	void AddBoxFixture(b2Body* body, Vector2 center, Vector2 bounds, float32 density, float32 friction, bool isSensor = false);
+	void AddCircleFixture(b2Body* body, Vector2 center, float32 radius, float32 density, float32 friction, bool isSensor = false);
+	void AddEdgeFixture(b2Body* body, Vector2 p1, Vector2 p2, float32 density, float32 friction, bool isSensor = false);
 
-	void SetGravity(b2Vec2 newGravity);
+	void SetGravity(Vector2 newGravity);
 	void DrawDebug();
 
 	b2DistanceJoint* MakeFixedDistanceJoint(b2Body* body1, b2Body* body2, bool collideConnected);
 private:
-	b2World& world = b2World(gravity);
-	b2Vec2 gravity = b2Vec2(0.0f, -15.0f);
+	b2World& world = b2World(b2Vec2(0.f, -10.f));
+	Vector2 gravity = Vector2(0.0f, -15.0f);
 public:
 	bool isDebug = false;
 };

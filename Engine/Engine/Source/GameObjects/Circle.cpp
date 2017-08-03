@@ -3,7 +3,7 @@
 #include "Renderer\Renderer.h"
 #include "XEngine.h"
 
-Circle::Circle(b2Vec2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radiusY, D2D1::ColorF newColor) : GameObject(spawn_pos, ref) {
+Circle::Circle(Vector2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radiusY, D2D1::ColorF newColor) : GameObject(spawn_pos, ref) {
 	radiusX = _radiusX;
 	radiusY = _radiusY;
 	color = newColor;
@@ -12,14 +12,7 @@ Circle::Circle(b2Vec2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radius
 void Circle::OnRender(Renderer &renderer) {
 	GameObject::OnRender(renderer);
 	SetTransform(renderer, radiusX * 2.f, radiusY * 2.f);
-	renderer.RenderCircle(transform.p.x, transform.p.y, radiusX, radiusY, color, scale, fill, strokeWith);
-}
-
-void Circle::Update(float deltaTime) {
-	if (rigidBody != NULL) {
-		transform.p = Renderer::WorldToScreenPixels(rigidBody->GetPosition());
-		transform.q.Set(rigidBody->GetAngle());
-	}
+	renderer.RenderCircle(transform->position.x, transform->position.y, radiusX, radiusY, color, scale, fill, strokeWith);
 }
 
 void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)
@@ -27,9 +20,9 @@ void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, 
 	if (active && rigidBody == NULL) {
 		//anchor.Set(0.5f, 0.5f);
 
-		rigidBody = coreRef.physics->CreateCircleBody(transform.p, radiusX, 1.0, friction, bodyType, isSensor);
+		rigidBody = coreRef.physics->CreateCircleBody(transform->position, radiusX, 1.0, friction, bodyType, isSensor);
 			
-		float32 angle = transform.q.GetAngle();
+		float32 angle = DEGREES_TO_RADS(transform->rotation.angles);
 		rigidBody->SetTransform(rigidBody->GetPosition(), angle);
 	}
 	else if (rigidBody != NULL) {

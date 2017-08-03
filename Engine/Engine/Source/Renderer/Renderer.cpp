@@ -449,6 +449,18 @@ b2Vec2 Renderer::PixelsToWorldUnits(b2Vec2 screenPixel)
 	return pu;
 }
 
+Vector2 Renderer::WorldToScreenPixels(Vector2 worldUnit)
+{
+	Vector2 pu = (Vector2(floor(50.f * worldUnit.x), floor(50.f * worldUnit.y)));
+	return pu;
+}
+
+Vector2 Renderer::PixelsToWorldUnits(Vector2 screenPixel)
+{
+	Vector2 pu = Vector2(0.02f * screenPixel.x, 0.02f * screenPixel.y);
+	return pu;
+}
+
 float Renderer::WorldToScreenPixels(float worldUnit)
 {
 	float32 pu = floor(50.f * worldUnit);

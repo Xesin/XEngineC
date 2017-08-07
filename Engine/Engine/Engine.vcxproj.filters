@@ -61,6 +61,9 @@
     <Filter Include="Libraries\PugiXml">
       <UniqueIdentifier>{8becbdf4-a4ed-43d5-b9db-1a0e7970794c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\TiledImporter">
+      <UniqueIdentifier>{7f47fcc0-b8e8-434d-8617-94475f6bfcd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -169,6 +172,69 @@
     </ClInclude>
     <ClInclude Include="Libraries\pugixml.hpp">
       <Filter>Libraries\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\TiledImporter.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\TiledObject.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Map.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Tileset.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Image.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\TerrainTypes.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Terrain.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Tile.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Animation.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Frame.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Layer.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Data.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\ObjectGroup.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Object.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Ellipse.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Polygon.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Polyline.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\ImageLayer.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Group.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Properties.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Property.h">
+      <Filter>Headers\TiledImporter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

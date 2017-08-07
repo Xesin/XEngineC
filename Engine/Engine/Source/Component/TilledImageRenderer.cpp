@@ -38,5 +38,5 @@ void TilledImageRenderer::OnRender(Renderer & renderer)
 	int column = currentFrame % columns;
 	int row = (int)floor(((float)currentFrame / columns));
 
-	renderer.RenderTilledImage(worldPos.position, *imageToRender, column, row, currentFrame, Vector2(frameWidth, frameHeight), Vector2(), tileSize, anchor);
+	renderer.RenderTilledImage(worldPos.position, *imageToRender, column, row, currentFrame, Vector2((float) frameWidth, (float) frameHeight), Vector2(), tileSize, anchor);
 }

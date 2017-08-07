@@ -15,7 +15,7 @@ void Rect::OnRender(Renderer &renderer){
 	WorldTransform(&worldPos);
 	renderer.SetTransform(worldPos.position, Vector2(bounds.x, bounds.y), transform->scale, anchor, transform->rotation.angles);
 
-	renderer.RenderRect(worldPos.position.x, worldPos.position.y, (float) bounds.x, (float) bounds.y, color, transform->scale, fill, strokeWith);
+	renderer.RenderRect(worldPos.position.x, worldPos.position.y, (int) bounds.x, (int) bounds.y, color, transform->scale, fill, strokeWith);
 	GameObject::OnRender(renderer);
 }
 

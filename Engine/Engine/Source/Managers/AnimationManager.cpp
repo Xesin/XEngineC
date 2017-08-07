@@ -39,4 +39,5 @@ bool AnimationManager::IsPlaying(LPCWSTR name) {
 	if (animations[name]) {
 		return animations[name]->isPlaying;
 	}
+	return false;
 }

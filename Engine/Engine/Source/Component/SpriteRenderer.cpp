@@ -35,7 +35,7 @@ void SpriteRenderer::OnRender(Renderer & renderer)
 	int column = currentFrame % columns;
 	int row = (int)floor(((float)currentFrame / columns));
 
-	renderer.SetTransform(worldTransform.position, Vector2(frameWidth, frameHeight), Vector2(worldTransform.scale.x, worldTransform.scale.y), anchor, worldTransform.rotation.angles);
+	renderer.SetTransform(worldTransform.position, Vector2((float) frameWidth, (float) frameHeight), Vector2(worldTransform.scale.x, worldTransform.scale.y), anchor, worldTransform.rotation.angles);
 
 	renderer.RenderImage(worldTransform.position.x, worldTransform.position.y, *imageToRender, column, row, currentFrame, frameWidth, frameHeight, worldTransform.scale);
 }

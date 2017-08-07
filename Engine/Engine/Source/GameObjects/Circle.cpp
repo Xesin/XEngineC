@@ -19,18 +19,3 @@ void Circle::Update(float deltaTime)
 {
 	GameObject::Update(deltaTime);
 }
-
-void Circle::SetPhysics(bool active, PhysicBodyType bodyType, float32 friction, bool isSensor)
-{
-	if (active && rigidBody == NULL) {
-		//anchor.Set(0.5f, 0.5f);
-
-		rigidBody = coreRef.physics->CreateCircleBody(transform->position, radiusX, 1.0, friction, bodyType, isSensor);
-			
-		float32 angle = DEGREES_TO_RADS(transform->rotation.angles);
-		rigidBody->SetTransform(rigidBody->GetPosition(), angle);
-	}
-	else if (rigidBody != NULL) {
-		DestroyBody();
-	}
-}

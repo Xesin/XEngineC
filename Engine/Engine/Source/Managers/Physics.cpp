@@ -135,12 +135,25 @@ b2Body * Physics::CreateEgeBody(Vector2 center, Vector2 p1, Vector2 p2, float32 
 	return rigidBody;
 }
 
+b2Body * Physics::CreateEmptyBody(Vector2 center)
+{
+	b2BodyDef bodyDef;
+
+	b2Body* rigidBody;
+	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(b2Vec2(center.x, center.y));
+	bodyDef.position.Set(centerInUnits.x, centerInUnits.y);
+
+	rigidBody = world.CreateBody(&bodyDef);
+	return rigidBody;
+}
+
 void Physics::AddBoxFixture(b2Body* body, Vector2 center, Vector2 bounds, float32 density, float32 friction, bool isSensor)
 {
 	b2FixtureDef fixtureDef;
 	b2PolygonShape boxShape;
 	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(b2Vec2(center.x, center.y));
-	boxShape.SetAsBox(Renderer::PixelsToWorldUnits(bounds.x) - 0.01f, Renderer::PixelsToWorldUnits(bounds.y) - 0.01f, centerInUnits, 0.0f);
+	Vector2 worldUnitsBound = Renderer::PixelsToWorldUnits(bounds);
+	boxShape.SetAsBox(worldUnitsBound.x - 0.01f, worldUnitsBound.y - 0.01f, centerInUnits, 0.0f);
 
 	fixtureDef.shape = &boxShape;
 	fixtureDef.density = density;
@@ -156,7 +169,7 @@ void Physics::AddCircleFixture(b2Body* body, Vector2 center, float32 radius, flo
 	b2CircleShape circShape;
 
 	circShape.m_radius = Renderer::PixelsToWorldUnits(radius);
-	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(b2Vec2(center.x, center.y));
+	b2Vec2 centerInUnits = b2Vec2(center.x, center.y);
 	circShape.m_p = Renderer::PixelsToWorldUnits(centerInUnits);
 
 	fixtureDef.shape = &circShape;

@@ -5,7 +5,7 @@
 
 class Transform : public Component {
 public:
-	Transform(GameObject* parent) : Component(parent) {
+	Transform(GameObject* parent, XEngine* engineRef) : Component(parent, engineRef) {
 		position = Vector2();
 		rotation = Rotation();
 		scale = Vector2(1.0f, 1.0f);

@@ -7,7 +7,7 @@ class CachedImage;
 class TilledImageRenderer : public Component {
 
 public:
-	TilledImageRenderer(GameObject* parent) : Component(parent) {};
+	TilledImageRenderer(GameObject* parent, XEngine* engineRef) : Component(parent, engineRef) {};
 
 	void SetImage(CachedImage* image);
 

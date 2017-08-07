@@ -8,9 +8,9 @@
 void GameObject::OnRender(Renderer & renderer)
 {
 	if (rigidBody != NULL) {
-		b2Vec2 bodyPos = rigidBody->GetPosition();
-		transform->position = Renderer::WorldToScreenPixels(Vector2(bodyPos.x, bodyPos.y));
-		transform->rotation.angles = RADS_TO_DEGREES(rigidBody->GetAngle());
+		Vector2 bodyPos = rigidBody->GetPosition();
+		transform->position = bodyPos;
+		transform->rotation.angles = rigidBody->GetRotation();
 	}
 
 	std::map<std::type_index, Component*>::iterator it = componentsMap.begin();

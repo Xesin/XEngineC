@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Component\Component.h" />
+    <ClInclude Include="Headers\Component\PhysicsBody.h" />
     <ClInclude Include="Headers\Component\SpriteRenderer.h" />
     <ClInclude Include="Headers\Component\TilledImageRenderer.h" />
     <ClInclude Include="Headers\Component\Transform.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Source\Managers\CacheManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Component\PhysicsBody.cpp" />
     <ClCompile Include="Source\Component\SpriteRenderer.cpp" />
     <ClCompile Include="Source\Component\TilledImageRenderer.cpp" />
     <ClCompile Include="Source\Engine.cpp" />

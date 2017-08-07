@@ -3,11 +3,13 @@
 class GameObject;
 class Renderer;
 class Transform;
+class XEngine;
 
 class Component {
 public:
-	Component(GameObject* parent) :
-		parent(parent)
+	Component(GameObject* parent, XEngine* engineRef) :
+		parent(parent),
+		engineRef(engineRef)
 	{
 	}
 
@@ -65,6 +67,7 @@ public:
 	bool mustUpdate = true;
 	bool mustRender = false;
 	GameObject* parent;
+	XEngine* engineRef;
 private:
 	bool validObject = true;
 	bool enabled = true;

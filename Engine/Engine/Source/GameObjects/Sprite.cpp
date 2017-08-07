@@ -12,6 +12,8 @@ Sprite::Sprite(Vector2 spawn_position, XEngine& ref, CachedImage &image) : GameO
 	cachedImage = image;
 	frameWidth = image.Get2D2Bitmap()->GetPixelSize().width;
 	frameHeight = image.Get2D2Bitmap()->GetPixelSize().height;
+	bounds.x = (float) frameWidth;
+	bounds.y = (float) frameHeight;
 	columns = 1;
 	rows = 1;
 	animationManager.parent = this;
@@ -34,43 +36,11 @@ void Sprite::OnRender(Renderer &renderer)
 	GameObject::OnRender(renderer);
 }
 
-void Sprite::SetPhysics(bool active, PhysicShape shape, PhysicBodyType bodyType, bool isSensor, float32 friction, float32 radius)
-{
-	if (active && rigidBody == NULL) {
-		InitializeSpritePhysics(shape, bodyType, friction, isSensor, radius);
-	}
-	else if (rigidBody != NULL) {
-		DestroyBody();
-	}
-}
-
-void Sprite::InitializeSpritePhysics(PhysicShape shape, PhysicBodyType bodyType, float32 friction, bool isSensor, float32 radius)
-{
-	Vector2 bounds = Vector2(spriteRenderer->frameWidth / 2.f, spriteRenderer->frameHeight / 2.f);
-	anchor.Set(bounds.x, bounds.y);
-
-	switch (shape)
-	{
-	case PhysicShape::Circle:
-	{
-		rigidBody = coreRef.physics->CreateCircleBody(transform->position, radius, 1.0, friction, bodyType, isSensor);
-		break;
-	}
-	case PhysicShape::Box:
-	{
-		rigidBody = coreRef.physics->CreateBoxBody(transform->position, bounds, 1.0, friction, bodyType, isSensor);
-		break;
-	}
-	default:
-		break;
-	}	
-	float32 angle = DEGREES_TO_RADS(transform->rotation.angles);
-	rigidBody->SetTransform(rigidBody->GetPosition(), angle);
-}
-
 void Sprite::SetSpriteSheet(int newFrameWidth, int newFrameHeight)
 {
 	frameHeight = newFrameHeight;
 	frameWidth = newFrameWidth;
+	bounds.x = (float) frameWidth;
+	bounds.y = (float) frameHeight;
 	spriteRenderer->SetSpriteSheet(newFrameWidth, newFrameHeight);
 }

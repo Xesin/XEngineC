@@ -4,9 +4,8 @@
 #include "Component\Transform.h"
 #include "Utils\MathUtils.h"
 #include "Renderer\Renderer.h"
-#include "Box2D\Common\b2Math.h"
-#include "Box2D\Box2D.h"
 
+#include "Component\PhysicsBody.h"
 #include <d2d1.h>
 #include <math.h>
 #include <map>
@@ -19,7 +18,8 @@ class Transform;
 class GameObject {
 public:
 	GameObject(Vector2 spawn_position, XEngine& ref) : 
-		coreRef(ref)
+		coreRef(ref),
+		rigidBody(NULL)
 	{
 		transform = AddComponent<Transform>(false, false);
 		transform->position = spawn_position;
@@ -27,25 +27,22 @@ public:
 		scale.height = 1.f;
 		anchor.x = 0.0L;
 		anchor.y = 0.0L;
+		bounds = Vector2(0.f, 0.f);
 		isPendingDestroy = false;
 	}
 
 	~GameObject()
 	{
 		DeleteComponents();
-		if (rigidBody != NULL) {
-			coreRef.physics->DestroyBody(rigidBody);
-			rigidBody = NULL;
-		}
 	}
 
 	virtual void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) {
 		std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
 		if (rigidBody != NULL) {
-			b2Vec2 bodyPos = rigidBody->GetPosition();
-			transform->position = Renderer::WorldToScreenPixels(Vector2(bodyPos.x, bodyPos.y));
-			transform->rotation.angles = RADS_TO_DEGREES(rigidBody->GetAngle());
+			Vector2 bodyPos = rigidBody->GetPosition();
+			transform->position = bodyPos;
+			transform->rotation.angles = rigidBody->GetRotation();
 		}
 		for (it; it != componentsMap.rend(); ++it) {
 			Component* componentToCheck = it->second;
@@ -67,8 +64,6 @@ public:
 		return *transform;
 	}
 
-	virtual void SetPhysics(bool active, PhysicBodyType bodyType = PhysicBodyType::Static, float32 friction = 1.0f, bool isSensor = false) {}
-
 	inline void WorldTransform(Transform* outTransform) {
 		outTransform->position = transform->position;
 		outTransform->rotation = transform->rotation;
@@ -84,10 +79,6 @@ public:
 
 	inline void Destroy() {
 		isPendingDestroy = true;
-		if (rigidBody != NULL) {
-			rigidBody->GetWorld()->DestroyBody(rigidBody);
-			rigidBody = NULL;
-		}
 
 		std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
 		for (it; it != componentsMap.rend(); ++it) {
@@ -111,10 +102,14 @@ public:
 
 	template <class T>
 	T* AddComponent(bool mustUpdate = true, bool mustRender = false) {
-		T* newComponent = new T(this);
+		T* newComponent = new T(this, &coreRef);
 		componentsMap[typeid(T)] = newComponent;
 		newComponent->mustUpdate = mustUpdate;
 		newComponent->mustRender = mustRender;
+		if (typeid(T) == typeid(PhysicsBody)) {
+			rigidBody = reinterpret_cast<PhysicsBody*>(newComponent);
+			anchor = Vector2(bounds.x / 2.f, bounds.y / 2.f);
+		}
 		return newComponent;
 	}
 
@@ -126,12 +121,15 @@ public:
 protected:
 	virtual void SetTransform(Renderer &renderer, int width, int height);
 	inline void DestroyBody() {
-		coreRef.physics->DestroyBody(rigidBody);
+		if (rigidBody != NULL) {
+			rigidBody->Destroy();
+		}
 		rigidBody = NULL;
 	}
 public:
-	b2Vec2 anchor;
-	b2Body* rigidBody = NULL;
+	Vector2 anchor;
+	Vector2 bounds;
+	PhysicsBody* rigidBody = NULL;
 	GameObject* parent = NULL;
 	D2D_SIZE_F scale;
 	float alpha = 1.0;

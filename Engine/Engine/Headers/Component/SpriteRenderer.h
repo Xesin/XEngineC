@@ -9,7 +9,7 @@ class SpriteRenderer : public Component{
 
 public:
 
-	SpriteRenderer(GameObject* parent) : Component(parent) {
+	SpriteRenderer(GameObject* parent, XEngine* engineRef) : Component(parent, engineRef) {
 		anchor = Vector2();
 		tileSize = Vector2();
 		frameWidth = 0;

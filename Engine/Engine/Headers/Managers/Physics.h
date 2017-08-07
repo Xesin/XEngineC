@@ -25,7 +25,7 @@ public:
 	b2Body* CreateBoxBody(Vector2 center, Vector2 bounds, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
 	b2Body* CreateCircleBody(Vector2 center, float32 radius, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
 	b2Body* CreateEgeBody(Vector2 center, Vector2 p1, Vector2 p2, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
-
+	b2Body* CreateEmptyBody(Vector2 center);
 	void AddBoxFixture(b2Body* body, Vector2 center, Vector2 bounds, float32 density, float32 friction, bool isSensor = false);
 	void AddCircleFixture(b2Body* body, Vector2 center, float32 radius, float32 density, float32 friction, bool isSensor = false);
 	void AddEdgeFixture(b2Body* body, Vector2 p1, Vector2 p2, float32 density, float32 friction, bool isSensor = false);

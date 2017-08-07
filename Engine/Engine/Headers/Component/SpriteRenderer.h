@@ -3,24 +3,31 @@
 #include "Utils\MathUtils.h"
 
 class CachedImage;
+class AnimationManager;
 
-class TilledImageRenderer : public Component {
+class SpriteRenderer : public Component{
 
 public:
-	TilledImageRenderer(GameObject* parent) : Component(parent) {};
+
+	SpriteRenderer(GameObject* parent) : Component(parent) {
+		anchor = Vector2();
+		tileSize = Vector2();
+		frameWidth = 0;
+		frameHeight = 0;
+		currentFrame = 0;
+		columns = 1;
+		rows = 1;
+	}
 
 	void SetImage(CachedImage* image);
 
-	void SetTilleSize(Vector2 size);
-
 	void SetSpriteSheet(int newFrameWidth, int newFrameHeight);
-	
+
 	void SetAnchor(Vector2 anchor);
 
 	void OnRender(Renderer &renderer) override;
 
 public:
-	CachedImage* imageToRender;
 	Vector2 anchor;
 	Vector2 tileSize;
 	int frameWidth = 0;
@@ -28,4 +35,6 @@ public:
 	int currentFrame = 0;
 	int columns = 1;
 	int rows = 1;
+private:
+	CachedImage* imageToRender;
 };

@@ -3,7 +3,7 @@
 #include "Managers\Physics.h"
 #include "Component\Transform.h"
 #include "Utils\MathUtils.h"
-
+#include "Renderer\Renderer.h"
 #include "Box2D\Common\b2Math.h"
 #include "Box2D\Box2D.h"
 
@@ -21,7 +21,7 @@ public:
 	GameObject(Vector2 spawn_position, XEngine& ref) : 
 		coreRef(ref)
 	{
-		transform = &AddComponent<Transform>(false, false);
+		transform = AddComponent<Transform>(false, false);
 		transform->position = spawn_position;
 		scale.width = 1.f;
 		scale.height = 1.f;
@@ -42,6 +42,11 @@ public:
 	virtual void OnRender(Renderer &renderer);
 	virtual void Update(float deltaTime) {
 		std::map<std::type_index, Component*>::reverse_iterator it = componentsMap.rbegin();
+		if (rigidBody != NULL) {
+			b2Vec2 bodyPos = rigidBody->GetPosition();
+			transform->position = Renderer::WorldToScreenPixels(Vector2(bodyPos.x, bodyPos.y));
+			transform->rotation.angles = RADS_TO_DEGREES(rigidBody->GetAngle());
+		}
 		for (it; it != componentsMap.rend(); ++it) {
 			Component* componentToCheck = it->second;
 			if (componentToCheck->markedToDestroy) {
@@ -67,11 +72,13 @@ public:
 	inline void WorldTransform(Transform* outTransform) {
 		outTransform->position = transform->position;
 		outTransform->rotation = transform->rotation;
+		outTransform->scale = transform->scale;
 		if (parent != NULL) {
 			Transform parentTransform;
 			transform->parent->WorldTransform(&parentTransform);
 			outTransform->position += parentTransform.position;
 			outTransform->rotation += parentTransform.rotation;
+			outTransform->scale += parentTransform.scale;
 		}
 	}
 
@@ -103,16 +110,16 @@ public:
 	}
 
 	template <class T>
-	T& AddComponent(bool mustUpdate = true, bool mustRender = false) {
+	T* AddComponent(bool mustUpdate = true, bool mustRender = false) {
 		T* newComponent = new T(this);
 		componentsMap[typeid(T)] = newComponent;
 		newComponent->mustUpdate = mustUpdate;
 		newComponent->mustRender = mustRender;
-		return *newComponent;
+		return newComponent;
 	}
 
 	template <typename T>
-	T& GetComponent() {
+	T* GetComponent() {
 		T* component = static_cast<T*>(componentsMap[typeid(T)]);
 		return *component;
 	}

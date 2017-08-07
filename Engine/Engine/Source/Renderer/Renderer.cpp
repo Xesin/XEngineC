@@ -185,8 +185,32 @@ void Renderer::SetTransform(D2D1::Matrix3x2F transform)
 	renderTarget->SetTransform(transform * canvasScaleMatrix * canvasTranslationMatrix);
 }
 
+void Renderer::SetTransform(Vector2 position, Vector2 bounds, Vector2 scale, Vector2 anchor, float angle)
+{
+	Vector2 invertedScale = Vector2(scale.x, scale.y * -1.f);
+	D2D1_SIZE_F correctedScale = D2D1::SizeF(invertedScale.x, invertedScale.y);
+	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(correctedScale);
+	float32 x = position.x;
+	float32 y = position.y;
+	//LEFT BOTTOM COORDINATES
+	D2D1::Matrix3x2F transformMatrix = D2D1::Matrix3x2F::Rotation(
+		angle,
+		D2D1::Point2F(
+		(x - camera->position.x) * scaleManager->renderTargetScaleX,
+			(y - camera->position.y) * scaleManager->renderTargetScaleY
+		)
+	);
+	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
+		((-anchor.x) * invertedScale.x - camera->position.x)* scaleManager->renderTargetScaleX,
+		((-anchor.y) * invertedScale.y - camera->position.y) * scaleManager->renderTargetScaleY
+	);
+	scaleMatrix = scaleMatrix * translationMatrix * transformMatrix;
+	SetTransform(scaleMatrix);
+}
+
 void Renderer::RenderRect(float posX, float posY, int width, int height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
 {
+	scale.height *= -1.f;
 	D2D1_RECT_F rectangle = D2D1::RectF(
 		PixelsToDipsX(posX / scale.width),
 		PixelsToDipsY(posY / scale.height),
@@ -206,6 +230,7 @@ void Renderer::RenderRect(float posX, float posY, int width, int height, D2D1::C
 
 void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
 {
+	scale.height *= -1.f;
 	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(
 		PixelsToDipsX(posX / scale.width),
 		PixelsToDipsY(posY / scale.height)),
@@ -221,8 +246,9 @@ void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY
 	}
 }
 
-void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, D2D_SIZE_F scale)
+void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, Vector2 scale)
 {
+	scale.y *= -1.f;
 	ID2D1Bitmap* bitmapToRender = imageToRender.Get2D2Bitmap();
 	if (bitmapToRender)
 	{
@@ -234,10 +260,10 @@ void Renderer::RenderImage(float posX, float posY, CachedImage &imageToRender, i
 		);
 
 		D2D1_RECT_F destination = D2D1::RectF(
-			PixelsToDipsX(posX / scale.width) ,
-			PixelsToDipsY(posY / scale.height),
-			PixelsToDipsX(posX / scale.width + frameWidth),
-			PixelsToDipsY(posY / scale.height + frameHeight)
+			PixelsToDipsX(posX / scale.x) ,
+			PixelsToDipsY(posY / scale.y),
+			PixelsToDipsX(posX / scale.x + frameWidth),
+			PixelsToDipsY(posY / scale.y + frameHeight)
 		);
 	
 		renderTarget->DrawBitmap(
@@ -453,7 +479,7 @@ void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color &
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);
 	D2D1_SIZE_F scale;
-	scale.height = 1.f;
+	scale.height = -1.f;
 	scale.width = 1.f;
 	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, false);
 }
@@ -469,7 +495,7 @@ void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Ve
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);
 	D2D1_SIZE_F scale;
-	scale.height = 1.f;
+	scale.height = -1.f;
 	scale.width = 1.f;
 	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, true);
 }

@@ -61,11 +61,11 @@ void InitialScene::Start()
 	coreRef.physics->AddBoxFixture(Mario->rigidBody, Vector2(0.f, Mario->anchor.y - (Mario->frameHeight / 2.f)), Vector2(Mario->frameWidth / 2.f, Mario->frameHeight / 2.f), 0.0f, 0.0f, true);
 
 	tilledImage = new GameObject(Vector2(10.f, 10.f), coreRef);
-	TilledImageRenderer& tilledRenderer = tilledImage->AddComponent<TilledImageRenderer>(false, true);
+	TilledImageRenderer* tilledRenderer = tilledImage->AddComponent<TilledImageRenderer>(false, true);
 
-	tilledRenderer.SetImage(image);
-	tilledRenderer.SetSpriteSheet(17, 33);
-	tilledRenderer.SetTilleSize(Vector2(200.f, 200.f));
+	tilledRenderer->SetImage(image);
+	tilledRenderer->SetSpriteSheet(17, 33);
+	tilledRenderer->SetTilleSize(Vector2(200.f, 200.f));
 	//OTHER PHYSICS OBJECTS (no need to add this objects to update list or render list, there are only present in the physics engine)
 	coreRef.physics->CreateBoxBody(Vector2(40.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
 	coreRef.physics->CreateBoxBody(Vector2(1230.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
@@ -103,7 +103,7 @@ void InitialScene::Start()
 		AddGameObject(rectDyn);
 	}
 	AddGameObject(rect);
-	AddGameObject(tilledImage);
+	//AddGameObject(tilledImage);
 }
 
 void InitialScene::OnDestroy() {

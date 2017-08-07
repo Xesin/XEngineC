@@ -57,11 +57,13 @@ public:
 
 	void SetTransform(D2D1::Matrix3x2F transform);
 
+	void SetTransform(Vector2 position, Vector2 bounds, Vector2 scale, Vector2 anchor, float angle);
+
 	void RenderRect(float posX, float posY, int width, int height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill = true, float strokeWith = 1);
 
 	void RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, D2D_SIZE_F scale, bool fill = true, float strokeWith = 1);
 
-	void RenderImage(float posX, float posY, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, D2D_SIZE_F scale);
+	void RenderImage(float posX, float posY, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, int frameWidth, int frameHeight, Vector2 scale);
 
 	void RenderTilledImage(Vector2 position, CachedImage &imageToRender, int frameColumn, int frameRow, int frame, Vector2 frameSize, Vector2 tileScroll, Vector2 tileSize, Vector2 anchor);
 

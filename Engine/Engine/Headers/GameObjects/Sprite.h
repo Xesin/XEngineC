@@ -4,6 +4,8 @@
 #include "Managers\Physics.h"
 #include "Renderer\CachedImage.h"
 
+class SpriteRenderer;
+
 class Sprite : public GameObject {
 
 public:
@@ -18,6 +20,7 @@ private:
 	virtual void SetPhysics(bool active, PhysicBodyType bodyType = PhysicBodyType::Static, float32 friction = 1.0f, bool isSensor = false) override {}
 public:
 	CachedImage cachedImage;
+	SpriteRenderer* spriteRenderer;
 	int frameWidth;
 	int frameHeight;
 	int currentFrame = 0;

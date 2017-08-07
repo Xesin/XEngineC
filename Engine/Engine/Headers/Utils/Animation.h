@@ -1,13 +1,13 @@
 #pragma once
 #include "Utils\Delegates\DelegatesSettings.h"
 
-class Sprite;
+class SpriteRenderer;
 
 class Animation {
 public:
 	Animation(int* const frames, int refreshRate, int size, bool loop = false);
 	
-	void SetSprite(Sprite* spriteRef);
+	void SetSprite(SpriteRenderer* spriteRef);
 
 	void Update(float deltaTime);
 
@@ -30,5 +30,5 @@ public:
 private:
 	int frameTime = 0;
 	int loopCount = 0;
-	Sprite* sprite;
+	SpriteRenderer* sprite;
 };

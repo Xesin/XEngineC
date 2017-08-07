@@ -208,14 +208,14 @@ void Renderer::SetTransform(Vector2 position, Vector2 bounds, Vector2 scale, Vec
 	SetTransform(scaleMatrix);
 }
 
-void Renderer::RenderRect(float posX, float posY, int width, int height, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
+void Renderer::RenderRect(float posX, float posY, int width, int height, D2D1::ColorF color, Vector2 scale, bool fill, float strokeWith)
 {
-	scale.height *= -1.f;
+	scale.y *= -1.f;
 	D2D1_RECT_F rectangle = D2D1::RectF(
-		PixelsToDipsX(posX / scale.width),
-		PixelsToDipsY(posY / scale.height),
-		PixelsToDipsX(posX / scale.width + width),
-		PixelsToDipsY(posY / scale.height + height)
+		PixelsToDipsX(posX / scale.x),
+		PixelsToDipsY(posY / scale.y),
+		PixelsToDipsX(posX / scale.x + width),
+		PixelsToDipsY(posY / scale.y + height)
 	);
 
 	colorBrush->SetColor(color);
@@ -228,12 +228,12 @@ void Renderer::RenderRect(float posX, float posY, int width, int height, D2D1::C
 	}
 }
 
-void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, D2D_SIZE_F scale, bool fill, float strokeWith)
+void Renderer::RenderCircle(float posX, float posY, float radiusX, float radiusY, D2D1::ColorF color, Vector2 scale, bool fill, float strokeWith)
 {
-	scale.height *= -1.f;
+	scale.y *= -1.f;
 	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2(
-		PixelsToDipsX(posX / scale.width),
-		PixelsToDipsY(posY / scale.height)),
+		PixelsToDipsX(posX / scale.x),
+		PixelsToDipsY(posY / scale.y)),
 		PixelsToDipsX(radiusX),
 		PixelsToDipsY(radiusY));
 
@@ -478,9 +478,9 @@ void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color &
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);
-	D2D1_SIZE_F scale;
-	scale.height = -1.f;
-	scale.width = 1.f;
+	Vector2 scale;
+	scale.y = -1.f;
+	scale.x = 1.f;
 	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, false);
 }
 
@@ -494,9 +494,9 @@ void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Ve
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	float32 radiusScreen = WorldToScreenPixels(radius);
-	D2D1_SIZE_F scale;
-	scale.height = -1.f;
-	scale.width = 1.f;
+	Vector2 scale;
+	scale.y = -1.f;
+	scale.x = 1.f;
 	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, true);
 }
 

@@ -32,5 +32,5 @@ void GameObject::OnRender(Renderer & renderer)
 
 void GameObject::SetTransform(Renderer & renderer, int width, int height)
 {
-	renderer.SetTransform(transform->position, Vector2(height, width), Vector2(scale.width, scale.height), Vector2(anchor.x, anchor.y), transform->rotation.angles);
+	renderer.SetTransform(transform->position, Vector2(height, width), Vector2(transform->scale.x, transform->scale.y), Vector2(anchor.x, anchor.y), transform->rotation.angles);
 }

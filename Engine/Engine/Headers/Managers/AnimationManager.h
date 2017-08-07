@@ -2,7 +2,7 @@
 #include <map>
 
 class Animation;
-class Sprite;
+class SpriteRenderer;
 
 class AnimationManager {
 public:
@@ -17,5 +17,5 @@ private:
 	Animation* currentAnimation;
 
 public:
-	Sprite* parent;
+	SpriteRenderer* parent;
 };

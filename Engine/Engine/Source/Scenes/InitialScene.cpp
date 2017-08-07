@@ -109,7 +109,7 @@ void InitialScene::Start()
 		rectDyn->rigidBody->AddCircleShape(Vector2(0.f, 0.f), 15.f, false, 1.f);
 		AddGameObject(rectDyn);
 
-		rectDyn = new Circle(Vector2(i * 25.f + 100.f, 580.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		/*rectDyn = new Circle(Vector2(i * 25.f + 100.f, 580.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->AddComponent<PhysicsBody>();
 		rectDyn->rigidBody->SetType(PhysicBodyType::Dynamic);
 		rectDyn->rigidBody->AddCircleShape(Vector2(0.f, 0.f), 15.f, false, 1.f);
@@ -119,7 +119,7 @@ void InitialScene::Start()
 		rectDyn->AddComponent<PhysicsBody>();
 		rectDyn->rigidBody->SetType(PhysicBodyType::Dynamic);
 		rectDyn->rigidBody->AddCircleShape(Vector2(0.f, 0.f), 15.f, false, 1.f);
-		AddGameObject(rectDyn);
+		AddGameObject(rectDyn);*/
 	}
 	AddGameObject(rect);
 	//AddGameObject(tilledImage);
@@ -141,7 +141,7 @@ void InitialScene::Update(float deltaTime)
 
 		Mario->rigidBody->SetLinearVelocity(Vector2(5.f, currentVel.y));
 		
-		Mario->scale.width = 1;
+		Mario->GetTransform().scale.x= 1;
 		tilledImage->GetTransform().position.x += 60.f *deltaTime;
 	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
 		if (!Mario->animationManager.IsPlaying(TEXT("walk"))) {
@@ -149,7 +149,7 @@ void InitialScene::Update(float deltaTime)
 		}
 		Mario->rigidBody->SetLinearVelocity(Vector2(-5.f, currentVel.y));
 
-		Mario->scale.width = -1;
+		Mario->GetTransform().scale.x = -1;
 		tilledImage->GetTransform().position.x -= 60.f *deltaTime;
 	}
 	else {

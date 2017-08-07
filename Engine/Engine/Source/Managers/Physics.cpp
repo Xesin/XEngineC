@@ -19,7 +19,7 @@ Physics::Physics(Renderer& ref)
 
 void Physics::Update(float32 deltaTime)
 {
-	world.Step(deltaTime, 6, 2);
+	world.Step(deltaTime, 6, 6);
 }
 
 void Physics::DestroyBody(b2Body * bodyToDestroy)

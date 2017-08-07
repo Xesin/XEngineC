@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Utils\Animation.h"
-#include "GameObjects\Sprite.h"
+#include "Component\SpriteRenderer.h"
 
 Animation::Animation(int* const framesRef, int refreshRate, int size, bool loop) {
 	frames = new int[size];
@@ -13,7 +13,7 @@ Animation::Animation(int* const framesRef, int refreshRate, int size, bool loop)
 	loopCount = 0;
 }
 
-void Animation::SetSprite(Sprite * spriteRef)
+void Animation::SetSprite(SpriteRenderer * spriteRef)
 {
 	sprite = spriteRef;
 }

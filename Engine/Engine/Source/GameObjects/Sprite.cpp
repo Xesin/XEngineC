@@ -16,7 +16,7 @@ Sprite::Sprite(Vector2 spawn_position, XEngine& ref, CachedImage &image) : GameO
 	bounds.y = (float) frameHeight;
 	columns = 1;
 	rows = 1;
-	animationManager.parent = this;
+	animationManager.parent = spriteRenderer;
 }
 
 Sprite::~Sprite() {

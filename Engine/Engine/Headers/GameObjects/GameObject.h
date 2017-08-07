@@ -23,8 +23,7 @@ public:
 	{
 		transform = AddComponent<Transform>(false, false);
 		transform->position = spawn_position;
-		scale.width = 1.f;
-		scale.height = 1.f;
+		transform->scale = Vector2(1.f, 1.f);
 		anchor.x = 0.0L;
 		anchor.y = 0.0L;
 		bounds = Vector2(0.f, 0.f);
@@ -131,7 +130,6 @@ public:
 	Vector2 bounds;
 	PhysicsBody* rigidBody = NULL;
 	GameObject* parent = NULL;
-	D2D_SIZE_F scale;
 	float alpha = 1.0;
 	bool isPendingDestroy = false;
 protected:

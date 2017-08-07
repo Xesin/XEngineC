@@ -11,7 +11,7 @@ Circle::Circle(Vector2 spawn_pos, XEngine& ref, float32 _radiusX, float32 _radiu
 
 void Circle::OnRender(Renderer &renderer) {
 	SetTransform(renderer, radiusX * 2.f, radiusY * 2.f);
-	renderer.RenderCircle(transform->position.x, transform->position.y, radiusX, radiusY, color, scale, fill, strokeWith);
+	renderer.RenderCircle(transform->position.x, transform->position.y, radiusX, radiusY, color, transform->scale, fill, strokeWith);
 	GameObject::OnRender(renderer);
 }
 

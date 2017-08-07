@@ -10,7 +10,7 @@
 #include "Renderer\Camera.h"
 #include "Component\TilledImageRenderer.h"
 #include "Component\PhysicsBody.h"
-
+#include "pugixml.hpp"
 
 Sprite* sprite;
 Rect* rect;
@@ -67,6 +67,12 @@ void InitialScene::Start()
 	tilledImage = new GameObject(Vector2(10.f, 10.f), coreRef);
 	TilledImageRenderer* tilledRenderer = tilledImage->AddComponent<TilledImageRenderer>(false, true);
 
+	pugi::xml_document doc;
+
+	pugi::xml_parse_result result = doc.load_file("Resources/tree.xml");
+
+	const char* resultText = result.description();
+	pugi::xml_node node = doc.child("test").child("child1").first_child();
 	tilledRenderer->SetImage(image);
 	tilledRenderer->SetSpriteSheet(17, 33);
 	tilledRenderer->SetTilleSize(Vector2(200.f, 200.f));

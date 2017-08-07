@@ -1,0 +1,3 @@
+<test>
+	<child1 attribute1="testAttribute">valor 1</child1>
+</test>

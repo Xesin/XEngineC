@@ -102,7 +102,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..;Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..;Headers;Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <CompileAsManaged>false</CompileAsManaged>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -197,9 +197,12 @@
     <ClInclude Include="Headers\Utils\Delegates\MultiCastDelegate.h" />
     <ClInclude Include="Headers\Utils\MathUtils.h" />
     <ClInclude Include="Headers\XEngine.h" />
+    <ClInclude Include="Libraries\pugiconfig.hpp" />
+    <ClInclude Include="Libraries\pugixml.hpp" />
     <ClInclude Include="Source\Managers\CacheManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Libraries\pugixml.cpp" />
     <ClCompile Include="Source\Component\PhysicsBody.cpp" />
     <ClCompile Include="Source\Component\SpriteRenderer.cpp" />
     <ClCompile Include="Source\Component\TilledImageRenderer.cpp" />

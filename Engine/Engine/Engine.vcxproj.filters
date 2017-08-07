@@ -55,6 +55,12 @@
     <Filter Include="Source\Component">
       <UniqueIdentifier>{6ec38f5a-c1f1-4fe7-bd05-af4c8d4d811b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{c5644adf-455e-4c61-9d3c-8a8a40b6e21d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\PugiXml">
+      <UniqueIdentifier>{8becbdf4-a4ed-43d5-b9db-1a0e7970794c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -158,6 +164,12 @@
     <ClInclude Include="Headers\Component\PhysicsBody.h">
       <Filter>Headers\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\pugiconfig.hpp">
+      <Filter>Libraries\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\pugixml.hpp">
+      <Filter>Libraries\PugiXml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -219,6 +231,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\PhysicsBody.cpp">
       <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pugixml.cpp">
+      <Filter>Libraries\PugiXml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

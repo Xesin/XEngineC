@@ -32,6 +32,8 @@ public:
 
 	void SetLinearVelocity(Vector2 velocity);
 
+	void SetGravityScale(float gravityScale);
+
 	Vector2 GetLinearVelocity();
 
 	Vector2 GetWorldCenter();

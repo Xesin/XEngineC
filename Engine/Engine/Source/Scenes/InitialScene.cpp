@@ -57,12 +57,13 @@ void InitialScene::Start()
 	Mario->anchor.y = 26.f;
 	b2MassData massData;
 	Mario->rigidBody->GetMassData(&massData);
+	Mario->rigidBody->SetGravityScale(0.f);
 	Vector2 center = Renderer::PixelsToWorldUnits(Mario->anchor);
 
 	massData.center = b2Vec2(center.x, center.y);
 	Mario->rigidBody->SetMassData(&massData);
 	Mario->rigidBody->SetFixedRotation(true);
-	Mario->rigidBody->AddCircleShape(Vector2(0.f, 0.f), 6.f, false, 1.f);
+	Mario->rigidBody->AddCircleShape(Vector2(0.f, 5.f), 6.f, false, 0.f);
 
 	tilledImage = new GameObject(Vector2(10.f, 10.f), coreRef);
 	TilledImageRenderer* tilledRenderer = tilledImage->AddComponent<TilledImageRenderer>(false, true);
@@ -189,7 +190,7 @@ void InitialScene::Update(float deltaTime)
 
 	}
 	else {
-		//Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 0.f));
+		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 0.f));
 	}
 
 	if (coreRef.inputManager->IsDown(VK_L)) {

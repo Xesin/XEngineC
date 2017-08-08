@@ -91,6 +91,11 @@ void PhysicsBody::SetLinearVelocity(Vector2 velocity)
 	rigidBody->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
 }
 
+void PhysicsBody::SetGravityScale(float gravityScale)
+{
+	rigidBody->SetGravityScale(gravityScale);
+}
+
 Vector2 PhysicsBody::GetLinearVelocity()
 {
 	b2Vec2 linearVelocity = rigidBody->GetLinearVelocity();

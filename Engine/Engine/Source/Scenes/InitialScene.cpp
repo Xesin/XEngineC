@@ -65,7 +65,9 @@ void InitialScene::Start()
 	Mario->rigidBody->SetFixedRotation(true);
 	Mario->rigidBody->AddCircleShape(Vector2(0.f, 5.f), 6.f, false, 0.f);
 	
-	AddTiledMap("Resources/TestTMX.tmx", Mario, 2);
+	DEFINE_DELEGATE(replaceDel, void(unsigned int, Vector2));
+	CREATE_DELEGATE(replaceDel, InitialScene, &InitialScene::TileReplace, this);
+	AddTiledMap("Resources/TestTMX.tmx", replaceDel, {36});
 }
 
 void InitialScene::OnDestroy() {
@@ -130,4 +132,9 @@ void InitialScene::Update(float deltaTime)
 		coreRef.camera->position.y += 20.f * deltaTime;
 	}
 	
+}
+
+void InitialScene::TileReplace(unsigned int, Vector2 position)
+{
+	AddGameObject(Mario);
 }

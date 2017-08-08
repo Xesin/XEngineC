@@ -51,7 +51,13 @@ protected:
 		}
 	}
 
-	void AddTiledMap(char* source, GameObject* objectBetweenLayers = nullptr, int overLayerIndex = 0) {
+	void AddTiledMap(char* source, vector<int> tileIdToReplace = vector<int>()) {
+		DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2));
+		CREATE_DELEGATE(newDelegate, EngineScene, &EngineScene::DefaultTileReplaceCallback, this);
+		AddTiledMap(source, newDelegate, tileIdToReplace);
+	}
+
+	void AddTiledMap(char* source, DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2)), vector<int> tileIdToReplace = vector<int>()) {
 		tmx::Map *map = new tmx::Map();
 		tmx::TiledImporter::LoadMap(source, map);
 		vector<CachedImage*> cachedImages;
@@ -72,9 +78,6 @@ protected:
 		for (int i = 0; i < 20; i++) {
 			if (map->layers[i].data.encoding != NULL && map->layers[i].data.encoding != "") {
 				tmx::Data data = map->layers[i].data;
-				if (objectBetweenLayers != nullptr && i == overLayerIndex) {
-					AddGameObject(objectBetweenLayers);
-				}
 				for (int j = 0; j < data.value.capacity(); j++) {
 					vector<string> columns = data.value.at(j);
 					for (int k = 0; k < map->width; k++) {
@@ -88,13 +91,29 @@ protected:
 						spawnPos.x = (float) map->tilewidth * k;
 						spawnPos.y = (float) (map->tileheight * map->height - map->tileheight) -map->tileheight *j;
 
-						GameObject* go = new GameObject(spawnPos, coreRef);
-						SpriteRenderer* spriteRenderer = go->AddComponent<SpriteRenderer>(false, true);
-						spriteRenderer->SetImage(cachedImages.at(tileSetIndex));
-						spriteRenderer->SetSpriteSheet(currTileset->tilewidth, currTileset->tileheight);
-						spriteRenderer->currentFrame = index - currTileset->firstgid;
+						bool replace = false;
 
-						AddGameObject(go, false, true);
+						for (int i = 0; i < tileIdToReplace.capacity(); i++) {
+							if (tileIdToReplace[i] + currTileset->firstgid == index - 1) {
+								replace = true;
+								break;
+							}
+						}
+
+						if (replace) {
+							newDelegate(index - 1, spawnPos);
+						}
+						else {
+							GameObject* go = new GameObject(spawnPos, coreRef);
+							SpriteRenderer* spriteRenderer = go->AddComponent<SpriteRenderer>(false, true);
+							spriteRenderer->SetImage(cachedImages.at(tileSetIndex));
+							spriteRenderer->SetSpriteSheet(currTileset->tilewidth, currTileset->tileheight);
+							spriteRenderer->currentFrame = index - currTileset->firstgid;
+
+							AddGameObject(go, false, true);
+						}
+
+						
 					}
 				}
 			}
@@ -130,11 +149,12 @@ private:
 		return size - 1;
 	}
 
+	void DefaultTileReplaceCallback(unsigned int, Vector2) {}
+
 public:
 	bool pendingActivation = true;
 	ArrayList<GameObject*> renderList;
 	ArrayList<GameObject*> updateList;
-
 protected:
 	XEngine& coreRef;
 };

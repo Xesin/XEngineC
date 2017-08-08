@@ -195,6 +195,17 @@ void Physics::AddEdgeFixture(b2Body * body, Vector2 p1, Vector2 p2, float32 dens
 	body->CreateFixture(&fixtureDef);
 }
 
+void Physics::ClearWorld()
+{
+	
+	for (b2Body* b = world.GetBodyList(); b;)  // remove GetNext() call
+	{
+		b2Body* next = b->GetNext();  // remember next body before *b gets destroyed
+		world.DestroyBody(b); // do I need to destroy fixture as well(and how?) or it does that for me?
+		b = next;  // go to next body
+	}
+}
+
 void Physics::SetGravity(Vector2 newGravity)
 {
 	world.SetGravity(b2Vec2(newGravity.x, newGravity.y));

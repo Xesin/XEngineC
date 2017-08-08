@@ -51,7 +51,7 @@ protected:
 		}
 	}
 
-	void AddTiledMap(char* source) {
+	void AddTiledMap(char* source, GameObject* objectBetweenLayers = nullptr, int overLayerIndex = 0) {
 		tmx::Map *map = new tmx::Map();
 		tmx::TiledImporter::LoadMap(source, map);
 		vector<CachedImage*> cachedImages;
@@ -72,9 +72,12 @@ protected:
 		for (int i = 0; i < 20; i++) {
 			if (map->layers[i].data.encoding != NULL && map->layers[i].data.encoding != "") {
 				tmx::Data data = map->layers[i].data;
+				if (objectBetweenLayers != nullptr && i == overLayerIndex) {
+					AddGameObject(objectBetweenLayers);
+				}
 				for (int j = 0; j < data.value.capacity(); j++) {
 					vector<string> columns = data.value.at(j);
-					for (int k = 0; k < std::stoi(map->width); k++) {
+					for (int k = 0; k < map->width; k++) {
 						int index = std::stoi(columns.at(k));
 						if (index == 0) continue;
 
@@ -82,28 +85,44 @@ protected:
 						tmx::Tileset* currTileset = &map->tileSets[tileSetIndex];
 						Vector2 spawnPos;
 
-						spawnPos.x = std::stoi(map->tilewidth) * k;
-						spawnPos.y = (std::stoi(map->tileheight) * std::stoi(map->height) - std::stoi(map->tileheight)) - std::stoi(map->tileheight) *j;
+						spawnPos.x = (float) map->tilewidth * k;
+						spawnPos.y = (float) (map->tileheight * map->height - map->tileheight) -map->tileheight *j;
 
 						GameObject* go = new GameObject(spawnPos, coreRef);
 						SpriteRenderer* spriteRenderer = go->AddComponent<SpriteRenderer>(false, true);
 						spriteRenderer->SetImage(cachedImages.at(tileSetIndex));
-						spriteRenderer->SetSpriteSheet(std::stoi(currTileset->tilewidth), std::stoi(currTileset->tileheight));
-						spriteRenderer->currentFrame = index - std::stoi(currTileset->firstgid);
+						spriteRenderer->SetSpriteSheet(currTileset->tilewidth, currTileset->tileheight);
+						spriteRenderer->currentFrame = index - currTileset->firstgid;
 
-						AddGameObject(go);
+						AddGameObject(go, false, true);
 					}
 				}
 			}
 		}
 
+		for (int i = 0; i < 10; i++) {
+			if (map->objectGroups[i].name != NULL && map->objectGroups[i].name != "") {
+				vector<tmx::Object> objects = map->objectGroups[i].objects;
+
+				for (int j = 0; j < objects.capacity(); j++) {
+					tmx::Object object = objects[j];
+
+					Vector2 spawnPos;
+
+					spawnPos.x = (float)object.x + object.width / 2.f;
+					spawnPos.y = ((float)(map->tileheight * map->height) - (object.y + object.height / 2.f));
+
+					coreRef.physics->CreateBoxBody(spawnPos, Vector2(object.width / 2.f, object.height / 2.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
+				}
+			}
+		}
 	}
 
 private:
 	int GetTileSetIndex(tmx::Tileset tilesets[], int tileIndex, int size) {
 		for (int i = 0; i < size - 1; i++) {
-			int firstGid = std::stoi(tilesets[i].firstgid);
-			int nextFirstGid = std::stoi(tilesets[i + 1].firstgid);
+			int firstGid = tilesets[i].firstgid;
+			int nextFirstGid = tilesets[i + 1].firstgid;
 			if (tileIndex >= firstGid && tileIndex < nextFirstGid) {
 				return i;
 			}

@@ -151,6 +151,7 @@ void XEngine::Render() {
 void XEngine::StartScene(EngineScene * sceneToStart)
 {
 	CacheManager::GetInstance()->FlushCache();
+	physics->ClearWorld();
 	previous = currentScene;
 	currentScene = sceneToStart;
 

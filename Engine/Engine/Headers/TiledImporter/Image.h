@@ -6,10 +6,10 @@ namespace tmx {
 	public:
 		Data* data;
 		const char* format;
-		const char* id;
+		int id;
 		const WCHAR* source;
 		const char* trans;
-		const char* width;
-		const char* height;
+		int width;
+		int height;
 	};
 }

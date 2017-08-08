@@ -9,10 +9,10 @@ namespace tmx {
 		Data data;
 
 		const char* name;
-		const char* x;
-		const char* y;
-		const char* width;
-		const char* height;
+		int x;
+		int y;
+		int width;
+		int height;
 		const char* opacity;
 		const char* visible;
 		const char* offsetx;

@@ -6,20 +6,21 @@
 
 namespace tmx {
 	class Object {
-		Properties* properties;
-		Ellipse* ellipse;
-		Polygon* polygon;
+	public:
+		Properties properties;
+		Ellipse ellipse;
+		Polygon polygon;
 		Polyline polyline;
 
-		char* id;
-		char* name;
-		char* type;
-		char* x;
-		char* y;
-		char* width;
-		char* height;
-		char* rotation;
-		char* gid;
-		char* visible;
+		const char* id;
+		const char* name;
+		const char* type;
+		int x = 0;
+		int y = 0;
+		int width = 0;
+		int height = 0;
+		const char* rotation;
+		const char* gid;
+		const char* visible;
 	};
 }

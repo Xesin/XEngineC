@@ -23,10 +23,10 @@ namespace tmx {
 		const char* tiledversion;
 		const char* orientation;
 		const char* renderorder;
-		const char* width;
-		const char* height;
-		const char* tilewidth;
-		const char* tileheight;
+		int width = 0;
+		int height = 0;
+		int tilewidth = 0;
+		int tileheight = 0;
 		const char* hexsidelength;
 		const char* staggeraxis;
 		const char* staggerindex;

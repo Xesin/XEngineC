@@ -17,11 +17,11 @@ namespace tmx {
 		TerrainTypes terrainTypes;
 		Tile tile;
 
-		const char* firstgid;
+		int firstgid;
 		const char* source;
 		const char* name;
-		const char* tilewidth;
-		const char* tileheight;
+		int tilewidth;
+		int tileheight;
 		const char* spacing;
 		const char* margin;
 		const char* tilecount;

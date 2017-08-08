@@ -42,10 +42,10 @@ void InitialScene::Start()
 	newDel = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
 	coreRef.inputManager->OnKeyDown += newDel;
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/Mario-Idle-Walk.png"));
-	Mario = new Sprite(Vector2(0, 0), coreRef, *image);
+	Mario = new Sprite(Vector2(100.f, 200.f), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
 	Mario->AddComponent<PhysicsBody>();
-	Mario->rigidBody->SetType(PhysicBodyType::Kinematic);
+	Mario->rigidBody->SetType(PhysicBodyType::Dynamic);
 
 	//SET MARIO ANIM
 	int idle[1] = { 0 };
@@ -77,13 +77,13 @@ void InitialScene::Start()
 	tilledRenderer->SetSpriteSheet(17, 33);
 	tilledRenderer->SetTilleSize(Vector2(200.f, 200.f));
 	//OTHER PHYSICS OBJECTS (no need to add this objects to update list or render list, there are only present in the physics engine)
-	coreRef.physics->CreateBoxBody(Vector2(40.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
-	coreRef.physics->CreateBoxBody(Vector2(1230.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
+	/*coreRef.physics->CreateBoxBody(Vector2(40.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
+	coreRef.physics->CreateBoxBody(Vector2(1230.f, 720.f / 2.f), Vector2(30.f, 720.f), 0.0f, 1.0f, PhysicBodyType::Static, false);*/
 
 	Rect* rect = new Rect(Vector2(1280.f / 2.f, 50.f), coreRef, 1280, 100, D2D1::ColorF(0.5f, 0.f, 0.5f));
-	rect->AddComponent<PhysicsBody>();
+	/*rect->AddComponent<PhysicsBody>();
 	rect->rigidBody->SetType(PhysicBodyType::Static);
-	rect->rigidBody->AddSquareShape(Vector2(0.f, 0.f), Vector2(rect->bounds.x / 2.f, rect->bounds.y / 2.f), false, 1.0);
+	rect->rigidBody->AddSquareShape(Vector2(0.f, 0.f), Vector2(rect->bounds.x / 2.f, rect->bounds.y / 2.f), false, 1.0);*/
 	for (int i = 0; i < 40; i++) {
 		/*Circle* rectDyn = new Circle(Vector2(i * 25.f + 100.f, 400.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->AddComponent<PhysicsBody>();
@@ -131,7 +131,7 @@ void InitialScene::Start()
 	//AddGameObject(tilledImage);
 	//AddGameObject(Mario);
 	
-	AddTiledMap("Resources/TestTMX.tmx");
+	AddTiledMap("Resources/TestTMX.tmx", Mario, 2);
 }
 
 void InitialScene::OnDestroy() {
@@ -189,7 +189,7 @@ void InitialScene::Update(float deltaTime)
 
 	}
 	else {
-		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 0.f));
+		//Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 0.f));
 	}
 
 	if (coreRef.inputManager->IsDown(VK_L)) {

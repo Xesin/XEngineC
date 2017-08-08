@@ -29,6 +29,7 @@ public:
 	void AddBoxFixture(b2Body* body, Vector2 center, Vector2 bounds, float32 density, float32 friction, bool isSensor = false);
 	void AddCircleFixture(b2Body* body, Vector2 center, float32 radius, float32 density, float32 friction, bool isSensor = false);
 	void AddEdgeFixture(b2Body* body, Vector2 p1, Vector2 p2, float32 density, float32 friction, bool isSensor = false);
+	void ClearWorld();
 
 	void SetGravity(Vector2 newGravity);
 	void DrawDebug();

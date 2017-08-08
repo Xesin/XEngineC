@@ -4,7 +4,7 @@
 #include "Polygon.h"
 #include "Polyline.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Object {
 		Properties* properties;
 		Ellipse* ellipse;

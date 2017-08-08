@@ -2,7 +2,7 @@
 #include "ImageLayer.h"
 #include "Image.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class ImageLayer {
 	public:
 		Properties* properties;

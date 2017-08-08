@@ -1,6 +1,6 @@
 #pragma once
 
-namespace TiledImporter {
+namespace tmx {
 	class Frame {
 	public:
 		char* tileid;

@@ -1,7 +1,7 @@
 #pragma once
 #include "Frame.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Animation {
 	public:
 		Frame* frames;

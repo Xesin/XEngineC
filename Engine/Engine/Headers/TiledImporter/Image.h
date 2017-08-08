@@ -1,15 +1,15 @@
 #pragma once
 #include "Data.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Image {
 	public:
 		Data* data;
-		char* format;
-		char* id;
-		char* source;
-		char* trans;
-		char* width;
-		char* height;
+		const char* format;
+		const char* id;
+		const WCHAR* source;
+		const char* trans;
+		const char* width;
+		const char* height;
 	};
 }

@@ -10,7 +10,7 @@
 #include "Renderer\Camera.h"
 #include "Component\TilledImageRenderer.h"
 #include "Component\PhysicsBody.h"
-#include "pugixml.hpp"
+#include "TiledImporter\TiledImporter.h"
 
 Sprite* sprite;
 Rect* rect;
@@ -29,7 +29,7 @@ void InitialScene::OnKeyDown(unsigned int keyCode)
 	}
 
 	if (keyCode == VK_ESCAPE) {
-		Mario->Destroy();
+		coreRef.StartScene(new InitialScene(coreRef));
 	}
 
 	if (keyCode == VK_D) {
@@ -42,7 +42,7 @@ void InitialScene::Start()
 	newDel = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
 	coreRef.inputManager->OnKeyDown += newDel;
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/Mario-Idle-Walk.png"));
-	Mario = new Sprite(Vector2(50, 200.f), coreRef, *image);
+	Mario = new Sprite(Vector2(0, 0), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
 	Mario->AddComponent<PhysicsBody>();
 	Mario->rigidBody->SetType(PhysicBodyType::Kinematic);
@@ -85,7 +85,7 @@ void InitialScene::Start()
 	rect->rigidBody->SetType(PhysicBodyType::Static);
 	rect->rigidBody->AddSquareShape(Vector2(0.f, 0.f), Vector2(rect->bounds.x / 2.f, rect->bounds.y / 2.f), false, 1.0);
 	for (int i = 0; i < 40; i++) {
-		Circle* rectDyn = new Circle(Vector2(i * 25.f + 100.f, 400.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
+		/*Circle* rectDyn = new Circle(Vector2(i * 25.f + 100.f, 400.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->AddComponent<PhysicsBody>();
 		rectDyn->rigidBody->SetType(PhysicBodyType::Dynamic);
 		rectDyn->rigidBody->AddCircleShape(Vector2(0.f, 0.f), 15.f, false, 1.f);
@@ -113,7 +113,7 @@ void InitialScene::Start()
 		rectDyn->AddComponent<PhysicsBody>();
 		rectDyn->rigidBody->SetType(PhysicBodyType::Dynamic);
 		rectDyn->rigidBody->AddCircleShape(Vector2(0.f, 0.f), 15.f, false, 1.f);
-		AddGameObject(rectDyn);
+		AddGameObject(rectDyn);*/
 
 		/*rectDyn = new Circle(Vector2(i * 25.f + 100.f, 580.f), coreRef, 15.f, 15.f, D2D1::ColorF(MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f), MathUtils::RandomInRange(0.f, 1.0f)));
 		rectDyn->AddComponent<PhysicsBody>();
@@ -127,9 +127,11 @@ void InitialScene::Start()
 		rectDyn->rigidBody->AddCircleShape(Vector2(0.f, 0.f), 15.f, false, 1.f);
 		AddGameObject(rectDyn);*/
 	}
-	AddGameObject(rect);
+	//AddGameObject(rect);
 	//AddGameObject(tilledImage);
-	AddGameObject(Mario);
+	//AddGameObject(Mario);
+	
+	AddTiledMap("Resources/TestTMX.tmx");
 }
 
 void InitialScene::OnDestroy() {

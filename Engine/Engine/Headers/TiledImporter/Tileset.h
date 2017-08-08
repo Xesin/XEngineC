@@ -1,9 +1,8 @@
 #pragma once
-#include "Image.h"
 #include "TerrainTypes.h"
 #include "Tile.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Tileoffset {
 	public:
 		float x;
@@ -12,19 +11,20 @@ namespace TiledImporter {
 
 	class Tileset {
 	public:
-		Tileoffset* tileoffset;
-		Properties* properties;
-		Image* image;
-		TerrainTypes* terrainTypes;
-		Tile* tile;
-		char* firstgid;
-		char* source;
-		char* name;
-		char* tilewidth;
-		char* tileheight;
-		char* spacing;
-		char* margin;
-		char* tilecount;
-		char* columns;
+		Tileoffset tileoffset;
+		Properties properties;
+		Image image;
+		TerrainTypes terrainTypes;
+		Tile tile;
+
+		const char* firstgid;
+		const char* source;
+		const char* name;
+		const char* tilewidth;
+		const char* tileheight;
+		const char* spacing;
+		const char* margin;
+		const char* tilecount;
+		const char* columns;
 	};	
 }

@@ -1,5 +1,5 @@
 #pragma once
-namespace TiledImporter {
+namespace tmx {
 	class Property {
 	public:
 		char* name;

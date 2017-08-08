@@ -1,14 +1,14 @@
 #pragma once
 #include "Properties.h"
-#include "Image.h"
+#include "TiledImporter\Image.h"
 #include "ObjectGroup.h"
 #include "Animation.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Tile {
 	public:
 		Properties* properties;
-		Image* image;
+		tmx::Image* image;
 		ObjectGroup* objectGroup;
 		Animation* animation;
 

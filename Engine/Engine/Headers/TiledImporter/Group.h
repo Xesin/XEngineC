@@ -5,7 +5,7 @@
 #include "ObjectGroup.h"
 #include "ImageLayer.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Group {
 		Properties* properties;
 		Layer* layer;

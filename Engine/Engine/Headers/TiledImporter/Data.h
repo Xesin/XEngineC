@@ -1,12 +1,18 @@
 #pragma once
-#include "Tile.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
-namespace TiledImporter {
+using namespace std;
+namespace tmx {
 	class Data {
 	public:
-		Tile* tile;
 
-		char* encoding;
-		char* compression;
+		vector<vector<string>> value;
+
+		const char* encoding;
+		const char* compression;
 	};
 }

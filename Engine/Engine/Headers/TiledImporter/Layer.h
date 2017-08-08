@@ -2,20 +2,20 @@
 #include "Properties.h"
 #include "Data.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Layer{
 	public:
-		Properties* properties;
-		Data* data;
+		Properties properties;
+		Data data;
 
-		char* name;
-		char* x;
-		char* y;
-		char* width;
-		char* height;
-		char* opacity;
-		char* visible;
-		char* offsetx;
-		char* offsety;
+		const char* name;
+		const char* x;
+		const char* y;
+		const char* width;
+		const char* height;
+		const char* opacity;
+		const char* visible;
+		const char* offsetx;
+		const char* offsety;
 	};
 }

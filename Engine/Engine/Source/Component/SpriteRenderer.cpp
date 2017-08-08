@@ -37,5 +37,5 @@ void SpriteRenderer::OnRender(Renderer & renderer)
 
 	renderer.SetTransform(worldTransform.position, Vector2((float) frameWidth, (float) frameHeight), Vector2(worldTransform.scale.x, worldTransform.scale.y), anchor, worldTransform.rotation.angles);
 
-	renderer.RenderImage(worldTransform.position.x, worldTransform.position.y, *imageToRender, column, row, currentFrame, frameWidth, frameHeight, worldTransform.scale);
+	renderer.RenderImage(worldTransform.position.x, worldTransform.position.y + frameHeight - anchor.y, *imageToRender, column, row, currentFrame, frameWidth, frameHeight, worldTransform.scale);
 }

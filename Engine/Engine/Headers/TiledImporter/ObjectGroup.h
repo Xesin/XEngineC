@@ -2,7 +2,7 @@
 #include "Properties.h"
 #include "Object.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class ObjectGroup {
 	public:
 		Properties* properties;

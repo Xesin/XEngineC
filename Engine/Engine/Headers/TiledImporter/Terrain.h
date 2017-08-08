@@ -1,7 +1,7 @@
 #pragma once
 #include "Properties.h"
 
-namespace TiledImporter {
+namespace tmx {
 	class Terrain {
 	public:
 		Properties* properties;

@@ -38,6 +38,8 @@ public:
 	// Initialize device-dependent resources.
 	HRESULT CreateDeviceResources(HWND m_hwnd);
 
+	void SetClearColor(D2D1::ColorF color);
+
 	void GetDesktopDpi(FLOAT* dpiX, FLOAT* dpiY);
 
 	static IWICImagingFactory* GetIwicFactory();
@@ -129,6 +131,7 @@ private:
 	float DPIScaleX = 1.f;
 	float DPIScaleY = 1.f;
 	Camera* camera;
+	D2D1::ColorF clearColor = D2D1::ColorF::Black;
 };
 
 

@@ -20,7 +20,7 @@ InitialScene::InitialScene(XEngine& ref) : EngineScene(ref) {
 
 Sprite* Mario;
 
-DEFINE_DELEGATE(newDel, void(unsigned int));
+DEFINE_DELEGATE(onKeyDownDelegate, void(unsigned int));
 void InitialScene::OnKeyDown(unsigned int keyCode)
 {
 	unsigned int test = VK_SPACE;
@@ -43,8 +43,10 @@ void InitialScene::OnKeyDown(unsigned int keyCode)
 
 void InitialScene::Start()
 {
-	newDel = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
-	coreRef.inputManager->OnKeyDown += newDel;
+	coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
+	coreRef.renderer->SetClearColor(D2D1::ColorF(0.16f, 0.15f, 0.20f));
+	onKeyDownDelegate = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
+	coreRef.inputManager->OnKeyDown += onKeyDownDelegate;
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/Mario-Idle-Walk.png"));
 	Mario = new Sprite(Vector2(100.f, 200.f), coreRef, *image);
 	Mario->SetSpriteSheet(17, 33);
@@ -74,7 +76,7 @@ void InitialScene::Start()
 }
 
 void InitialScene::OnDestroy() {
-	coreRef.inputManager->OnKeyDown -= newDel;
+	coreRef.inputManager->OnKeyDown -= onKeyDownDelegate;
 }
 
 void InitialScene::Update(float deltaTime)
@@ -127,10 +129,7 @@ void InitialScene::Update(float deltaTime)
 		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 0.f));
 	}
 
-	if (coreRef.inputManager->IsDown(VK_L)) {
-		coreRef.camera->position = Mario->GetTransform().position;
-	}
-	
+	coreRef.camera->position = Mario->GetTransform().position;
 }
 
 void InitialScene::TileReplace(unsigned int, Vector2 position)

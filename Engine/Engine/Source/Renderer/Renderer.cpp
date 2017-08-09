@@ -98,6 +98,11 @@ HRESULT Renderer::CreateDeviceResources(HWND m_hwnd)
 	return hr;
 }
 
+void Renderer::SetClearColor(D2D1::ColorF color)
+{
+	clearColor = color;
+}
+
 HRESULT Renderer::CreateDeviceIndependentResources()
 {
 	HRESULT hr = S_OK;
@@ -163,7 +168,7 @@ HRESULT Renderer::PreRender(HWND m_hwnd)
 	if (SUCCEEDED(hr)) {
 		Renderer::renderTarget->BeginDraw();
 		Renderer::renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-		Renderer::renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+		Renderer::renderTarget->Clear(clearColor);
 	}
 	return hr;
 }

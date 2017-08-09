@@ -88,14 +88,14 @@ void InitialScene::Update(float deltaTime)
 			Mario->animationManager.PlayAnim(TEXT("walk"));
 		}
 
-		Mario->rigidBody->SetLinearVelocity(Vector2(5.f, currentVel.y));
+		Mario->rigidBody->SetLinearVelocity(Vector2(50.f, currentVel.y));
 		
 		Mario->GetTransform().scale.x= 1;
 	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
 		if (!Mario->animationManager.IsPlaying(TEXT("walk"))) {
 			Mario->animationManager.PlayAnim(TEXT("walk"));
 		}
-		Mario->rigidBody->SetLinearVelocity(Vector2(-5.f, currentVel.y));
+		Mario->rigidBody->SetLinearVelocity(Vector2(-50.f, currentVel.y));
 
 		Mario->GetTransform().scale.x = -1;
 	}
@@ -109,18 +109,18 @@ void InitialScene::Update(float deltaTime)
 	currentVel = Mario->rigidBody->GetLinearVelocity();
 
 	if (coreRef.inputManager->IsDown(VK_UP)) {
-		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 5.f));
+		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 50.f));
 		Vector2 vel = Mario->rigidBody->GetLinearVelocity();
-		if (vel.x > 5.f) {
-			vel.x = 5.f;
+		if (vel.x > 50.f) {
+			vel.x = 50.f;
 			Mario->rigidBody->SetLinearVelocity(vel);
 		}
 	}
 	else if (coreRef.inputManager->IsDown(VK_DOWN)) {
-		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, -5.f));
+		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, -50.f));
 		Vector2 vel = Mario->rigidBody->GetLinearVelocity();
-		if (vel.x < -5.f) {
-			vel.x = -5.f;
+		if (vel.x < -50.f) {
+			vel.x = -50.f;
 			Mario->rigidBody->SetLinearVelocity(vel);
 		}
 

@@ -88,7 +88,7 @@ void PhysicsBody::ApplyForce(Vector2 force, Vector2 position)
 
 void PhysicsBody::SetLinearVelocity(Vector2 velocity)
 {
-	rigidBody->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+	rigidBody->SetLinearVelocity(Renderer::PixelsToWorldUnits(b2Vec2(velocity.x, velocity.y)));
 }
 
 void PhysicsBody::SetGravityScale(float gravityScale)
@@ -98,7 +98,7 @@ void PhysicsBody::SetGravityScale(float gravityScale)
 
 Vector2 PhysicsBody::GetLinearVelocity()
 {
-	b2Vec2 linearVelocity = rigidBody->GetLinearVelocity();
+	b2Vec2 linearVelocity = Renderer::WorldToScreenPixels(rigidBody->GetLinearVelocity());
 	return Vector2(linearVelocity.x, linearVelocity.y);
 }
 

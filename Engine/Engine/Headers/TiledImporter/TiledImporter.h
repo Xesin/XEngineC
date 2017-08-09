@@ -33,9 +33,9 @@ namespace tmx {
 			outputMap->nextobjectid = mapNode.attribute("nextobjectid").value();			
 			
 			GetPropertiesFromNode(mapNode, &outputMap->properties);
-			GetTilesetFromNode(mapNode, outputMap->tileSets);
-			GetLayersFromNode(mapNode, outputMap->layers);
-			GetObjectGroupsFromNode(mapNode, outputMap->objectGroups);
+			GetTilesetFromNode(mapNode, &outputMap->tileSets);
+			GetLayersFromNode(mapNode, &outputMap->layers);
+			GetObjectGroupsFromNode(mapNode, &outputMap->objectGroups);
 
 
 			return outputMap;
@@ -46,33 +46,31 @@ namespace tmx {
 			
 		}
 
-		static void GetTilesetFromNode(xml_node node, Tileset outputTileset[]) {
+		static void GetTilesetFromNode(xml_node node, vector<Tileset>* outputTileset) {
 			int counter = 0;
 			for (pugi::xml_node tileset = node.child("tileset"); tileset; tileset = tileset.next_sibling("tileset"))
 			{
 				if (counter >= 10) {
 					return;
 				}
+				outputTileset->push_back(Tileset());
+				outputTileset->at(counter).firstgid = std::stoi(tileset.attribute("firstgid").value());
+				outputTileset->at(counter).source = tileset.attribute("source").value();
+				outputTileset->at(counter).name = tileset.attribute("name").value();
+				outputTileset->at(counter).tilewidth = std::stoi(tileset.attribute("tilewidth").value());
+				outputTileset->at(counter).tileheight = std::stoi(tileset.attribute("tileheight").value());
+				outputTileset->at(counter).spacing = tileset.attribute("spacing").value();
+				outputTileset->at(counter).margin = tileset.attribute("margin").value();
+				outputTileset->at(counter).tilecount = tileset.attribute("tilecount").value();
+				outputTileset->at(counter).columns = tileset.attribute("columns").value();
 
-				ZeroMemory(&outputTileset[counter], sizeof(Tileset));
-
-				outputTileset[counter].firstgid = std::stoi(tileset.attribute("firstgid").value());
-				outputTileset[counter].source = tileset.attribute("source").value();
-				outputTileset[counter].name = tileset.attribute("name").value();
-				outputTileset[counter].tilewidth = std::stoi(tileset.attribute("tilewidth").value());
-				outputTileset[counter].tileheight = std::stoi(tileset.attribute("tileheight").value());
-				outputTileset[counter].spacing = tileset.attribute("spacing").value();
-				outputTileset[counter].margin = tileset.attribute("margin").value();
-				outputTileset[counter].tilecount = tileset.attribute("tilecount").value();
-				outputTileset[counter].columns = tileset.attribute("columns").value();
-
-				GetImageFromNode(tileset, &outputTileset[counter].image);
+				GetImageFromNode(tileset, &outputTileset->at(counter).image);
 
 				counter++;
 			}
 		}
 
-		static void GetLayersFromNode(xml_node node, Layer outputLayers[]) {
+		static void GetLayersFromNode(xml_node node, vector<Layer>* outputLayers) {
 			int counter = 0;
 			for (pugi::xml_node layerNode = node.child("layer"); layerNode; layerNode = layerNode.next_sibling("layer"))
 			{
@@ -80,41 +78,41 @@ namespace tmx {
 					return;
 				}
 
-				ZeroMemory(&outputLayers[counter], sizeof(Layer));
+				outputLayers->push_back(Layer());
 
-				outputLayers[counter].name = layerNode.attribute("name").value();
+				outputLayers->at(counter).name = layerNode.attribute("name").value();
 				try {
-					outputLayers[counter].x = std::stoi(layerNode.attribute("x").value());
+					outputLayers->at(counter).x = std::stoi(layerNode.attribute("x").value());
 				}
 				catch (...) {
-					outputLayers[counter].x = 0;
+					outputLayers->at(counter).x = 0;
 				}
 				try {
-					outputLayers[counter].y = std::stoi(layerNode.attribute("y").value());
+					outputLayers->at(counter).y = std::stoi(layerNode.attribute("y").value());
 				}
 				catch (...) {
-					outputLayers[counter].y = 0;
+					outputLayers->at(counter).y = 0;
 				}
 				try {
-					outputLayers[counter].width = std::stoi(layerNode.attribute("width").value());
+					outputLayers->at(counter).width = std::stoi(layerNode.attribute("width").value());
 				}
 				catch (...) {
-					outputLayers[counter].width = 0;
+					outputLayers->at(counter).width = 0;
 				}
 
 				try {
-					outputLayers[counter].height = std::stoi(layerNode.attribute("height").value());
+					outputLayers->at(counter).height = std::stoi(layerNode.attribute("height").value());
 				}
 				catch (...) {
-					outputLayers[counter].height = 0;
+					outputLayers->at(counter).height = 0;
 				}
 
-				outputLayers[counter].opacity = layerNode.attribute("opacity").value();
-				outputLayers[counter].visible = layerNode.attribute("visible").value();
-				outputLayers[counter].offsetx = layerNode.attribute("offsetx").value();
-				outputLayers[counter].offsety = layerNode.attribute("offsety").value();
+				outputLayers->at(counter).opacity = layerNode.attribute("opacity").value();
+				outputLayers->at(counter).visible = layerNode.attribute("visible").value();
+				outputLayers->at(counter).offsetx = layerNode.attribute("offsetx").value();
+				outputLayers->at(counter).offsety = layerNode.attribute("offsety").value();
 
-				GetDataFromNode(layerNode, &outputLayers[counter].data);
+				GetDataFromNode(layerNode, &outputLayers->at(counter).data);
 
 				counter++;
 			}
@@ -178,7 +176,7 @@ namespace tmx {
 			outputImage->height = std::stoi(imageNode.attribute("height").value());
 		}
 
-		static void GetObjectGroupsFromNode(xml_node node, ObjectGroup outputGroups[]) {
+		static void GetObjectGroupsFromNode(xml_node node, vector<ObjectGroup>* outputGroups) {
 			int counter = 0;
 			for (pugi::xml_node groupNode = node.child("objectgroup"); groupNode; groupNode = groupNode.next_sibling("objectgroup"))
 			{
@@ -186,41 +184,41 @@ namespace tmx {
 					return;
 				}
 
-				ZeroMemory(&outputGroups[counter], sizeof(ObjectGroup));
+				outputGroups->push_back(ObjectGroup());
 
-				outputGroups[counter].name = groupNode.attribute("name").value();
+				outputGroups->at(counter).name = groupNode.attribute("name").value();
 				try {
-					outputGroups[counter].x = std::stoi(groupNode.attribute("x").value());
+					outputGroups->at(counter).x = std::stoi(groupNode.attribute("x").value());
 				}
 				catch (...) {
-					outputGroups[counter].x = 0;
+					outputGroups->at(counter).x = 0;
 				}
 				try {
-					outputGroups[counter].y = std::stoi(groupNode.attribute("y").value());
+					outputGroups->at(counter).y = std::stoi(groupNode.attribute("y").value());
 				}
 				catch (...) {
-					outputGroups[counter].y = 0;
+					outputGroups->at(counter).y = 0;
 				}
 				try {
-					outputGroups[counter].width = std::stoi(groupNode.attribute("width").value());
+					outputGroups->at(counter).width = std::stoi(groupNode.attribute("width").value());
 				}
 				catch (...) {
-					outputGroups[counter].width = 0;
+					outputGroups->at(counter).width = 0;
 				}
 
 				try {
-					outputGroups[counter].height = std::stoi(groupNode.attribute("height").value());
+					outputGroups->at(counter).height = std::stoi(groupNode.attribute("height").value());
 				}
 				catch (...) {
-					outputGroups[counter].height = 0;
+					outputGroups->at(counter).height = 0;
 				}
 
-				outputGroups[counter].opacity = groupNode.attribute("opacity").value();
-				outputGroups[counter].visible = groupNode.attribute("visible").value();
-				outputGroups[counter].offsetx = groupNode.attribute("offsetx").value();
-				outputGroups[counter].offsety = groupNode.attribute("offsety").value();
+				outputGroups->at(counter).opacity = groupNode.attribute("opacity").value();
+				outputGroups->at(counter).visible = groupNode.attribute("visible").value();
+				outputGroups->at(counter).offsetx = groupNode.attribute("offsetx").value();
+				outputGroups->at(counter).offsety = groupNode.attribute("offsety").value();
 
-				GetObjectsFromNode(groupNode, &outputGroups[counter].objects);
+				GetObjectsFromNode(groupNode, &outputGroups->at(counter).objects);
 
 				counter++;
 			}

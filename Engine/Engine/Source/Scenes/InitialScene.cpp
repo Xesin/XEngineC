@@ -14,7 +14,6 @@
 
 Sprite* sprite;
 Rect* rect;
-GameObject* tilledImage;
 InitialScene::InitialScene(XEngine& ref) : EngineScene(ref) {
 }
 
@@ -67,7 +66,7 @@ void InitialScene::Start()
 	
 	DEFINE_DELEGATE(replaceDel, void(unsigned int, Vector2));
 	CREATE_DELEGATE(replaceDel, InitialScene, &InitialScene::TileReplace, this);
-	AddTiledMap("Resources/TestTMX.tmx", replaceDel, {36});
+	AddTiledMap("Resources/TestTMX.tmx", replaceDel, {81});
 }
 
 void InitialScene::OnDestroy() {
@@ -86,7 +85,6 @@ void InitialScene::Update(float deltaTime)
 		Mario->rigidBody->SetLinearVelocity(Vector2(5.f, currentVel.y));
 		
 		Mario->GetTransform().scale.x= 1;
-		tilledImage->GetTransform().position.x += 60.f *deltaTime;
 	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
 		if (!Mario->animationManager.IsPlaying(TEXT("walk"))) {
 			Mario->animationManager.PlayAnim(TEXT("walk"));
@@ -94,7 +92,6 @@ void InitialScene::Update(float deltaTime)
 		Mario->rigidBody->SetLinearVelocity(Vector2(-5.f, currentVel.y));
 
 		Mario->GetTransform().scale.x = -1;
-		tilledImage->GetTransform().position.x -= 60.f *deltaTime;
 	}
 	else {
 		if (!Mario->animationManager.IsPlaying(TEXT("idle"))) {
@@ -112,7 +109,6 @@ void InitialScene::Update(float deltaTime)
 			vel.x = 5.f;
 			Mario->rigidBody->SetLinearVelocity(vel);
 		}
-		tilledImage->GetTransform().position.y += 60.f *deltaTime;
 	}
 	else if (coreRef.inputManager->IsDown(VK_DOWN)) {
 		Mario->rigidBody->SetLinearVelocity(Vector2(currentVel.x, -5.f));
@@ -121,7 +117,6 @@ void InitialScene::Update(float deltaTime)
 			vel.x = -5.f;
 			Mario->rigidBody->SetLinearVelocity(vel);
 		}
-		tilledImage->GetTransform().position.y -= 60.f *deltaTime;
 
 	}
 	else {
@@ -136,5 +131,6 @@ void InitialScene::Update(float deltaTime)
 
 void InitialScene::TileReplace(unsigned int, Vector2 position)
 {
+	Mario->rigidBody->Translate(position);
 	AddGameObject(Mario);
 }

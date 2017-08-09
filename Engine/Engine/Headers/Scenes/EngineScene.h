@@ -51,55 +51,64 @@ protected:
 		}
 	}
 
-	void AddTiledMap(char* source, vector<int> tileIdToReplace = vector<int>()) {
+	void AddTiledMap(char* source) {
 		DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2));
 		CREATE_DELEGATE(newDelegate, EngineScene, &EngineScene::DefaultTileReplaceCallback, this);
-		AddTiledMap(source, newDelegate, tileIdToReplace);
+		AddTiledMap(source, newDelegate, vector<int>());
 	}
 
-	void AddTiledMap(char* source, DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2)), vector<int> tileIdToReplace = vector<int>()) {
-		tmx::Map *map = new tmx::Map();
-		tmx::TiledImporter::LoadMap(source, map);
+	void AddTiledMap(char* source, DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2)), vector<int> tileIdToReplace) {
+		tmx::Map map;
+		tmx::TiledImporter::LoadMap(source, &map);
 		vector<CachedImage*> cachedImages;
 		string resourceFolder = "Resources/";
 		int tilesetCount = 0;
-		for (int i = 0; i < 10; i++) {
-			if (map->tileSets[i].image.source != NULL && map->tileSets[i].image.source != L"") {
+
+		//LOAD TILESETS
+		for (int i = 0; i < map.tileSets.capacity(); i++) {
+			if (map.tileSets[i].image.source != NULL && map.tileSets[i].image.source != L"") {
 				std::wstring output;
 
 				output = std::wstring(resourceFolder.begin(), resourceFolder.end());
-				output = output + std::wstring(map->tileSets[i].image.source); // or output += L" program";
+				output = output + std::wstring(map.tileSets[i].image.source); // or output += L" program";
 				const wchar_t *ptr = output.c_str();
 
 				cachedImages.push_back(CacheManager::GetInstance()->AddImage(ptr));
 				tilesetCount++;
 			}
 		}
-		for (int i = 0; i < 20; i++) {
-			if (map->layers[i].data.encoding != NULL && map->layers[i].data.encoding != "") {
-				tmx::Data data = map->layers[i].data;
+
+		//ADD LAYERS
+		for (int i = 0; i < map.layers.capacity(); i++) {
+			if (map.layers[i].data.encoding != NULL && map.layers[i].data.encoding != "") {
+				tmx::Data data = map.layers[i].data;
+
+				//ITERATE OVER LAYER TILES
 				for (int j = 0; j < data.value.capacity(); j++) {
 					vector<string> columns = data.value.at(j);
-					for (int k = 0; k < map->width; k++) {
+					for (int k = 0; k < map.width; k++) {
 						int index = std::stoi(columns.at(k));
 						if (index == 0) continue;
 
-						int tileSetIndex = GetTileSetIndex(map->tileSets, index, tilesetCount);
-						tmx::Tileset* currTileset = &map->tileSets[tileSetIndex];
-						Vector2 spawnPos;
+						//get tileset
+						int tileSetIndex = GetTileSetIndex(map.tileSets, index);
+						tmx::Tileset* currTileset = &map.tileSets[tileSetIndex];
 
-						spawnPos.x = (float) map->tilewidth * k;
-						spawnPos.y = (float) (map->tileheight * map->height - map->tileheight) -map->tileheight *j;
+						Vector2 spawnPos;
+						spawnPos.x = (float) map.tilewidth * k;
+						spawnPos.y = (float) (map.tileheight * map.height - map.tileheight) -map.tileheight *j;
 
 						bool replace = false;
 
+						//find if the tile is marked to be replaced
 						for (int i = 0; i < tileIdToReplace.capacity(); i++) {
-							if (tileIdToReplace[i] + currTileset->firstgid == index - 1) {
+							if (tileIdToReplace[i] + currTileset->firstgid == index) {
 								replace = true;
 								break;
 							}
 						}
 
+						//if replace is true we call the callback, otherwise we spawn a static gameobject with a sprite
 						if (replace) {
 							newDelegate(index - 1, spawnPos);
 						}
@@ -119,18 +128,22 @@ protected:
 			}
 		}
 
-		for (int i = 0; i < 10; i++) {
-			if (map->objectGroups[i].name != NULL && map->objectGroups[i].name != "") {
-				vector<tmx::Object> objects = map->objectGroups[i].objects;
 
+		//ITERATE OVER OBJECT GROUPS
+		for (int i = 0; i < map.objectGroups.capacity(); i++) {
+			if (map.objectGroups[i].name != NULL && map.objectGroups[i].name != "") {
+				vector<tmx::Object> objects = map.objectGroups[i].objects;
+
+				//ITERATE OVER OBJECTS IN GROUP
 				for (int j = 0; j < objects.capacity(); j++) {
 					tmx::Object object = objects[j];
 
 					Vector2 spawnPos;
 
 					spawnPos.x = (float)object.x + object.width / 2.f;
-					spawnPos.y = ((float)(map->tileheight * map->height) - (object.y + object.height / 2.f));
+					spawnPos.y = ((float)(map.tileheight * map.height) - (object.y + object.height / 2.f));
 
+					//CREATE A STATIC COLLISION BOX
 					coreRef.physics->CreateBoxBody(spawnPos, Vector2(object.width / 2.f, object.height / 2.f), 0.0f, 1.0f, PhysicBodyType::Static, false);
 				}
 			}
@@ -138,15 +151,15 @@ protected:
 	}
 
 private:
-	int GetTileSetIndex(tmx::Tileset tilesets[], int tileIndex, int size) {
-		for (int i = 0; i < size - 1; i++) {
+	int GetTileSetIndex(std::vector<tmx::Tileset> tilesets, int tileIndex) {
+		for (int i = 0; i < tilesets.capacity() - 1; i++) {
 			int firstGid = tilesets[i].firstgid;
 			int nextFirstGid = tilesets[i + 1].firstgid;
 			if (tileIndex >= firstGid && tileIndex < nextFirstGid) {
 				return i;
 			}
 		}
-		return size - 1;
+		return tilesets.capacity() - 1;
 	}
 
 	void DefaultTileReplaceCallback(unsigned int, Vector2) {}

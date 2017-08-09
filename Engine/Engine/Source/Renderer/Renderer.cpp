@@ -188,7 +188,7 @@ void Renderer::SetTransform(D2D1::Matrix3x2F transform)
 void Renderer::SetTransform(Vector2 position, Vector2 bounds, Vector2 scale, Vector2 anchor, float angle)
 {
 	Vector2 invertedScale = Vector2(scale.x, scale.y * -1.f);
-	D2D1_SIZE_F correctedScale = D2D1::SizeF(invertedScale.x, invertedScale.y);
+	D2D1_SIZE_F correctedScale = D2D1::SizeF(invertedScale.x * scaleManager->gameScale.x, invertedScale.y * scaleManager->gameScale.y);
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(correctedScale);
 	float32 x = position.x;
 	float32 y = position.y;
@@ -196,13 +196,13 @@ void Renderer::SetTransform(Vector2 position, Vector2 bounds, Vector2 scale, Vec
 	D2D1::Matrix3x2F transformMatrix = D2D1::Matrix3x2F::Rotation(
 		angle,
 		D2D1::Point2F(
-		(x - camera->position.x) * scaleManager->renderTargetScaleX,
-			(y - camera->position.y) * scaleManager->renderTargetScaleY
+		(x - camera->position.x) * scaleManager->renderTargetScaleX * scaleManager->gameScale.x,
+			(y - camera->position.y) * scaleManager->renderTargetScaleY * scaleManager->gameScale.y
 		)
 	);
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		((-anchor.x) * invertedScale.x - camera->position.x)* scaleManager->renderTargetScaleX,
-		((-anchor.y) * invertedScale.y - camera->position.y) * scaleManager->renderTargetScaleY
+		((-anchor.x) * invertedScale.x - camera->position.x)* (scaleManager->renderTargetScaleX * scaleManager->gameScale.x),
+		((-anchor.y) * invertedScale.y - camera->position.y) * (scaleManager->renderTargetScaleY * scaleManager->gameScale.y)
 	);
 	scaleMatrix = scaleMatrix * translationMatrix * transformMatrix;
 	SetTransform(scaleMatrix);

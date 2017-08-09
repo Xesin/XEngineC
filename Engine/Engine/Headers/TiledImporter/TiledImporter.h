@@ -50,9 +50,7 @@ namespace tmx {
 			int counter = 0;
 			for (pugi::xml_node tileset = node.child("tileset"); tileset; tileset = tileset.next_sibling("tileset"))
 			{
-				if (counter >= 10) {
-					return;
-				}
+
 				outputTileset->push_back(Tileset());
 				outputTileset->at(counter).firstgid = std::stoi(tileset.attribute("firstgid").value());
 				outputTileset->at(counter).source = tileset.attribute("source").value();
@@ -74,10 +72,6 @@ namespace tmx {
 			int counter = 0;
 			for (pugi::xml_node layerNode = node.child("layer"); layerNode; layerNode = layerNode.next_sibling("layer"))
 			{
-				if (counter >= 20) {
-					return;
-				}
-
 				outputLayers->push_back(Layer());
 
 				outputLayers->at(counter).name = layerNode.attribute("name").value();
@@ -180,10 +174,6 @@ namespace tmx {
 			int counter = 0;
 			for (pugi::xml_node groupNode = node.child("objectgroup"); groupNode; groupNode = groupNode.next_sibling("objectgroup"))
 			{
-				if (counter >= 10) {
-					return;
-				}
-
 				outputGroups->push_back(ObjectGroup());
 
 				outputGroups->at(counter).name = groupNode.attribute("name").value();
@@ -228,10 +218,6 @@ namespace tmx {
 			int counter = 0;
 			for (pugi::xml_node groupNode = node.child("object"); groupNode; groupNode = groupNode.next_sibling("object"))
 			{
-				if (counter >= 10) {
-					return;
-				}
-
 				outputObjects->push_back(Object());
 				try {
 					outputObjects->at(counter).x = std::stoi(groupNode.attribute("x").value());

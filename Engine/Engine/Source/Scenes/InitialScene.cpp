@@ -11,6 +11,7 @@
 #include "Component\TilledImageRenderer.h"
 #include "Component\PhysicsBody.h"
 #include "TiledImporter\TiledImporter.h"
+#include "Managers\ScaleManager.h"
 
 Sprite* sprite;
 Rect* rect;
@@ -45,7 +46,7 @@ void InitialScene::Start()
 	Mario->SetSpriteSheet(17, 33);
 	Mario->AddComponent<PhysicsBody>();
 	Mario->rigidBody->SetType(PhysicBodyType::Dynamic);
-
+	coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
 	//SET MARIO ANIM
 	int idle[1] = { 0 };
 	int walk[4] = { 1, 2, 3, 4 };
@@ -124,7 +125,7 @@ void InitialScene::Update(float deltaTime)
 	}
 
 	if (coreRef.inputManager->IsDown(VK_L)) {
-		coreRef.camera->position.y += 20.f * deltaTime;
+		coreRef.camera->position.x = Mario->GetTransform().position.x;
 	}
 	
 }

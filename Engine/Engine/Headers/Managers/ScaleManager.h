@@ -1,4 +1,5 @@
 #pragma once
+#include "Utils\MathUtils.h"
 
 class ScaleManager {
 public:
@@ -10,6 +11,7 @@ public:
 public:
 	float renderTargetScaleX = 1.f;
 	float renderTargetScaleY = 1.f;
+	Vector2 gameScale = Vector2(1.f, 1.f);
 	float aspectRatio;
 
 private:

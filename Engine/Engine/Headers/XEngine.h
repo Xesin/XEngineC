@@ -70,10 +70,10 @@ public:
 	InputManager* inputManager;
 	Physics* physics;
 	Camera* camera;
+	Renderer* renderer;
 private:
 	ArrayList<GameObject*> gameObjects;
 	HWND m_hwnd;
-	Renderer* renderer;
 	EngineScene* currentScene;
 	EngineScene* previous;
 	unsigned long currentTime = 0;

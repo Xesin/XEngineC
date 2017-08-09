@@ -1,11 +1,11 @@
 #include "Renderer\Camera.h"
 
-Camera::Camera(b2Vec2 worldBounds) {
-	position = b2Vec2(0.f, 0.f);
+Camera::Camera(Vector2 worldBounds) {
+	position = Vector2(0.f, 0.f);
 	SetWorldBounds(worldBounds);
 }
 
-void Camera::SetWorldBounds(b2Vec2 worldBounds)
+void Camera::SetWorldBounds(Vector2 worldBounds)
 {
 	bounds = worldBounds;
 }

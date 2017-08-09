@@ -1,11 +1,12 @@
 #pragma once
-#include "Box2D\Common\b2Math.h"
+#include "Utils\MathUtils.h"
+struct Vector2;
 
 class Camera {
 public:
-	Camera(b2Vec2 worldBounds);
-	void SetWorldBounds(b2Vec2 worldBounds);
+	Camera(Vector2 worldBounds);
+	void SetWorldBounds(Vector2 worldBounds);
 public:
-	b2Vec2 position;
-	b2Vec2 bounds;
+	Vector2 position;
+	Vector2 bounds;
 };

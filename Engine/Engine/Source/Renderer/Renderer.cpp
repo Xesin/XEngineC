@@ -193,18 +193,24 @@ void Renderer::SetTransform(Vector2 position, Vector2 bounds, Vector2 scale, Vec
 	float32 x = position.x;
 	float32 y = position.y;
 	//LEFT BOTTOM COORDINATES
-	D2D1::Matrix3x2F transformMatrix = D2D1::Matrix3x2F::Rotation(
+	D2D1::Matrix3x2F rotationMatrix = D2D1::Matrix3x2F::Rotation(
 		angle,
 		D2D1::Point2F(
-		(x - camera->position.x) * scaleManager->renderTargetScaleX * scaleManager->gameScale.x,
-			(y - camera->position.y) * scaleManager->renderTargetScaleY * scaleManager->gameScale.y
+		(x - abs((camera->position.x - camera->bounds.x / 2.f))) * scaleManager->renderTargetScaleX * scaleManager->gameScale.x,
+			(y - abs((camera->position.y - camera->bounds.y / 2.f))) * scaleManager->renderTargetScaleY * scaleManager->gameScale.y
 		)
 	);
+
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		((-anchor.x) * invertedScale.x - camera->position.x)* (scaleManager->renderTargetScaleX * scaleManager->gameScale.x),
-		((-anchor.y) * invertedScale.y - camera->position.y) * (scaleManager->renderTargetScaleY * scaleManager->gameScale.y)
+		((-anchor.x * scaleManager->gameScale.x) * invertedScale.x - pos.x)* (scaleManager->renderTargetScaleX),
+		((-anchor.y * scaleManager->gameScale.y) * invertedScale.y - pos.y) * (scaleManager->renderTargetScaleY)
 	);
-	scaleMatrix = scaleMatrix * translationMatrix * transformMatrix;
+	scaleMatrix = scaleMatrix * translationMatrix * rotationMatrix;
 	SetTransform(scaleMatrix);
 }
 
@@ -282,9 +288,14 @@ void Renderer::RenderTilledImage(Vector2 position, CachedImage &imageToRender, i
 
 	CreateTilledBitmapBrush(imageToRender, frameColumn, frameRow, frame, frameSize, &m_pBitmapBrush, tileScroll);
 
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-camera->position.x,
-		-camera->position.y
+		-pos.x,
+		-pos.y
 	);
 	
 	SetTransform(translationMatrix);
@@ -386,9 +397,14 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
 
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-camera->position.x,
-		-camera->position.y
+		-pos.x,
+		-pos.y
 	);
 
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
@@ -398,17 +414,17 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 	hr = geo->Open(&sink);
 	sink->SetFillMode(D2D1_FILL_MODE_WINDING);
 	// first point
-	sink->BeginFigure(D2D1::Point2F(WorldToScreenPixels(vertices[0].x), WorldToScreenPixels(vertices[0].y)), D2D1_FIGURE_BEGIN_FILLED);
+	sink->BeginFigure(D2D1::Point2F(WorldToScreenPixels(vertices[0].x * scaleManager->gameScale.x), WorldToScreenPixels(vertices[0].y * scaleManager->gameScale.y)), D2D1_FIGURE_BEGIN_FILLED);
 	// middle points
 	vertices++;
 	vertexCount--;
 	for (i = 0; i < vertexCount; i++, vertices++)
 	{
-		points[i].x = WorldToScreenPixels(vertices->x);
-		points[i].y = WorldToScreenPixels(vertices->y);
+		points[i].x = WorldToScreenPixels(vertices->x * scaleManager->gameScale.x);
+		points[i].y = WorldToScreenPixels(vertices->y * scaleManager->gameScale.y);
 	}
-	points[vertexCount].x = WorldToScreenPixels(points[0].x);
-	points[vertexCount].y = WorldToScreenPixels(points[0].y);
+	points[vertexCount].x = WorldToScreenPixels(points[0].x * scaleManager->gameScale.x);
+	points[vertexCount].y = WorldToScreenPixels(points[0].y * scaleManager->gameScale.y);
 	sink->AddLines(points, vertexCount);
 	// close it
 	sink->EndFigure(D2D1_FIGURE_END_CLOSED);
@@ -432,9 +448,14 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-camera->position.x,
-		-camera->position.y
+		-pos.x,
+		-pos.y
 	);
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
 	SetTransform(translationMatrix * scaleMatrix);
@@ -443,17 +464,17 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	hr = geo->Open(&sink);
 	sink->SetFillMode(D2D1_FILL_MODE_WINDING);
 	// first point
-	sink->BeginFigure(D2D1::Point2F(WorldToScreenPixels(vertices[0].x), WorldToScreenPixels(vertices[0].y)), D2D1_FIGURE_BEGIN_FILLED);
+	sink->BeginFigure(D2D1::Point2F(WorldToScreenPixels(vertices[0].x * scaleManager->gameScale.x), WorldToScreenPixels(vertices[0].y * scaleManager->gameScale.y)), D2D1_FIGURE_BEGIN_FILLED);
 	// middle points
 	vertices++;
 	vertexCount--;
 	for (i = 0; i < vertexCount; i++, vertices++)
 	{
-		points[i].x = WorldToScreenPixels(vertices->x);
-		points[i].y = WorldToScreenPixels(vertices->y);
+		points[i].x = WorldToScreenPixels(vertices->x * scaleManager->gameScale.x);
+		points[i].y = WorldToScreenPixels(vertices->y * scaleManager->gameScale.y);
 	}
-	points[vertexCount].x = WorldToScreenPixels(points[0].x);
-	points[vertexCount].y = WorldToScreenPixels(points[0].y);
+	points[vertexCount].x = WorldToScreenPixels(points[0].x * scaleManager->gameScale.x);
+	points[vertexCount].y = WorldToScreenPixels(points[0].y * scaleManager->gameScale.y);
 	sink->AddLines(points, vertexCount);
 	// close it
 	sink->EndFigure(D2D1_FIGURE_END_CLOSED);
@@ -470,9 +491,14 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 
 void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color & color)
 {
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-camera->position.x,
-		-camera->position.y
+		-pos.x,
+		-pos.y
 	);
 	SetTransform(translationMatrix);
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
@@ -481,14 +507,19 @@ void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color &
 	Vector2 scale;
 	scale.y = -1.f;
 	scale.x = 1.f;
-	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, false);
+	RenderCircle(centerScreen.x * scaleManager->gameScale.x, centerScreen.y * scaleManager->gameScale.y, radiusScreen * scaleManager->gameScale.x, radiusScreen * scaleManager->gameScale.y, dColor, scale, false);
 }
 
 void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Vec2 & axis, const b2Color & color)
 {
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-camera->position.x,
-		-camera->position.y
+		-pos.x,
+		-pos.y
 	);
 	SetTransform(translationMatrix);
 	b2Vec2 centerScreen = WorldToScreenPixels(center);
@@ -497,14 +528,19 @@ void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Ve
 	Vector2 scale;
 	scale.y = -1.f;
 	scale.x = 1.f;
-	RenderCircle(centerScreen.x, centerScreen.y, radiusScreen, radiusScreen, dColor, scale, true);
+	RenderCircle(centerScreen.x * scaleManager->gameScale.x, centerScreen.y * scaleManager->gameScale.y, radiusScreen * scaleManager->gameScale.x, radiusScreen * scaleManager->gameScale.y, dColor, scale, true);
 }
 
 void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color & color)
 {
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-camera->position.x,
-		-camera->position.y
+		-pos.x,
+		-pos.y
 	);
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
 	SetTransform(translationMatrix * scaleMatrix);
@@ -512,7 +548,7 @@ void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color &
 	b2Vec2 p2Screen = WorldToScreenPixels(p2);
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	colorBrush->SetColor(dColor);
-	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x, p1Screen.y), D2D1::Point2F(p2Screen.x, p2Screen.y), colorBrush);
+	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x * scaleManager->gameScale.x, p1Screen.y * scaleManager->gameScale.y), D2D1::Point2F(p2Screen.x * scaleManager->gameScale.x, p2Screen.y * scaleManager->gameScale.y), colorBrush);
 }
 
 void Renderer::DrawTransform(const b2Transform & xf)
@@ -523,9 +559,14 @@ void Renderer::DrawTransform(const b2Transform & xf)
 	b2Vec2 p1 = xf.p, p2;
 	b2Vec2 p1Screen, p2Screen;
 
+	Vector2 pos = Vector2();
+
+	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
+	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
-		-camera->position.x,
-		-camera->position.y
+		-pos.x,
+		-pos.y
 	);
 	D2D1::Matrix3x2F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(scaleManager->renderTargetScaleX, scaleManager->renderTargetScaleY));
 	SetTransform(translationMatrix * scaleMatrix);
@@ -535,14 +576,14 @@ void Renderer::DrawTransform(const b2Transform & xf)
 	p2 = p1 + k_axisScale * xf.q.GetXAxis();
 	p1Screen = WorldToScreenPixels(p1);
 	p2Screen = WorldToScreenPixels(p2);
-	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x, p1Screen.y), D2D1::Point2F(p2Screen.x, p2Screen.y), colorBrush);
+	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x * scaleManager->gameScale.x, p1Screen.y * scaleManager->gameScale.y), D2D1::Point2F(p2Screen.x * scaleManager->gameScale.x, p2Screen.y * scaleManager->gameScale.y), colorBrush);
 
 	D2D1::ColorF dColorGreen(green.r, green.g, green.b, 0.7f);
 	colorBrush->SetColor(dColorGreen);
 	p2 = p1 + k_axisScale * xf.q.GetYAxis();
 	p1Screen = WorldToScreenPixels(p1);
 	p2Screen = WorldToScreenPixels(p2);
-	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x, p1Screen.y), D2D1::Point2F(p2Screen.x, p2Screen.y), colorBrush);
+	renderTarget->DrawLine(D2D1::Point2F(p1Screen.x * scaleManager->gameScale.x, p1Screen.y * scaleManager->gameScale.y), D2D1::Point2F(p2Screen.x * scaleManager->gameScale.x, p2Screen.y * scaleManager->gameScale.y), colorBrush);
 
 	
 }

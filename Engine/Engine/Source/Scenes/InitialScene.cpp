@@ -25,7 +25,11 @@ void InitialScene::OnKeyDown(unsigned int keyCode)
 {
 	unsigned int test = VK_SPACE;
 	if (keyCode == VK_SPACE) {
- 		Mario->rigidBody->ApplyForce(Vector2(0.0f, 150.f), Mario->rigidBody->GetWorldCenter());
+		coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
+	}
+
+	if (keyCode == VK_N) {
+		coreRef.renderer->scaleManager->gameScale = Vector2(1.f, 1.f);
 	}
 
 	if (keyCode == VK_ESCAPE) {
@@ -46,7 +50,6 @@ void InitialScene::Start()
 	Mario->SetSpriteSheet(17, 33);
 	Mario->AddComponent<PhysicsBody>();
 	Mario->rigidBody->SetType(PhysicBodyType::Dynamic);
-	coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
 	//SET MARIO ANIM
 	int idle[1] = { 0 };
 	int walk[4] = { 1, 2, 3, 4 };
@@ -125,7 +128,7 @@ void InitialScene::Update(float deltaTime)
 	}
 
 	if (coreRef.inputManager->IsDown(VK_L)) {
-		coreRef.camera->position.x = Mario->GetTransform().position.x;
+		coreRef.camera->position = Mario->GetTransform().position;
 	}
 	
 }

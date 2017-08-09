@@ -51,7 +51,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 	currentScene = initialScene;
 	renderer = new Renderer();
 
-	camera = new Camera(b2Vec2(resolutionX, resolutionY));
+	camera = new Camera(Vector2(resolutionX, resolutionY));
 	hr = renderer->Initialize(camera);
 	if (SUCCEEDED(hr))
 	{

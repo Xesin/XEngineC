@@ -117,6 +117,8 @@ private:
 	{
 		return (static_cast<float>(y) / DPIScaleY) * scaleManager->renderTargetScaleY;
 	}
+
+	Vector2 GetCameraPos();
 	
 public:
 	static IWICImagingFactory *wicFactory;

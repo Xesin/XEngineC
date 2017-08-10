@@ -206,10 +206,7 @@ void Renderer::SetTransform(Vector2 position, Vector2 bounds, Vector2 scale, Vec
 		)
 	);
 
-	Vector2 pos = Vector2();
-
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		((-anchor.x * scaleManager->gameScale.x) * invertedScale.x - pos.x)* (scaleManager->renderTargetScaleX),
@@ -293,10 +290,7 @@ void Renderer::RenderTilledImage(Vector2 position, CachedImage &imageToRender, i
 
 	CreateTilledBitmapBrush(imageToRender, frameColumn, frameRow, frame, frameSize, &m_pBitmapBrush, tileScroll);
 
-	Vector2 pos = Vector2();
-
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-pos.x,
@@ -402,10 +396,7 @@ void Renderer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2C
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
 
-	Vector2 pos = Vector2();
-
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-pos.x,
@@ -453,10 +444,8 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 	D2D1::ColorF dColor(color.r, color.g, color.b, 0.7f);
 	D2D1_POINT_2F *points = new D2D1_POINT_2F[vertexCount + 1];
 	HRESULT hr;
-	Vector2 pos = Vector2();
 
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-pos.x,
@@ -496,10 +485,7 @@ void Renderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const
 
 void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color & color)
 {
-	Vector2 pos = Vector2();
-
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-pos.x,
@@ -517,10 +503,7 @@ void Renderer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color &
 
 void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Vec2 & axis, const b2Color & color)
 {
-	Vector2 pos = Vector2();
-
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-pos.x,
@@ -538,10 +521,7 @@ void Renderer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Ve
 
 void Renderer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color & color)
 {
-	Vector2 pos = Vector2();
-
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-pos.x,
@@ -564,10 +544,7 @@ void Renderer::DrawTransform(const b2Transform & xf)
 	b2Vec2 p1 = xf.p, p2;
 	b2Vec2 p1Screen, p2Screen;
 
-	Vector2 pos = Vector2();
-
-	pos.x = max((camera->position.x  * scaleManager->gameScale.x) - camera->bounds.x / 2.f, 0.f);
-	pos.y = max((camera->position.y * scaleManager->gameScale.y) - camera->bounds.y / 2.f, 0.f);
+	Vector2 pos = GetCameraPos();
 
 	D2D1::Matrix3x2F translationMatrix = D2D1::Matrix3x2F::Translation(
 		-pos.x,
@@ -601,6 +578,16 @@ void Renderer::DiscardDeviceResources()
 {
 	SafeRelease(&Renderer::renderTarget);
 	SafeRelease(&colorBrush);
+}
+
+Vector2 Renderer::GetCameraPos()
+{
+	Vector2 pos = Vector2();
+
+	pos.x = (camera->position.x  * scaleManager->gameScale.x);
+	pos.y = (camera->position.y * scaleManager->gameScale.y);
+
+	return pos;
 }
 
 b2Vec2 Renderer::WorldToScreenPixels(b2Vec2 worldUnit)

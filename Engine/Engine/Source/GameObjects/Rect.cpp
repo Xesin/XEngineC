@@ -1,20 +1,25 @@
 #include "stdafx.h"
 #include "GameObjects\Rect.h"
 #include "Renderer\Renderer.h"
+#include "Managers\Physics.h"
+#include "XEngine.h"
 
-Rect::Rect(b2Vec2 spawn_pos, float32 _width, float32 _height, D2D1::ColorF _color) : GameObject(spawn_pos) {
-	width = _width;
-	height = _height;
+Rect::Rect(Vector2 spawn_pos, XEngine& ref, int width, int height, D2D1::ColorF _color) : GameObject(spawn_pos, ref) {
+	bounds.x = (float) width;
+	bounds.y = (float) height;
 	color = _color;
 }
 
 void Rect::OnRender(Renderer &renderer){
-	b2Transform worldPos;
+	Transform worldPos;
 	WorldTransform(&worldPos);
-	renderer.SetTransform(D2D1::Matrix3x2F::Scale(scale));
-	renderer.RenderRect(worldPos.p.x, worldPos.p.y, width, height, color, scale, fill, strokeWith);
+	renderer.SetTransform(worldPos.position, Vector2(bounds.x, bounds.y), transform->scale, anchor, transform->rotation.angles);
+
+	renderer.RenderRect(worldPos.position.x, worldPos.position.y, (int) bounds.x, (int) bounds.y, color, transform->scale, fill, strokeWith);
+	GameObject::OnRender(renderer);
 }
 
-//void Rect::Update(float deltaTime)
-//{
-//}
+void Rect::Update(float deltaTime)
+{
+	GameObject::Update(deltaTime);
+}

@@ -17,7 +17,7 @@ CachedImage::CachedImage(LPCWSTR _imageName)
 
 CachedImage::~CachedImage()
 {
-	SafeRelease(&cachedBitmap);
+	cachedBitmap->Release();
 }
 
 void CachedImage::OnRecreateResources()

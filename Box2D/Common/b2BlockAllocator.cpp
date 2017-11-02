@@ -191,7 +191,7 @@ void b2BlockAllocator::Free(void* p, int32 size)
 		}
 	}
 
-	b2Assert(found);
+	//b2Assert(found);
 
 	memset(p, 0xfd, blockSize);
 #endif

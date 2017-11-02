@@ -26,6 +26,10 @@ class Renderer;
 class GameObject;
 class InputManager;
 class EngineScene;
+class Physics;
+class Camera;
+
+struct b2Vec2;
 
 class XEngine
 {
@@ -34,7 +38,7 @@ public:
 	~XEngine();
 
 	// Register the window class and call methods for instantiating drawing resources
-	HRESULT Initialize(EngineScene* initialScene, float resolutionX, float resolutionY);
+	HRESULT Initialize(EngineScene* initialScene, HINSTANCE instance, float resolutionX, float resolutionY);
 
 	// Process and dispatch messages
 	void RunMessageLoop();
@@ -46,6 +50,7 @@ public:
 			milliseconds(1);
 		return (long)time;
 	}
+	void StartScene(EngineScene* sceneToStart);
 
 private:
 	// The windows procedure.
@@ -58,16 +63,19 @@ private:
 
 	void Update();
 
-	void StartScene(EngineScene* sceneToStart);
+	void Render();
+
 
 public:
-	static XEngine* instance;
 	InputManager* inputManager;
+	Physics* physics;
+	Camera* camera;
+	Renderer* renderer;
 private:
 	ArrayList<GameObject*> gameObjects;
 	HWND m_hwnd;
-	Renderer* renderer;
 	EngineScene* currentScene;
+	EngineScene* previous;
 	unsigned long currentTime = 0;
 	unsigned long newTime = 0;
 	float dt = 0;

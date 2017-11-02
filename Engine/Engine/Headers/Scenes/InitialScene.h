@@ -4,7 +4,11 @@
 class InitialScene : public EngineScene {
 
 public:
-
+	InitialScene(XEngine& ref);
+	void OnKeyDown(unsigned int);
 	void Start() override;
+	void OnDestroy() override;
 	void Update(float deltaTime) override;
+
+	void TileReplace(unsigned int, Vector2 position);
 };

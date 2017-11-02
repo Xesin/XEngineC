@@ -102,11 +102,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..;Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..;Headers;Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <CompileAsManaged>false</CompileAsManaged>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <PreprocessToFile>false</PreprocessToFile>
+      <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,6 +142,8 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderOutputFile>$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalIncludeDirectories>..\..;Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,6 +167,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\Component\Component.h" />
+    <ClInclude Include="Headers\Component\PhysicsBody.h" />
+    <ClInclude Include="Headers\Component\SpriteRenderer.h" />
+    <ClInclude Include="Headers\Component\TilledImageRenderer.h" />
+    <ClInclude Include="Headers\Component\Transform.h" />
     <ClInclude Include="Headers\Engine.h" />
     <ClInclude Include="Headers\GameObjects\Circle.h" />
     <ClInclude Include="Headers\GameObjects\GameObject.h" />
@@ -171,24 +179,54 @@
     <ClInclude Include="Headers\GameObjects\Sprite.h" />
     <ClInclude Include="Headers\Managers\AnimationManager.h" />
     <ClInclude Include="Headers\Managers\InputManager.h" />
+    <ClInclude Include="Headers\Managers\Physics.h" />
     <ClInclude Include="Headers\Managers\ScaleManager.h" />
     <ClInclude Include="Headers\Renderer\CachedImage.h" />
+    <ClInclude Include="Headers\Renderer\Camera.h" />
     <ClInclude Include="Headers\Renderer\Renderer.h" />
     <ClInclude Include="Headers\resource.h" />
     <ClInclude Include="Headers\Scenes\EngineScene.h" />
     <ClInclude Include="Headers\Scenes\InitialScene.h" />
     <ClInclude Include="Headers\stdafx.h" />
     <ClInclude Include="Headers\targetver.h" />
+    <ClInclude Include="Headers\TiledImporter\Animation.h" />
+    <ClInclude Include="Headers\TiledImporter\Data.h" />
+    <ClInclude Include="Headers\TiledImporter\Ellipse.h" />
+    <ClInclude Include="Headers\TiledImporter\Frame.h" />
+    <ClInclude Include="Headers\TiledImporter\Group.h" />
+    <ClInclude Include="Headers\TiledImporter\Image.h" />
+    <ClInclude Include="Headers\TiledImporter\ImageLayer.h" />
+    <ClInclude Include="Headers\TiledImporter\Layer.h" />
+    <ClInclude Include="Headers\TiledImporter\Map.h" />
+    <ClInclude Include="Headers\TiledImporter\Object.h" />
+    <ClInclude Include="Headers\TiledImporter\ObjectGroup.h" />
+    <ClInclude Include="Headers\TiledImporter\Polygon.h" />
+    <ClInclude Include="Headers\TiledImporter\Polyline.h" />
+    <ClInclude Include="Headers\TiledImporter\Properties.h" />
+    <ClInclude Include="Headers\TiledImporter\Property.h" />
+    <ClInclude Include="Headers\TiledImporter\Terrain.h" />
+    <ClInclude Include="Headers\TiledImporter\TerrainTypes.h" />
+    <ClInclude Include="Headers\TiledImporter\Tile.h" />
+    <ClInclude Include="Headers\TiledImporter\TiledImporter.h" />
+    <ClInclude Include="Headers\TiledImporter\TiledObject.h" />
+    <ClInclude Include="Headers\TiledImporter\Tileset.h" />
     <ClInclude Include="Headers\Utils\Animation.h" />
     <ClInclude Include="Headers\Utils\ArrayList.h" />
     <ClInclude Include="Headers\Utils\Delegates\Delegate.h" />
     <ClInclude Include="Headers\Utils\Delegates\DelegateBase.h" />
     <ClInclude Include="Headers\Utils\Delegates\DelegatesSettings.h" />
     <ClInclude Include="Headers\Utils\Delegates\MultiCastDelegate.h" />
+    <ClInclude Include="Headers\Utils\MathUtils.h" />
     <ClInclude Include="Headers\XEngine.h" />
+    <ClInclude Include="Libraries\pugiconfig.hpp" />
+    <ClInclude Include="Libraries\pugixml.hpp" />
     <ClInclude Include="Source\Managers\CacheManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Libraries\pugixml.cpp" />
+    <ClCompile Include="Source\Component\PhysicsBody.cpp" />
+    <ClCompile Include="Source\Component\SpriteRenderer.cpp" />
+    <ClCompile Include="Source\Component\TilledImageRenderer.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\GameObjects\Circle.cpp" />
     <ClCompile Include="Source\GameObjects\GameObject.cpp" />
@@ -197,8 +235,10 @@
     <ClCompile Include="Source\Managers\AnimationManager.cpp" />
     <ClCompile Include="Source\Managers\CacheManager.cpp" />
     <ClCompile Include="Source\Managers\InputManager.cpp" />
+    <ClCompile Include="Source\Managers\Physics.cpp" />
     <ClCompile Include="Source\Managers\ScaleManager.cpp" />
     <ClCompile Include="Source\Renderer\CachedImage.cpp" />
+    <ClCompile Include="Source\Renderer\Camera.cpp" />
     <ClCompile Include="Source\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Scenes\InitialScene.cpp" />
     <ClCompile Include="Source\stdafx.cpp" />

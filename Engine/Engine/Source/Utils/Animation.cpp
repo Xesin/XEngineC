@@ -1,15 +1,19 @@
 #include "stdafx.h"
 #include "Utils\Animation.h"
-#include "GameObjects\Sprite.h"
+#include "Component\SpriteRenderer.h"
 
-Animation::Animation(int* const frames, int refreshRate, int size) {
-	this->frames = frames;
+Animation::Animation(int* const framesRef, int refreshRate, int size, bool loop) {
+	frames = new int[size];
+	for (int i = 0; i < size; i++) {
+		frames[i] = framesRef[i];
+	}
 	frameCount = size;
 	this->refreshRate = refreshRate;
+	this->loop = loop;
 	loopCount = 0;
 }
 
-void Animation::SetSprite(Sprite * spriteRef)
+void Animation::SetSprite(SpriteRenderer * spriteRef)
 {
 	sprite = spriteRef;
 }

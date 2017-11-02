@@ -1,57 +1,142 @@
 #include "Scenes\InitialScene.h"
 #include "XEngine.h"
 #include "Managers\AnimationManager.h"
-#include "Utils\Animation.h"
 #include "Managers\InputManager.h"
+#include "Utils\Animation.h"
+#include "Utils\MathUtils.h"
 #include "GameObjects\Sprite.h"
 #include "GameObjects\Rect.h"
 #include "GameObjects\Circle.h"
+#include "Renderer\Camera.h"
+#include "Component\TilledImageRenderer.h"
+#include "Component\PhysicsBody.h"
+#include "TiledImporter\TiledImporter.h"
+#include "Managers\ScaleManager.h"
 
 Sprite* sprite;
+Rect* rect;
+InitialScene::InitialScene(XEngine& ref) : EngineScene(ref) {
+}
+
+Sprite* character;
+
+DEFINE_DELEGATE(onKeyDownDelegate, void(unsigned int));
+void InitialScene::OnKeyDown(unsigned int keyCode)
+{
+	unsigned int test = VK_SPACE;
+	if (keyCode == VK_SPACE) {
+		coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
+	}
+
+	if (keyCode == VK_N) {
+		coreRef.renderer->scaleManager->gameScale = Vector2(1.f, 1.f);
+	}
+
+	if (keyCode == VK_ESCAPE) {
+		coreRef.StartScene(new InitialScene(coreRef));
+	}
+
+	if (keyCode == VK_D) {
+		coreRef.physics->isDebug = !coreRef.physics->isDebug;
+	}
+}
 
 void InitialScene::Start()
 {
-	CachedImage* image = CacheManager::GetInstance()->AddImage(L"Resources/Mario-Idle-Walk.png");
-	sprite = new Sprite(b2Vec2(0.f, 0.f), *image);
-	sprite->SetSpriteSheet(17, 33);
-	sprite->scale.width = 2.0f;
-	sprite->scale.height = 2.0f;
-	int *idleFrames = new int[1]{ 0 };
-	int *walkFrames = new int[4]{ 1, 2, 3, 4 };
-	Animation* idle = new Animation(idleFrames, 900, 1);
-	Animation* walk = new Animation(walkFrames, 150, 4);
-	idle->loop = true;
-	walk->loop = true;
-	sprite->animationManager.AddAnim(L"Idle", idle);
-	sprite->animationManager.AddAnim(L"Walk", walk);
-	gameObjects.insert(sprite);
-	sprite->animationManager.PlayAnim(L"Idle");
+	coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
+	coreRef.renderer->SetClearColor(D2D1::ColorF(0.16f, 0.15f, 0.20f));
+	onKeyDownDelegate = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
+	coreRef.inputManager->OnKeyDown += onKeyDownDelegate;
+	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/character tiles.png"));
+	character = new Sprite(Vector2(0.f, 0.f), coreRef, *image);
+	character->SetSpriteSheet(32, 48);
+	character->AddComponent<PhysicsBody>();
+	character->rigidBody->SetType(PhysicBodyType::Dynamic);
+	//SET MARIO ANIM
+	int idle[1] = { 0 };
+	int walk[4] = { 1, 2, 3 };
+	character->animationManager.AddAnim(TEXT("idle"), new Animation(idle, 150, 1, true));
+	character->animationManager.AddAnim(TEXT("walk"), new Animation(walk, 150, 4, true));
+	
+	//SET MARIO PHYSICS
+	character->anchor.y = 26.f;
+	b2MassData massData;
+	character->rigidBody->GetMassData(&massData);
+	character->rigidBody->SetGravityScale(0.f);
+	Vector2 center = Renderer::PixelsToWorldUnits(character->anchor);
 
-	DEFINE_DELEGATE(newDel, void(unsigned int)) = CREATE_MULTICAST_DELEGATE(XEngine::instance->inputManager->OnMouseDown, EngineScene, &EngineScene::Test, this);
-	XEngine::instance->inputManager->OnMouseDown += newDel;
+	massData.center = b2Vec2(center.x, center.y);
+	character->rigidBody->SetMassData(&massData);
+	character->rigidBody->SetFixedRotation(true);
+	character->rigidBody->AddCircleShape(Vector2(0.f, 5.f), 6.f, false, 0.f);
+	
+	DEFINE_DELEGATE(replaceDel, void(unsigned int, Vector2));
+	CREATE_DELEGATE(replaceDel, InitialScene, &InitialScene::TileReplace, this);
+	AddTiledMap("Resources/TestTMX.tmx", replaceDel, {81});
+}
+
+void InitialScene::OnDestroy() {
+	coreRef.inputManager->OnKeyDown -= onKeyDownDelegate;
 }
 
 void InitialScene::Update(float deltaTime)
 {
 	EngineScene::Update(deltaTime);
-	if (XEngine::instance->inputManager->IsDown(VK_RIGHT)) {
-		if (!sprite->animationManager.IsPlaying(L"Walk")) {
-			sprite->animationManager.PlayAnim(L"Walk");
+	Vector2 currentVel = character->rigidBody->GetLinearVelocity();
+	if (coreRef.inputManager->IsDown(VK_RIGHT)) {
+		if (!character->animationManager.IsPlaying(TEXT("walk"))) {
+			character->animationManager.PlayAnim(TEXT("walk"));
 		}
-		sprite->scale.width = 2.0f;
-		sprite->scale.height = 2.0f;
-		sprite->transform.p.x += 60 * deltaTime;
-	}
-	else if (XEngine::instance->inputManager->IsDown(VK_LEFT) ){
-		if (!sprite->animationManager.IsPlaying(L"Walk")) {
-			sprite->animationManager.PlayAnim(L"Walk");
+
+		character->rigidBody->SetLinearVelocity(Vector2(50.f, currentVel.y));
+		
+		character->GetTransform().scale.x= 1;
+	}else if (coreRef.inputManager->IsDown(VK_LEFT)) {
+		if (!character->animationManager.IsPlaying(TEXT("walk"))) {
+			character->animationManager.PlayAnim(TEXT("walk"));
 		}
-		sprite->scale.width = -2.0f;
-		sprite->transform.p.x -= 60 * deltaTime;
+		character->rigidBody->SetLinearVelocity(Vector2(-50.f, currentVel.y));
+
+		character->GetTransform().scale.x = -1;
 	}
 	else {
-		if (!sprite->animationManager.IsPlaying(L"Idle")) {
-			sprite->animationManager.PlayAnim(L"Idle");
+		if (!character->animationManager.IsPlaying(TEXT("idle"))) {
+			character->animationManager.PlayAnim(TEXT("idle"));
+		}
+		character->rigidBody->SetLinearVelocity(Vector2(0.f, currentVel.y));
+	}
+
+	currentVel = character->rigidBody->GetLinearVelocity();
+
+	if (coreRef.inputManager->IsDown(VK_UP)) {
+		character->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 50.f));
+		Vector2 vel = character->rigidBody->GetLinearVelocity();
+		if (vel.x > 50.f) {
+			vel.x = 50.f;
+			character->rigidBody->SetLinearVelocity(vel);
 		}
 	}
+	else if (coreRef.inputManager->IsDown(VK_DOWN)) {
+		character->rigidBody->SetLinearVelocity(Vector2(currentVel.x, -50.f));
+		Vector2 vel = character->rigidBody->GetLinearVelocity();
+		if (vel.x < -50.f) {
+			vel.x = -50.f;
+			character->rigidBody->SetLinearVelocity(vel);
+		}
+
+	}
+	else {
+		character->rigidBody->SetLinearVelocity(Vector2(currentVel.x, 0.f));
+	}
+
+	Transform& marioTransform = character->GetTransform();
+
+	//coreRef.camera->position = marioTransform.position;
+
+}
+
+void InitialScene::TileReplace(unsigned int, Vector2 position)
+{
+	character->rigidBody->Translate(position);
+	AddGameObject(character);
 }

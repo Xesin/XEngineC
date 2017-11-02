@@ -49,6 +49,21 @@
     <Filter Include="Headers\Utils\Delegates">
       <UniqueIdentifier>{17fefc3c-2bd8-4fd6-8eec-839d8b7e3f76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Component">
+      <UniqueIdentifier>{7f845455-145d-4456-8cd2-8eb9eea2d155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component">
+      <UniqueIdentifier>{6ec38f5a-c1f1-4fe7-bd05-af4c8d4d811b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{c5644adf-455e-4c61-9d3c-8a8a40b6e21d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\PugiXml">
+      <UniqueIdentifier>{8becbdf4-a4ed-43d5-b9db-1a0e7970794c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\TiledImporter">
+      <UniqueIdentifier>{7f47fcc0-b8e8-434d-8617-94475f6bfcd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -72,9 +87,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Headers\GameObjects\Circle.h">
-      <Filter>Headers\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\GameObjects\GameObject.h">
       <Filter>Headers\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Headers\GameObjects\Rect.h">
@@ -128,6 +140,102 @@
     <ClInclude Include="Headers\Scenes\InitialScene.h">
       <Filter>Headers\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\GameObjects\GameObject.h">
+      <Filter>Headers\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Managers\Physics.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Utils\MathUtils.h">
+      <Filter>Headers\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Renderer\Camera.h">
+      <Filter>Headers\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\Component.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\Transform.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\TilledImageRenderer.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\SpriteRenderer.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Component\PhysicsBody.h">
+      <Filter>Headers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\pugiconfig.hpp">
+      <Filter>Libraries\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\pugixml.hpp">
+      <Filter>Libraries\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\TiledImporter.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\TiledObject.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Map.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Tileset.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Image.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\TerrainTypes.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Terrain.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Tile.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Animation.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Frame.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Layer.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Data.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\ObjectGroup.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Object.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Ellipse.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Polygon.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Polyline.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\ImageLayer.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Group.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Properties.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\TiledImporter\Property.h">
+      <Filter>Headers\TiledImporter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GameObjects\Circle.cpp">
@@ -174,6 +282,24 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\InitialScene.cpp">
       <Filter>Source\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Managers\Physics.cpp">
+      <Filter>Source\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Camera.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\TilledImageRenderer.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpriteRenderer.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\PhysicsBody.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pugixml.cpp">
+      <Filter>Libraries\PugiXml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

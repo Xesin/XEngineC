@@ -14,6 +14,6 @@ ScaleManager::~ScaleManager()
 
 void ScaleManager::OnResize(int newResX)
 {
-	scaleX = (float) newResX / originalResX;
-	scaleY = (float) (newResX * aspectRatio) / originalResY;
+	renderTargetScaleX = (float) newResX / originalResX;
+	renderTargetScaleY = (float) (newResX * aspectRatio) / originalResY;
 }

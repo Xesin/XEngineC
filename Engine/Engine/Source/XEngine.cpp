@@ -4,15 +4,17 @@
 #include <math.h>
 #include <ctime>
 
+#include "resource.h"
 #include "XEngine.h"
 #include "Renderer\Renderer.h"
+#include "Renderer\Camera.h"
 #include "GameObjects\GameObject.h"
 #include "GameObjects\Rect.h"
 #include "Scenes\EngineScene.h"
 #include "Managers\InputManager.h"
+#include "Managers\Physics.h"
 
 XEngine* pDemoApp;
-XEngine* XEngine::instance = NULL;
 
 void XEngine::RunMessageLoop()
 {
@@ -26,37 +28,31 @@ void XEngine::RunMessageLoop()
 		}
 		else {
 			pDemoApp->Update();
-			HRESULT hr;
-			hr = pDemoApp->renderer->PreRender(m_hwnd);
-			if (SUCCEEDED(hr)) {
-				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
-				pDemoApp->renderer->EndRender();
-			}
+			pDemoApp->Render();
 		}
 	}
 }
 
 XEngine::XEngine() 
 {
-	XEngine::instance = NULL;
 	m_hwnd = NULL;
 	inputManager = NULL;
 }
+
 XEngine::~XEngine()
 {
 	delete renderer;
 	delete inputManager;
 }
 
-HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float resolutionY)
+HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float resolutionX, float resolutionY)
 {
 	HRESULT hr;
 	currentScene = initialScene;
 	renderer = new Renderer();
 
-	XEngine::instance = this;
-	// as the Direct2D factory.
-	hr = renderer->Initialize();
+	camera = new Camera(Vector2(resolutionX, resolutionY));
+	hr = renderer->Initialize(camera);
 	if (SUCCEEDED(hr))
 	{
 		// Register the window class.
@@ -68,8 +64,10 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		wcex.hInstance = HINST_THISCOMPONENT;
 		wcex.hbrBackground = NULL;
 		wcex.lpszMenuName = NULL;
-		wcex.hCursor = LoadCursor(NULL, IDI_APPLICATION);
+		wcex.hIcon = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ENGINE));
+		wcex.hCursor = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 		wcex.lpszClassName = L"D2DDemoApp";
+
 
 		RegisterClassEx(&wcex);
 
@@ -80,20 +78,19 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		// The factory returns the current system DPI. This is also the value it will use
 		// to create its own windows.
 		renderer->GetDesktopDpi(&dpiX, &dpiY);
-
-
 		// Create the window.
+
 		m_hwnd = CreateWindow(
 			L"D2DDemoApp",
-			L"Direct2D Demo App",
+			L"Piscina de bolas",
 			WS_OVERLAPPEDWINDOW,
-			CW_USEDEFAULT,
-			CW_USEDEFAULT,
+			0,
+			0,
 			static_cast<UINT>(ceil(resolutionX * dpiX / 96.f)),
 			static_cast<UINT>(ceil(resolutionY * dpiY / 96.f)),
 			NULL,
 			NULL,
-			HINST_THISCOMPONENT,
+			instance,
 			this
 		);
 		hr = m_hwnd ? S_OK : E_FAIL;
@@ -105,6 +102,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 			renderer->CreateDeviceResources(m_hwnd);
 		}
 
+		physics = new Physics(*renderer);
 		inputManager = new InputManager(m_hwnd);
 		pDemoApp = this;
 		
@@ -113,6 +111,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, float resolutionX, float 
 		dt = 1.f / 60.f;
 		currentScene->Preload();
 		currentScene->Start();
+		currentScene->pendingActivation = false;
 	}
 
 	return hr;
@@ -124,18 +123,38 @@ void XEngine::Update() {
 	newTime = GetTime();
 	double frameTime = (newTime - currentTime) * 0.001;
 	currentTime = newTime;
+	float fps =  1.f / (float) frameTime;
 	float deltaTime = (float) min(frameTime, dt);
-
+	if (currentScene->pendingActivation)
+	{
+		previous->OnDestroy();
+		currentScene->Preload();
+		currentScene->Start();
+		currentScene->pendingActivation = false;
+	}
+	physics->Update(deltaTime);
 	currentScene->Update(deltaTime);
+}
+
+void XEngine::Render() {
+	HRESULT hr;
+	hr = renderer->PreRender(m_hwnd);
+	if (SUCCEEDED(hr)) {
+		pDemoApp->currentScene->Render(*renderer);
+		if (physics->isDebug) {
+			physics->DrawDebug();
+		}
+		renderer->EndRender();
+	}
 }
 
 void XEngine::StartScene(EngineScene * sceneToStart)
 {
-	currentScene->OnDestroy();
 	CacheManager::GetInstance()->FlushCache();
+	physics->ClearWorld();
+	previous = currentScene;
 	currentScene = sceneToStart;
-	currentScene->Preload();
-	currentScene->Start();
+
 }
 
 LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -171,7 +190,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			{
 
 				ValidateRect(hwnd, NULL);
-				pDemoApp->currentScene->Render(*(pDemoApp->renderer));
+				pDemoApp->Render();
 				result = 0;
 				wasHandled = true;
 				break;
@@ -188,7 +207,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			case WM_KEYDOWN:
 			{
-				pDemoApp->inputManager->KeyDown(wParam);
+				pDemoApp->inputManager->KeyDown((unsigned int) wParam);
 				result = 0;
 				wasHandled = true;
 				break;
@@ -196,7 +215,7 @@ LRESULT CALLBACK XEngine::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			case WM_KEYUP:
 			{
-				pDemoApp->inputManager->KeyUp(wParam);
+				pDemoApp->inputManager->KeyUp((unsigned int) wParam);
 				result = 0;
 				wasHandled = true;
 				break;

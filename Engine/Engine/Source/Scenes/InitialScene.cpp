@@ -72,7 +72,12 @@ void InitialScene::Start()
 	
 	DEFINE_DELEGATE(replaceDel, void(unsigned int, Vector2));
 	CREATE_DELEGATE(replaceDel, InitialScene, &InitialScene::TileReplace, this);
-	AddTiledMap("Resources/TestTMX.tmx", replaceDel, {81});
+	vector<int> tileIdToReplace = vector<int>();
+	tileIdToReplace.push_back(81);
+	
+	wstring path = TEXT("Resources/TestTMX.tmx");
+	
+	AddTiledMap(path.c_str(), replaceDel, tileIdToReplace);
 }
 
 void InitialScene::OnDestroy() {

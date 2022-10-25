@@ -13,7 +13,7 @@ using namespace std;
 namespace tmx {
 	class TiledImporter {
 	public:
-		static Map* LoadMap(const char* sourceFile, Map *outputMap) {			
+		static Map* LoadMap(const wchar_t* sourceFile, Map *outputMap) {
 			outputMap->xmlFile.load_file(sourceFile);
 
 			xml_node mapNode = outputMap->xmlFile.child("map");

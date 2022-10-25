@@ -19,7 +19,7 @@ enum class PhysicBodyType {
 
 class Physics {
 public:
-	Physics::Physics(Renderer& ref);
+	Physics(Renderer& ref);
 	void Update(float32 deltaTime);
 	void DestroyBody(b2Body* bodyToDestroy);
 	b2Body* CreateBoxBody(Vector2 center, Vector2 bounds, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor = false);
@@ -36,7 +36,7 @@ public:
 
 	b2DistanceJoint* MakeFixedDistanceJoint(b2Body* body1, b2Body* body2, bool collideConnected);
 private:
-	b2World& world = b2World(b2Vec2(0.f, -10.f));
+	b2World* world;
 	Vector2 gravity = Vector2(0.0f, -15.0f);
 public:
 	bool isDebug = false;

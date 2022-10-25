@@ -7,6 +7,7 @@
 #include "Utils\MathUtils.h"
 #include "Utils\ArrayList.h"
 #include "Box2D\Common\b2Draw.h"
+#include "Managers\ScaleManager.h"
 
 template<class Interface>
 inline void SafeRelease(
@@ -106,16 +107,14 @@ private:
 	// Release device-dependent resource.
 	void DiscardDeviceResources();
 
-	template <typename T>
-	float PixelsToDipsX(T x)
+	float PixelsToDipsX(float x)
 	{
-		return (static_cast<float>(x) / DPIScaleX) * scaleManager->renderTargetScaleX;
+		return (x / DPIScaleX) * scaleManager->renderTargetScaleX;
 	}
 
-	template <typename T>
-	float PixelsToDipsY(T y)
+	float PixelsToDipsY(float y)
 	{
-		return (static_cast<float>(y) / DPIScaleY) * scaleManager->renderTargetScaleY;
+		return (y / DPIScaleY) * scaleManager->renderTargetScaleY;
 	}
 
 	Vector2 GetCameraPos();

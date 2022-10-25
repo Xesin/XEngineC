@@ -51,13 +51,13 @@ protected:
 		}
 	}
 
-	void AddTiledMap(char* source) {
+	void AddTiledMap(const wchar_t* source) {
 		DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2));
 		CREATE_DELEGATE(newDelegate, EngineScene, &EngineScene::DefaultTileReplaceCallback, this);
 		AddTiledMap(source, newDelegate, vector<int>());
 	}
 
-	void AddTiledMap(char* source, DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2)), vector<int> tileIdToReplace) {
+	void AddTiledMap(const wchar_t* source, DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2)), vector<int> tileIdToReplace) {
 		tmx::Map map;
 		tmx::TiledImporter::LoadMap(source, &map);
 		vector<CachedImage*> cachedImages;

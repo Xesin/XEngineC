@@ -6,8 +6,8 @@
 Physics::Physics(Renderer& ref)
 {
 	gravity = Vector2(0.0f, -25.0f);
-	world = *(new b2World(b2Vec2(gravity.x, gravity.y)));
-	world.SetDebugDraw(&ref);
+	world = new b2World(b2Vec2(gravity.x, gravity.y));
+	world->SetDebugDraw(&ref);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -19,12 +19,12 @@ Physics::Physics(Renderer& ref)
 
 void Physics::Update(float32 deltaTime)
 {
-	world.Step(deltaTime, 6, 6);
+	world->Step(deltaTime, 6, 6);
 }
 
 void Physics::DestroyBody(b2Body * bodyToDestroy)
 {
-	world.DestroyBody(bodyToDestroy);
+	world->DestroyBody(bodyToDestroy);
 }
 
 b2Body * Physics::CreateBoxBody(Vector2 center, Vector2 bounds, float32 density, float32 friction, PhysicBodyType bodyType, bool isSensor)
@@ -57,7 +57,7 @@ b2Body * Physics::CreateBoxBody(Vector2 center, Vector2 bounds, float32 density,
 		break;
 	}
 
-	rigidBody = world.CreateBody(&bodyDef);
+	rigidBody = world->CreateBody(&bodyDef);
 	AddBoxFixture(rigidBody, Vector2(.0f, .0f), bounds, density, friction, isSensor);
 
 	return rigidBody;
@@ -92,7 +92,7 @@ b2Body * Physics::CreateCircleBody(Vector2 center, float32 radius, float32 densi
 	default:
 		break;
 	}
-	rigidBody = world.CreateBody(&bodyDef);
+	rigidBody = world->CreateBody(&bodyDef);
 
 	AddCircleFixture(rigidBody, Vector2(.0f, .0f), radius, density, friction, isSensor);
 
@@ -129,7 +129,7 @@ b2Body * Physics::CreateEgeBody(Vector2 center, Vector2 p1, Vector2 p2, float32 
 		break;
 	}
 
-	rigidBody = world.CreateBody(&bodyDef);
+	rigidBody = world->CreateBody(&bodyDef);
 	AddEdgeFixture(rigidBody, p1, p2, density, friction, isSensor);
 
 	return rigidBody;
@@ -143,7 +143,7 @@ b2Body * Physics::CreateEmptyBody(Vector2 center)
 	b2Vec2 centerInUnits = Renderer::PixelsToWorldUnits(b2Vec2(center.x, center.y));
 	bodyDef.position.Set(centerInUnits.x, centerInUnits.y);
 
-	rigidBody = world.CreateBody(&bodyDef);
+	rigidBody = world->CreateBody(&bodyDef);
 	return rigidBody;
 }
 
@@ -198,22 +198,22 @@ void Physics::AddEdgeFixture(b2Body * body, Vector2 p1, Vector2 p2, float32 dens
 void Physics::ClearWorld()
 {
 	
-	for (b2Body* b = world.GetBodyList(); b;)  // remove GetNext() call
+	for (b2Body* b = world->GetBodyList(); b;)  // remove GetNext() call
 	{
 		b2Body* next = b->GetNext();  // remember next body before *b gets destroyed
-		world.DestroyBody(b); // do I need to destroy fixture as well(and how?) or it does that for me?
+		world->DestroyBody(b); // do I need to destroy fixture as well(and how?) or it does that for me?
 		b = next;  // go to next body
 	}
 }
 
 void Physics::SetGravity(Vector2 newGravity)
 {
-	world.SetGravity(b2Vec2(newGravity.x, newGravity.y));
+	world->SetGravity(b2Vec2(newGravity.x, newGravity.y));
 }
 
 void Physics::DrawDebug()
 {
-	world.DrawDebugData();
+	world->DrawDebugData();
 }
 
 b2DistanceJoint* Physics::MakeFixedDistanceJoint(b2Body * body1, b2Body * body2, bool collideConnected)
@@ -222,7 +222,7 @@ b2DistanceJoint* Physics::MakeFixedDistanceJoint(b2Body * body1, b2Body * body2,
 	jointDef.Initialize(body1, body2, body1->GetWorldCenter(), body2->GetWorldCenter());
 	jointDef.collideConnected = collideConnected;
 
-	b2DistanceJoint* joint = (b2DistanceJoint*)world.CreateJoint(&jointDef);
+	b2DistanceJoint* joint = (b2DistanceJoint*)world->CreateJoint(&jointDef);
 
 	return joint;
 }

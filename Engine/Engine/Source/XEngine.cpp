@@ -82,7 +82,7 @@ HRESULT XEngine::Initialize(EngineScene* initialScene, HINSTANCE instance, float
 
 		m_hwnd = CreateWindow(
 			L"D2DDemoApp",
-			L"Piscina de bolas",
+			L"Simple Tiled Scene",
 			WS_OVERLAPPEDWINDOW,
 			0,
 			0,

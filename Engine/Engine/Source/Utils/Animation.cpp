@@ -11,6 +11,7 @@ Animation::Animation(int* const framesRef, int refreshRate, int size, bool loop)
 	this->refreshRate = refreshRate;
 	this->loop = loop;
 	loopCount = 0;
+	sprite = nullptr;
 }
 
 void Animation::SetSprite(SpriteRenderer * spriteRef)

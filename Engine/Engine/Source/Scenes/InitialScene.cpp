@@ -25,7 +25,6 @@ Sprite* character;
 
 void InitialScene::OnKeyDown(unsigned int keyCode)
 {
-	unsigned int test = VK_SPACE;
 	if (keyCode == VK_SPACE) {
 		coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
 	}
@@ -49,6 +48,7 @@ void InitialScene::Start()
 	coreRef.renderer->SetClearColor(D2D1::ColorF(0.16f, 0.15f, 0.20f));
 
 	ADD_MULTICAST_DELEGATE(onKeyDownDelegate, coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
+	ADD_MULTICAST_DELEGATE(onKeyDownDelegate, coreRef.inputManager->OnKeyDown, InitialScene, &InitialScene::OnKeyDown, this);
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/character tiles.png"));
 	character = new Sprite(Vector2(0.f, 0.f), coreRef, *image);
 	character->SetSpriteSheet(32, 48);

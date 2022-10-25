@@ -6,6 +6,7 @@
 #include "TiledImporter\TiledImporter.h"
 #include "Component\SpriteRenderer.h"
 
+DECLARE_DELEGATE(OnTileReplaceDelegate, unsigned int, Vector2);
 class EngineScene {
 
 public:
@@ -40,6 +41,7 @@ public:
 		renderer.OnRenderGroup(renderList);
 	}
 protected:
+	
 	void AddGameObject(GameObject* go, bool mustUpdate = true, bool mustRender = true) {
 		
 		if (mustUpdate) {
@@ -52,18 +54,15 @@ protected:
 	}
 
 	void AddTiledMap(const wchar_t* source) {
-		DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2));
-		CREATE_DELEGATE(newDelegate, EngineScene, &EngineScene::DefaultTileReplaceCallback, this);
-		AddTiledMap(source, newDelegate, vector<int>());
+		AddTiledMap(source, vector<int>());
 	}
 
-	void AddTiledMap(const wchar_t* source, DEFINE_DELEGATE(newDelegate, void(unsigned int, Vector2)), vector<int> tileIdToReplace) {
+	void AddTiledMap(const wchar_t* source, vector<int> tileIdToReplace) {
 		tmx::Map map;
 		tmx::TiledImporter::LoadMap(source, &map);
 		vector<CachedImage*> cachedImages;
 		string resourceFolder = "Resources/";
 		int tilesetCount = 0;
-
 		//LOAD TILESETS
 		for (int i = 0; i < map.tileSets.capacity(); i++) {
 			if (map.tileSets[i].image.source != NULL && map.tileSets[i].image.source != L"") {
@@ -110,7 +109,7 @@ protected:
 
 						//if replace is true we call the callback, otherwise we spawn a static gameobject with a sprite
 						if (replace) {
-							newDelegate(index - 1, spawnPos);
+							OnTileReplace(index - 1, spawnPos);
 						}
 						else {
 							GameObject* go = new GameObject(spawnPos, coreRef);
@@ -168,6 +167,7 @@ public:
 	bool pendingActivation = true;
 	ArrayList<GameObject*> renderList;
 	ArrayList<GameObject*> updateList;
+	OnTileReplaceDelegate OnTileReplace;
 protected:
 	XEngine& coreRef;
 };

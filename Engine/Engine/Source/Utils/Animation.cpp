@@ -60,5 +60,5 @@ void Animation::Stop()
 	isPlaying = false;
 	animTime = 0;
 	currentFrame = 0;
-	OnEnd();
+	OnEnd(0);
 }

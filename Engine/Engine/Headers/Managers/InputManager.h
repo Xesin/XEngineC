@@ -6,6 +6,8 @@
 #define MOUSE_RIGHT 0x1
 #define MOUSE_MIDDLE 0x2
 
+DECLARE_MULTICAST_DELEGATE(OnKeyDelegate, unsigned int)
+
 class InputManager {
 
 public:
@@ -23,11 +25,11 @@ public:
 	bool IsDown(unsigned int vKeyCode);
 
 	POINT CursorPos();
-
-	DEFINE_MULTICAST_DELEGATE(OnKeyDown, void(unsigned int));
-	DEFINE_MULTICAST_DELEGATE(OnKeyUp, void(unsigned int));
-	DEFINE_MULTICAST_DELEGATE(OnMouseDown, void(unsigned int));
-	DEFINE_MULTICAST_DELEGATE(OnMouseUp, void(unsigned int));
+	OnKeyDelegate OnKeyDown;
+	OnKeyDelegate OnKeyUp;
+	OnKeyDelegate OnMouseDown;
+	OnKeyDelegate OnMouseUp;
+	
 
 private:	
 	bool keyDowns[255];

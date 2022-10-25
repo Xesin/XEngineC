@@ -1,7 +1,11 @@
 #pragma once
 #include "Utils\Delegates\DelegatesSettings.h"
+#include "Utils\Delegates\MultiCastDelegate.h""
 
 class SpriteRenderer;
+
+DECLARE_MULTICAST_DELEGATE(OnLoopDelegate, int)
+DECLARE_MULTICAST_DELEGATE(OnEndDelegate, int)
 
 class Animation {
 public:
@@ -24,9 +28,8 @@ public:
 	int refreshRate = 100;
 	bool isPlaying = false;
 	bool loop = false;
-
-	DEFINE_MULTICAST_DELEGATE(OnLoop, void(int repeatCount));
-	DEFINE_MULTICAST_DELEGATE(OnEnd, void());
+	OnLoopDelegate OnLoop;
+	OnLoopDelegate OnEnd;
 private:
 	int frameTime = 0;
 	int loopCount = 0;

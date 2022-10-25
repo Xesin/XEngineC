@@ -13,14 +13,16 @@
 #include "TiledImporter\TiledImporter.h"
 #include "Managers\ScaleManager.h"
 
+DECLARE_DELEGATE(asdfasdf, unsigned int);
+
 Sprite* sprite;
 Rect* rect;
+OnKeyDelegate_delegate onKeyDownDelegate;
 InitialScene::InitialScene(XEngine& ref) : EngineScene(ref) {
 }
 
 Sprite* character;
 
-DEFINE_DELEGATE(onKeyDownDelegate, void(unsigned int));
 void InitialScene::OnKeyDown(unsigned int keyCode)
 {
 	unsigned int test = VK_SPACE;
@@ -45,8 +47,8 @@ void InitialScene::Start()
 {
 	coreRef.renderer->scaleManager->gameScale = Vector2(2.f, 2.f);
 	coreRef.renderer->SetClearColor(D2D1::ColorF(0.16f, 0.15f, 0.20f));
-	onKeyDownDelegate = CREATE_MULTICAST_DELEGATE(coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
-	coreRef.inputManager->OnKeyDown += onKeyDownDelegate;
+
+	ADD_MULTICAST_DELEGATE(onKeyDownDelegate, coreRef.inputManager->OnMouseDown, InitialScene, &InitialScene::OnKeyDown, this);
 	CachedImage* image = CacheManager::GetInstance()->AddImage(TEXT("Resources/character tiles.png"));
 	character = new Sprite(Vector2(0.f, 0.f), coreRef, *image);
 	character->SetSpriteSheet(32, 48);
@@ -70,14 +72,12 @@ void InitialScene::Start()
 	character->rigidBody->SetFixedRotation(true);
 	character->rigidBody->AddCircleShape(Vector2(0.f, 5.f), 6.f, false, 0.f);
 	
-	DEFINE_DELEGATE(replaceDel, void(unsigned int, Vector2));
-	CREATE_DELEGATE(replaceDel, InitialScene, &InitialScene::TileReplace, this);
+	ADD_DELEGATE(OnTileReplace, InitialScene, &InitialScene::TileReplace, this);
 	vector<int> tileIdToReplace = vector<int>();
 	tileIdToReplace.push_back(81);
 	
 	wstring path = TEXT("Resources/TestTMX.tmx");
-	
-	AddTiledMap(path.c_str(), replaceDel, tileIdToReplace);
+	AddTiledMap(path.c_str(), tileIdToReplace);
 }
 
 void InitialScene::OnDestroy() {

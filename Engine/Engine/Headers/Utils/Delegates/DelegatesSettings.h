@@ -1,8 +1,8 @@
 #pragma once
 #include "MultiCastDelegate.h"
 
-#define DEFINE_DELEGATE(DelName, ...) delegate<__VA_ARGS__> DelName
-#define DEFINE_MULTICAST_DELEGATE(DelName, ...) multicast_delegate<__VA_ARGS__> DelName; DEFINE_DELEGATE(DelName ## _delegate, __VA_ARGS__)
-#define CREATE_DELEGATE(DelRef, Class, Method, Instance); DelRef = DelRef.create<Class, Method>(Instance)
-#define CREATE_MULTICAST_DELEGATE(DelRef, Class, Method, Instance) DelRef ## _delegate.create<Class, Method>(Instance)
+#define DECLARE_DELEGATE(DelegateName, ...) typedef delegate<void(__VA_ARGS__)> DelegateName;
+#define DECLARE_MULTICAST_DELEGATE(DelName, ...) typedef multicast_delegate<typename void(__VA_ARGS__)> DelName; DECLARE_DELEGATE(DelName ## _delegate, __VA_ARGS__);
+#define ADD_MULTICAST_DELEGATE(DelType, DelRef, Class, Method, Instance) DelType = DelType.create<Class, Method>(Instance); DelRef += DelType;
+#define ADD_DELEGATE(DelRef, Class, Method, Instance) DelRef = DelRef.create<Class, Method>(Instance)
 #define REMOVE_DELEGATE(DelRef); DelRef = NULL
